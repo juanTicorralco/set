@@ -15884,7 +15884,7 @@ textarea.form-control {
 }
 
 .header--standard .header__top {
-    padding: 10px 0;
+    padding: 5px 0;
     background-color: #fff;
     border-bottom: none;
 }
@@ -15967,7 +15967,7 @@ textarea.form-control {
 }
 
 .header--standard .header__content {
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .header--standard .header__content .menu--product-categories .menu__toggle:hover:before {
@@ -16112,7 +16112,7 @@ textarea.form-control {
     -webkit-box-pack: justify;
     justify-content: space-between;
     background-color: #349749;
-    padding: 15px 30px;
+    padding: 5px 30px;
 }
 
 .header--mobile .header__top>* {

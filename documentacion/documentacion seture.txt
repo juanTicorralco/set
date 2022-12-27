@@ -1,0 +1,1 @@
+1.- crear las carpetas controllers y views, en views copiar las carpetas img, js, css

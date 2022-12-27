@@ -154,7 +154,7 @@ if($totalPro->status == 200){
         if(!empty($urlParams[0])){
             if(isset($urlProduct->status) && $urlProduct->status == 200){
                 $name = $urlProduct->result[0]->name_product;
-                $title = "MarketPlace | ". $urlProduct->result[0]->name_product;
+                $title = "Seture | ". $urlProduct->result[0]->name_product;
                 $description = "";
                 foreach(json_decode($urlProduct->result[0]->summary_product, true) as $key => $value){
                     $description .= $value.", ";
@@ -168,16 +168,16 @@ if($totalPro->status == 200){
                 $imagen =  $path."/views/img/products/".$urlProduct->result[0]->url_category."/".$urlProduct->result[0]->image_product;
                 $url = $path.$urlProduct->result[0]->url_product;
             }else{
-                $title = "MarketPlace";
-                $name = "MarketPlace | Home";
+                $title = "Seture";
+                $name = "Seture | Home";
                 $description = "Pagina de mercadeo de compra y venta de articulos y la creacion de tiendas";
                 $keywords = "market, products, sales, store, shell";
                 $imagen =  $path."/views/img/bg/about-us.jpg";
                 $url = $path;
             }
         }else{
-            $title = "MarketPlace";
-            $name = "MarketPlace | Home";
+            $title = "Seture";
+            $name = "Seture | Home";
             $description = "Pagina de mercadeo de compra y venta de articulos y la creacion de tiendas";
             $keywords = "market, products, sales, store, shell";
             $imagen =  $path."/views/img/bg/about-us.jpg";

@@ -35,10 +35,10 @@ Header TOP
 
             <div class="header__left">
                 <ul class="d-flex justify-content-center">
-                    <li><a href="#" target="_blank"><i class="fab fa-facebook-f mr-4"></i></a></li>
-                    <li><a href="#" target="_blank"><i class="fab fa-instagram mr-4"></i></a></li>
+                    <li><a target="_blank"><i class="fab fa-facebook-f mr-4"></i></a></li>
+                    <li><a target="_blank"><i class="fab fa-instagram mr-4"></i></a></li>
                     <!-- <li><a href="#" target="_blank"><i class="fab fa-twitter mr-4"></i></a></li> -->
-                    <li><a href="#" target="_blank"><i class="fab fa-youtube mr-4"></i></a></li>
+                    <li><a target="_blank"><i class="fab fa-youtube mr-4"></i></a></li>
                 </ul>
             </div>
 
@@ -75,7 +75,7 @@ Header Content
 
             <div class="header__content-left">
 
-                <!--=====================================
+            <!--=====================================
             Logo
             ======================================-->
 
@@ -83,77 +83,35 @@ Header Content
                     <img src="img/template/logo_light.png" alt="">
                 </a>
 
-                <!--=====================================
+            <!--=====================================
             Menú
             ======================================-->
-
-                <div class="menu--product-categories">
+            <div class="menu--product-categories">
 
                     <div class="menu__toggle">
                         <i class="icon-menu"></i>
-                        <span> Shop by Department</span>
+                        <span>
+                            <img style="height: 30px;" src="img/template/icono.png" alt="">
+                        </span>
                     </div>
 
-                    <div class="menu__content">
-                        <ul class="menu--dropdown">
-
-                            <?php foreach ($menuCategories as $key => $value) : ?>
-                                <li class="menu-item-has-children has-mega-menu">
-                                    <a href="<?php echo $path . $value->url_category; ?> "><i class="<?php echo $value->icon_category; ?> "></i>
-                                        <?php echo $value->name_category; ?> </a>
-                                    <div class="mega-menu">
-
-                                        <?php $title_list = json_decode($value->title_list_category); ?>
-                                        <?php foreach ($title_list as $key => $value) : ?>
-                                            <div class="mega-menu__column">
-                                                <h4><?php echo $value; ?> <span class="sub-toggle"></span></h4>
-                                                <ul class="mega-menu__list">
-
-                                                    <?php
-                                                    $url = CurlController::api() . "subcategories?linkTo=title_list_subcategory&equalTo=" . rawurlencode($value) . "&select=url_subcategory,name_subcategory";
-                                                    $method = "GET";
-                                                    $field = array();
-                                                    $header = array();
-
-                                                    $menuSubcategories = CurlController::request($url, $method, $field, $header)->result;
-                                                    ?>
-
-                                                    <?php foreach ($menuSubcategories as $key => $value) : ?>
-                                                        <li><a href="<?php echo $path . $value->url_subcategory; ?>">
-                                                                <?php echo $value->name_subcategory; ?> </a>
-                                                        </li>
-                                                    <?php endforeach; ?>
-
-                                                </ul>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-
-                    </div>
+                    
 
                 </div><!-- End menu-->
-
+                
             </div><!-- End Header Content Left-->
 
-            <!--=====================================
+        <!--=====================================
         Search
         ======================================-->
 
-            <div class="header__content-center">
-                <form class="ps-form--quick-search">
-                    <input class="form-control inputSearch" type="text" placeholder="Buscar por...">
-                    <button type="button" class="btnSearch" path="<?php echo $path; ?>">Buscar</button>
-                </form>
-            </div>
+           
 
             <div class="header__content-right">
 
                 <div class="header__actions">
 
-                    <!--=====================================
+                <!--=====================================
                 Wishlist
                 ======================================-->
 

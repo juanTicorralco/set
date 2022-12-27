@@ -80,12 +80,12 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Vertical Slider Category
                 ======================================-->
                 <?php
-                $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product";
-                $method = "GET";
-                $field = array();
-                $header = array();
+                    $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starEnd_product,starStart_product";
+                    $method = "GET";
+                    $field = array();
+                    $header = array();
 
-                $bestProduct = CurlController::request($url, $method, $field, $header)->result;
+                    $bestProduct = CurlController::request($url, $method, $field, $header)->result;
                 ?>
                 <div class="ps-block__slider">
 
@@ -106,86 +106,77 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Block Product Box
                 ======================================-->
 
-                <div class="ps-block__product-box">
+               
 
                     <!--=====================================
                     Product Simple
                     ======================================-->
-
-                    <?php foreach ($bestProduct as $key3 => $value3) : ?>
-                        <div class="ps-product ps-product--simple">
-
-                            <div class="ps-product__thumbnail">
-
-                                <a href="<?php echo $path . $value3->url_product; ?>">
-                                    <img src="img/products/<?php echo $value->url_category; ?>/<?php echo $value3->image_product; ?>" alt="<?php echo $value3->name_product; ?>">
+                    <?php $bestProduct2= $bestProduct[0]; ?>
+                    <div class="plantilla-principal">
+                            
+                        <div class="quedan-estos" id="quedn"><?php echo $bestProduct2->starEnd_product - $bestProduct2->starStart_product ?></div>
+                        <h1 class="principal-h1">Participa y GANA!!!</h1>
+                        <a href="<?php echo $path . $value->url_category; ?>">
+                            <h4 class="p-color"><?php echo $value->name_category; ?></h4>
+                        </a>
+                        <div class="plantilla-secundaria">
+                            <div class="mr-5 ml-5"> 
+                                <a href="<?php echo $path . $bestProduct2->url_product; ?>">
+                                    <h2 class="principal-h1"><?php echo $bestProduct2->name_product; ?></h2>
                                 </a>
-
-                                <?php if ($value3->stock_product != 0) : ?>
-                                    <?php if ($value3->offer_product != null) : ?>
-
-                                        <div class="ps-product__badge">-<?php echo TemplateController::percentOffer($value3->price_product, json_decode($value3->offer_product, true)[1], json_decode($value3->offer_product, true)[0]); ?>%</div>
-                                    <?php endif; ?>
-                                <?php else : ?>
-                                    <div class="ps-product__badge out-stock">Fuera de Stock</div>
-                                <?php endif; ?>
-
+                                <p class="p-color"><?php echo $bestProduct2->description_product; ?></p>
                             </div>
-
-                            <div class="ps-product__container">
-
-                                <div class="ps-product__content" data-mh="clothing">
-
-                                    <a class="ps-product__title" href="<?php echo $path . $value3->url_product; ?>"><?php echo $value3->name_product; ?></a>
-
-                                    <div class="ps-product__rating">
-
-                                        <?php $reviews = TemplateController::calificationStars(json_decode($value3->reviews_product, true));
-                                        ?>
-
-                                        <select class="ps-rating" data-read-only="true">
-
-                                            <?php
-                                            if ($reviews > 0) {
-                                                for ($i = 0; $i < 5; $i++) {
-                                                    if ($reviews < ($i + 1)) {
-                                                        echo '<option value="1">' . $i + 1 . '</option>';
-                                                    } else {
-                                                        echo '<option value="2">' . $i + 1 . '</option>';
-                                                    }
-                                                }
-                                            } else {
-                                                echo '<option value="0">0</option>';
-                                                for ($i = 0; $i < 5; $i++) {
-                                                    echo '<option value="1">' . $i + 1 . '</option>';
-                                                }
-                                            }
-                                            ?>
-
-                                        </select>
-
-                                        <span>(<?php
-                                                if ($value3->reviews_product != null) {
-                                                    echo count(json_decode($value3->reviews_product, true));
-                                                } else {
-                                                    echo "0";
-                                                }
-                                                ?> reseñas)</span>
-
-                                    </div>
-                                    <?php if ($value3->offer_product != null) : ?>
-                                        <p class="ps-product__price sale">$<?php echo TemplateController::offerPrice($value3->price_product, json_decode($value3->offer_product, true)[1], json_decode($value3->offer_product, true)[0]); ?> <del>$<?php echo $value3->price_product; ?></del></p>
-                                    <?php else : ?>
-                                        <p class="ps-product__price">$<?php echo $value3->price_product; ?></p>
-                                    <?php endif; ?>
-                                </div>
-
+                            <div class="mr-5 ml-5">
+                                <a href="<?php echo $path . $bestProduct2->url_product; ?>">
+                                    <img class="imagen-baja" src="img/products/<?php echo $value->url_category; ?>/<?php echo $bestProduct2->image_product; ?>" alt="<?php echo $bestProduct2->name_product; ?>">
+                                </a>
                             </div>
-
-                        </div> <!-- End Product Simple -->
-                    <?php endforeach; ?>
-
-                </div><!-- End Block Product Box -->
+                        </div>
+                        <div class="plantilla-bolas">
+                            <div class="item-bola">
+                                <p class="p-bolas">1</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">2</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">    
+                                <p class="p-bolas">3</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">4</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">5</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola"> 
+                                <p class="p-bolas">6</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">7</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">8</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">9</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                            <div class="item-bola">
+                                <p class="p-bolas">10</p>
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <!-- End Product Simple -->
 
             </div><!-- End Products of category -->
         <?php endforeach; ?>

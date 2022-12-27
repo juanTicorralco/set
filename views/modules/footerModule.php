@@ -22,7 +22,6 @@
 
                 <ul class="ps-list--social">
                     <li><a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                    <li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
                     <li><a class="google-plus" href="#"><i class="fab fa-youtube"></i></a></li>
                     <li><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>
                 </ul>
@@ -105,30 +104,6 @@
     Categories Footer
     ======================================-->
 
-    <div class="ps-footer__links">
-        <!-- filter the categories and subcategories -->
-        <h5>Categorias</h5>
-        <?php foreach($menuCategories as $key => $value): ?>
-        <p>
-            <strong> <?php echo $value->name_category;?> </strong>
-            <?php
-                                    
-            $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . rawurlencode($value->id_category)."&select=url_subcategory,name_subcategory";
-            $method= "GET";
-            $field=array();
-            $header=array();
-
-            $menuSubcategories=CurlController::request($url, $method, $field, $header)->result;
-            ?>
-             <?php if(isset($menuSubcategories) && $menuSubcategories != "no found"): 
-                foreach($menuSubcategories as $key => $value): ?>
-            <a href="<?php echo $path.$value->url_subcategory;?>"> <?php echo $value->name_subcategory;?> </a>
-            <?php endforeach; 
-        endif; ?>
-        </p>
-        <?php endforeach; ?>
-
-    </div>
 
     <!--=====================================
     CopyRight - Payment method Footer
@@ -136,7 +111,7 @@
 
     <div class="ps-footer__copyright">
 
-        <p>© 2020 WeSharp. Todos los derechos reservados</p>
+        <p>© 2023 Seture. Todos los derechos reservados</p>
 
         <p>
             <span>Usamos pagos seguros con:</span>

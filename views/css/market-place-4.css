@@ -214,3 +214,93 @@
 a.jo {
   color: #06e321;
 }
+.plantilla-principal{
+  background-color: #06e321;
+  text-align: center;
+  padding: 10px 20px 0px 20px;
+  background-image: url("/views/img/uno.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-repeat: initial;
+  border: #fbff00 5px double;
+  border-top-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+.plantilla-secundaria{
+  display: flex;
+  justify-content: center;
+}
+.imagen-baja{
+  max-width: 200px;
+}
+.numero-pedido{
+  width: 60px;
+  height: 60px;
+}
+.numero-pedido img:hover{
+  -webkit-transform: rotate(-30deg);
+  -moz-transform: rotate(-30deg);
+  -o-transform: rotate(-30deg);
+  cursor: pointer;
+}
+.plantilla-bolas{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+}
+.item-bola{
+  margin: 30px;
+}
+.principal-h1{
+  color: #fbff00;
+  text-shadow: -2px -2px 1px #727422, 2px 2px 1px #727422, -2px 2px 1px #727422, 2px -2px 1px #727422;
+}
+.p-bolas{
+  font-weight: bold;
+  font-size: large;
+  color: rgb(255, 255, 255);
+  margin: 0;
+}
+.p-color{
+  color: rgb(255, 255, 255);
+}
+#quedn{
+  position: relative;
+  top: 0px; left: 90%;
+  background-color: #f3af48;
+  color: #fff;
+  width: 60px;
+  border: #000 solid 1px;
+  border-radius: 50px;
+  font-size: larger;
+  font-weight: bold;
+}
+
+@media (max-width: 560px) {
+  .plantilla-secundaria{
+    justify-content: center;
+    display: block;
+  }
+  #quedn{
+    top: 0px; left: 85%;
+  }
+  .item-bola{
+    margin: 20px;
+  }
+}
+
+@media (max-width: 290px) {
+  .plantilla-secundaria{
+    justify-content: center;
+    display: block;
+  }
+  #quedn{
+    top: 0px; left: 75%;
+  }
+  .item-bola{
+    margin: 20px;
+  }
+  .imagen-baja{
+    max-width: 150px;
+  }
+}

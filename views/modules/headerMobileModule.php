@@ -48,61 +48,10 @@
 				Menu Mobile
 				======================================-->
 
-            <div class="menu--product-categories">
+            
 
-                <div class="ps-shop__filter-mb mt-4 mr-4" id="filter-sidebar">
-                    <i class="icon-menu "></i>
-                </div>
-
-                <div class="ps-filter--sidebar">
-
-                    <div class="ps-filter__header">
-                        <h3>Categories</h3><a class="ps-btn--close ps-btn--no-boder" href="#"></a>
-                    </div>
-
-                    <div class="ps-filter__content">
-
-                        <aside class="widget widget_shop">
-
-                            <ul class="ps-list--categories">
-
-                                <!-- filter the categories and subcategories -->
-                                <?php foreach ($menuCategories as $key => $value) : ?>
-                                    <li class="current-menu-item menu-item-has-children"><a class="jo" href="<?php echo $path . $value->url_category; ?>"> <?php echo $value->name_category; ?> </a><span class="sub-toggle"><i class="fa fa-angle-down"></i></span>
-                                        <ul class="sub-menu" style="display: none;">
-                                            <?php
-
-                                            $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . rawurlencode($value->id_category) . "&select=url_subcategory,name_subcategory";
-                                            $method = "GET";
-                                            $field = array();
-                                            $header = array();
-
-                                            $menuSubcategories = CurlController::request($url, $method, $field, $header)->result;
-                                            ?>
-                                            <?php foreach ($menuSubcategories as $key => $value) : ?>
-
-                                                <li class="current-menu-item "><a href="<?php echo $path . $value->url_subcategory; ?>"> <?php echo $value->name_subcategory; ?> </a>
-                                                </li>
-
-                                            <?php endforeach; ?>
-
-
-                                        </ul>
-                                    </li>
-
-                                <?php endforeach; ?>
-                            </ul>
-
-                        </aside>
-
-                    </div>
-
-                </div>
-
-            </div><!-- End menu-->
-
-            <a class="ps-logo pl-3 pl-sm-5" href="/">
-                <img src="img/template/logo_light.png" class="pt-3" alt="">
+            <a class="ps-logo" href="/">
+                <img src="img/template/logo_light.png"  alt="">
             </a>
 
         </div>
@@ -294,18 +243,9 @@
     </div>
 
     <!--=====================================
-		Search
-		======================================-->
+	Search
+	======================================-->
 
-    <div class="ps-search--mobile">
-
-        <form class="ps-form--quick-search">
-            <div class="form-group--nest">
-                <input class="form-control inputSearch" type="text" placeholder="Buscar por...">
-                <button type="button" class="btnSearch" path="<?php echo $path; ?>">Buscar</button>
-            </div>
-        </form>
-
-    </div>
+    
 
 </header>
