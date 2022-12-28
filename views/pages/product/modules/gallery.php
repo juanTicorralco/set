@@ -3,14 +3,6 @@
     <figure>
 
         <div class="ps-wrapper">
-            <?php if ($producter->stock_product != 0) : ?>
-                <?php if ($producter->offer_product != null) : ?>
-
-                    <div class="ps-product__badge text-light p-2 rounded-pill font-weight-bold">-<?php echo TemplateController::percentOffer($producter->price_product, json_decode($producter->offer_product, true)[1], json_decode($producter->offer_product, true)[0]); ?>%</div>
-                <?php endif; ?>
-            <?php else : ?>
-                <div class="ps-product__badge out-stock text-danger p-2 rounded-pill font-weight-bold">Fuera de stock</div>
-            <?php endif; ?>
 
             <div class="ps-product__gallery" data-arrow="true">
                 <?php
@@ -19,7 +11,7 @@
                 ?>
                     <div class="item">
                         <a href="img/products/<?php echo $producter->url_category; ?>/gallery/<?php echo $value2; ?>">
-                            <img src="img/products/<?php echo $producter->url_category; ?>/gallery/<?php echo $value2; ?>" alt="<?php echo $producter->name_category; ?>">
+                            <img class="imgborder" src="img/products/<?php echo $producter->url_category; ?>/gallery/<?php echo $value2; ?>" alt="<?php echo $producter->name_category; ?>">
                         </a>
                     </div>
 
@@ -29,6 +21,16 @@
 
         </div>
 
+        <!-- video del producto  -->
+        <?php if ($producter->video_product != null) : ?>
+            <?php $video = json_decode($producter->video_product, true); ?>
+            <?php if ($video[0] == "youtube") : ?>
+                <iframe class="videoclas imgborder" src="https://www.youtube.com/embed/<?php echo $video[1]; ?>?rel=0&autoplay=0" height='360' frameborder='0' allowfullscreen></iframe>
+            <?php else : ?>
+                <iframe class="videoclas" src="https://player.vimeo.com/video/<?php echo $video[1]; ?>" height="360" frameborder="0" allowfullscreen></iframe>
+            <?php endif; ?>
+        <?php endif; ?>
+
     </figure>
 
     <div class="ps-product__variants" data-item="4" data-md="4" data-sm="4" data-arrow="false">
@@ -37,7 +39,7 @@
         foreach ($galeriProducter as $key3 => $value3) :
         ?>
             <div class="item">
-                <img src="img/products/<?php echo $producter->url_category; ?>/gallery/<?php echo $value3; ?>" alt="<?php echo $producter->name_category; ?>">
+                <img class="imgborder" src="img/products/<?php echo $producter->url_category; ?>/gallery/<?php echo $value3; ?>" alt="<?php echo $producter->name_category; ?>">
             </div>
         <?php endforeach; ?>
 

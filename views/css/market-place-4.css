@@ -226,6 +226,10 @@ a.jo {
   border-top-left-radius: 40px;
   border-bottom-right-radius: 40px;
 }
+.plantilla-principal1{
+  text-align: center;
+  padding: 10px 20px 0px 20px;
+}
 .plantilla-secundaria{
   display: flex;
   justify-content: center;
@@ -303,4 +307,18 @@ a.jo {
   .imagen-baja{
     max-width: 150px;
   }
+}
+
+.videoclas{
+  margin-top: 30px;
+}
+.imgborder{
+  border: #000 solid 1px;
+  border-radius: 10%;
+}
+.colorcute{
+  color: #fff !important;
+}
+.botonses{
+  justify-content: end;
 }

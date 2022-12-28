@@ -22,25 +22,25 @@
 </ul>
 
 <div class="container-fluid preloadTrue">
-            <div class="ph-item border-0 p-0 mt-0">
-                <div class="ph-col-6">
-                    <div class="ph-picture" style="height:50px"></div>
-                </div>
-                <div class="ph-col-6">
-                    <div class="ph-row">
-                        <div class="ph-col-8"></div>
-                        <div class="ph-col-4 empty"></div>
+    <div class="ph-item border-0 p-0 mt-0">
+        <div class="ph-col-6">
+            <div class="ph-picture" style="height:50px"></div>
+        </div>
+        <div class="ph-col-6">
+            <div class="ph-row">
+                <div class="ph-col-8"></div>
+                <div class="ph-col-4 empty"></div>
 
-                        <div class="ph-col-12"></div>
-                        <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
 
-                        <div class="ph-col-6"></div>
-                        <div class="ph-col-6 empty"></div>
+                <div class="ph-col-6"></div>
+                <div class="ph-col-6 empty"></div>
 
-                    </div>
-                </div>
             </div>
         </div>
+    </div>
+</div>
 
 <div class="ps-tabs preloadFalse">
 

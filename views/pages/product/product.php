@@ -1,6 +1,6 @@
 <!-- traer toda la informacion del producto -->
 <?php
-$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product";
+$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product,starEnd_product,starStart_product";
 $method9 = "GET";
 $field9 = array();
 $header9 = array();
@@ -67,52 +67,52 @@ Product Content
                     ======================================-->
 
                     <div class="container-fluid preloadTrue">
-                    <div class="ph-item">
-                        <div class="ph-col-6">
-                            <div class="ph-item border-0">
-                                <div class="ph-col-2">
-                                    <div class="ph-picture" style="height:300px"></div>
-                                </div>
-                                <div class="ph-col-10">
-                                    <div class="ph-picture" style="height:300px"></div>
+                        <div class="ph-item">
+                            <div class="ph-col-6">
+                                <div class="ph-item border-0">
+                                    <div class="ph-col-2">
+                                        <div class="ph-picture" style="height:300px"></div>
+                                    </div>
+                                    <div class="ph-col-10">
+                                        <div class="ph-picture" style="height:300px"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ph-col-6">
-                            <div class="ph-row mt-5">
-                                <div class="ph-col-4 big"></div>
-                                <div class="ph-col-8 empty"></div>
+                            <div class="ph-col-6">
+                                <div class="ph-row mt-5">
+                                    <div class="ph-col-4 big"></div>
+                                    <div class="ph-col-8 empty"></div>
 
-                                <div class="ph-col-6 big"></div>
-                                <div class="ph-col-8 empty"></div>
+                                    <div class="ph-col-6 big"></div>
+                                    <div class="ph-col-8 empty"></div>
 
-                                <div class="ph-col-8"></div>
-                                <div class="ph-col-4 empty"></div>
+                                    <div class="ph-col-8"></div>
+                                    <div class="ph-col-4 empty"></div>
 
-                                <div class="ph-col-12 big"></div>
+                                    <div class="ph-col-12 big"></div>
 
-                                <div class="ph-col-6 big" style="height:70px"></div>
-                                <div class="ph-col-6 empty"></div>
+                                    <div class="ph-col-6 big" style="height:70px"></div>
+                                    <div class="ph-col-6 empty"></div>
 
-                                <div class="ph-col-8 big"></div>
-                                <div class="ph-col-4 empty"></div>
+                                    <div class="ph-col-8 big"></div>
+                                    <div class="ph-col-4 empty"></div>
 
-                                <div class="ph-col-12"></div>
+                                    <div class="ph-col-12"></div>
 
-                                <div class="ph-col-8"></div>
-                                <div class="ph-col-4 empty"></div>
+                                    <div class="ph-col-8"></div>
+                                    <div class="ph-col-4 empty"></div>
 
-                                <div class="ph-col-12 big"></div>
+                                    <div class="ph-col-12 big"></div>
 
-                                <div class="ph-col-12" style="height:70px"></div>
+                                    <div class="ph-col-12" style="height:70px"></div>
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
 
-                </div>
-
-                    <div class="ps-product__header preloadFalse">
+                    <div class="ps-product__header preloadFalse plantilla-principal">
 
                         <!--=====================================
                         Gallery
@@ -133,7 +133,16 @@ Product Content
                     <div class="ps-product__content ps-tab-root">
 
                         <!-- Comprados con frecuencia -->
-                        <?php include "modules/frecuently.php"; ?>
+                        <?php
+                        $url10 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=title_list_product&equalTo=" . $producter->title_list_product . "&select=id_product,url_category,image_product,name_product,url_product,price_product,offer_product,stock_product,name_store,reviews_product";
+                        $method10 = "GET";
+                        $field10 = array();
+                        $header10 = array();
+
+                        $newProduct = CurlController::request($url10, $method10, $field10, $header10)->result;
+
+                        ?>
+                        <?php //include "modules/frecuently.php"; ?>
 
                         <!-- menu del producto -->
                         <?php include "modules/menuProduct.php"; ?>
@@ -173,7 +182,7 @@ Product Content
         Customers who bought
         ======================================-->
 
-        <?php include "modules/coustomersWhoBouht.php"; ?>
+        <?php //include "modules/coustomersWhoBouht.php"; ?>
         <!--=====================================
         Related products
         ======================================-->

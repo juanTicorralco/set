@@ -8747,13 +8747,13 @@ textarea.form-control {
     margin-bottom: 5rem;
 }
 
-.ps-product--detail h1 {
+/* .ps-product--detail h1 {
     margin-bottom: 10px;
     font-size: 24px;
     color: #000;
     font-weight: 400;
     line-height: 1.2;
-}
+} */
 
 .ps-product--detail .slick-slide {
     outline: none;
