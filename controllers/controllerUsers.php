@@ -544,4 +544,14 @@ class ControllerUser
             }
         }
     }
+
+    public function starcheck(){
+        if(isset($_POST["idStar"]) && preg_match('/^[0-9]{1,}$/', $_POST["idStar"]) &&
+        isset($_POST["idUser"]) && preg_match('/^[0-9]{1,}$/', $_POST["idUser"]) &&
+        isset($_POST["idtipe"]) && preg_match('/^[a-zA-Z]{1,}$/', $_POST["idtipe"])){
+            
+            
+            
+        }
+    }
 }

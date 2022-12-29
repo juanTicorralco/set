@@ -1,5 +1,5 @@
 <?php
-$url11 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=id_store_product&equalTo=" . $producter->id_store . "&orderBy=id_product&orderMode=DESC&startAt=0&endAt=4&select=url_product,url_category,image_product,name_product,stock_product,offer_product,price_product,url_store,name_store,reviews_product";
+$url11 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=id_store_product&equalTo=" . $producter->id_store . "&orderBy=id_product&orderMode=DESC&startAt=0&endAt=1&select=url_product,url_category,image_product,name_product,stock_product,offer_product,price_product,url_store,name_store,reviews_product";
 $method11 = "GET";
 $field11 = array();
 $header11 = array();
@@ -10,7 +10,7 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
 
 <aside class="widget widget_same-brand">
 
-    <h3>Productos Similares</h3>
+    <h3>Rifas Similares</h3>
 
     <!-- preload  -->
     <div class="container-fluid preloadTrue">
@@ -123,27 +123,16 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
 
                     
                     <?php
-                                            if (in_array($value->url_product, $wishlist)) {
-                                                echo '  <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>';
-                                            }
-                                         ?>
+                        if (in_array($value->url_product, $wishlist)) {
+                            echo '  <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>';
+                        }
+                    ?>
 
-                                        <div class="invisibleCorazon <?php echo $value->url_product; ?>">
-                                        <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>
-                                        </div>
+                    <div class="invisibleCorazon <?php echo $value->url_product; ?>">
+                    <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>
+                    </div>
 
                     <ul class="ps-product__actions">
-
-                        <li>
-                            <a
-                            class="btn" 
-                            onclick="addBagCard('<?php echo $value->url_product; ?>', '<?php echo $value->url_category; ?>', '<?php echo $value->image_product; ?>', '<?php echo $value->name_product; ?>', '<?php echo $value->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
-                            detailSC 
-                            quantitySC
-                            data-toggle="tooltip" data-placement="top" title="Agregar al carrito">
-                                <i class="icon-bag2"></i>
-                            </a>
-                        </li>
 
                         <li>
                             <a href="#" data-toggle="tooltip" data-placement="top" title="Quick View">
@@ -171,29 +160,6 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
 
                         <div class="ps-product__rating">
 
-                            <select class="ps-rating" data-read-only="true">
-
-                                <!-- reseñas en estrellas -->
-                                <?php $reviews = TemplateController::calificationStars(json_decode($value->reviews_product, true)); ?>
-                                <?php
-                                if ($reviews > 0) {
-                                    for ($i = 0; $i < 5; $i++) {
-                                        if ($reviews < ($i + 1)) {
-                                            echo '<option value="1">' . $i + 1 . '</option>';
-                                        } else {
-                                            echo '<option value="2">' . $i + 1 . '</option>';
-                                        }
-                                    }
-                                } else {
-                                    echo '<option value="0">0</option>';
-                                    for ($i = 0; $i < 5; $i++) {
-                                        echo '<option value="1">' . $i + 1 . '</option>';
-                                    }
-                                }
-                                ?>
-
-                            </select>
-
                             <!-- numero de reviciones -->
                             <span>(<?php
                                     if ($producter->reviews_product != null) {
@@ -201,7 +167,7 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
                                     } else {
                                         echo "0";
                                     }
-                                    ?> reseñas)
+                                    ?> rascados)
                             </span>
 
                         </div>

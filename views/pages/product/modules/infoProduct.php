@@ -35,7 +35,22 @@
         <div class="plantilla-bolas">
             <div class="item-bola">
                 <p class="p-bolas">1</p>
-                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                
+                    <form  method="POST" class="needs-validation" novalidate>
+                        <input type="hidden" name="idStar" value="1">
+                        <input type="hidden" name="idUser" value="1">
+                        <input type="hidden" name="idtipe" value="checkIn">
+                        <button class="butonInter" type="submit">
+                            <div class="contestrella">
+                                <img class="numero-pedido" src="/views/img/starendsas.png" alt="star">
+                                <p class="numeroDesc">$25</p>
+                            </div>
+                        </button>
+                        <?php
+                            $question = new ControllerUser();
+                            $question -> starcheck();
+                        ?>
+                    </form>
             </div>
             <div class="item-bola">
                 <p class="p-bolas">2</p>

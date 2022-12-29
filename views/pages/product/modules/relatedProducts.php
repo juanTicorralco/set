@@ -101,12 +101,7 @@
 
                         <ul class="ps-product__actions">
 
-                            <li><a
-                            class="btn" 
-                            onclick="addBagCard('<?php echo $value->url_product; ?>', '<?php echo $value->url_category; ?>', '<?php echo $value->image_product; ?>', '<?php echo $value->name_product; ?>', '<?php echo $value->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
-                            detailSC 
-                            quantitySC
-                            data-toggle="tooltip" data-placement="top" title="Agregar al carrito"><i class="icon-bag2"></i></a></li>
+                       
                             <li><a href="#" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-eye"></i></a></li>
                             <li>
                             <a class="btn" onclick="addWishList('<?php echo $value->url_product; ?>', '<?php echo CurlController::api(); ?>')" data-toggle="tooltip" data-placement="top" title="Lo deseo">
@@ -120,29 +115,6 @@
 
                     <div class="ps-product__container"><a class="ps-product__vendor" href="<?php echo $path . $value->url_store; ?>"><?php echo $value->name_store; ?></a>
                         <div class="ps-product__content"><a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
-                            <select class="ps-rating" data-read-only="true">
-
-                                <!-- reseñas en estrellas -->
-                                <?php $reviews = TemplateController::calificationStars(json_decode($value->reviews_product, true)); ?>
-                                <?php
-                                if ($reviews > 0) {
-                                    for ($i = 0; $i < 5; $i++) {
-                                        if ($reviews < ($i + 1)) {
-                                            echo '<option value="1">' . $i + 1 . '</option>';
-                                        } else {
-                                            echo '<option value="2">' . $i + 1 . '</option>';
-                                        }
-                                    }
-                                } else {
-                                    echo '<option value="0">0</option>';
-                                    for ($i = 0; $i < 5; $i++) {
-                                        echo '<option value="1">' . $i + 1 . '</option>';
-                                    }
-                                }
-                                ?>
-
-                            </select>
-
                             <!-- precio  -->
                             <?php if ($value->offer_product != null) : ?>
                                 <h2 class="ps-product__price sale text-success">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del>$<?php echo $value->price_product; ?></del></h2>

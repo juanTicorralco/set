@@ -238,8 +238,12 @@ a.jo {
   max-width: 200px;
 }
 .numero-pedido{
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
+}
+.numero-pedidorojo{
+  width: 65px;
+  height: 65px;
 }
 .numero-pedido img:hover{
   -webkit-transform: rotate(-30deg);
@@ -321,4 +325,21 @@ a.jo {
 }
 .botonses{
   justify-content: end;
+}
+.contestrella{
+  position: relative;
+    display: inline-block;
+    text-align: center;
+}
+.numeroDesc{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-weight: bold;
+}
+.butonInter{
+  background-color: transparent;
+  border: aliceblue;
 }
