@@ -173,11 +173,8 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
                         </div>
 
                         <!-- precio  -->
-                        <?php if ($value->offer_product != null) : ?>
-                            <h2 class="ps-product__price sale text-success">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del>$<?php echo $value->price_product; ?></del></h2>
-                        <?php else : ?>
-                            <p class="ps-product__price">$<?php echo $value->price_product; ?></p>
-                        <?php endif; ?>
+                        <?php $priceProduct = json_decode($value->price_product); ?>
+                        <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></h2>
 
                     </div>
 
@@ -186,11 +183,7 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
                         <a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
 
                         <!-- precio  -->
-                        <?php if ($value->offer_product != null) : ?>
-                            <h2 class="ps-product__price sale text-success">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del>$<?php echo $value->price_product; ?></del></h2>
-                        <?php else : ?>
-                            <p class="ps-product__price">$<?php echo $value->price_product; ?></p>
-                        <?php endif; ?>
+                        <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></h2>
 
                     </div>
 

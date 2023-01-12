@@ -23,11 +23,7 @@
                     <div class="ps-product__shopping">
 
                         <!-- precio  -->
-                        <?php if ($producter->offer_product != null) : ?>
-                            <p class="ps-product__price sale text-success">$<?php echo TemplateController::offerPrice($producter->price_product, json_decode($producter->offer_product, true)[1], json_decode($producter->offer_product, true)[0]); ?> <del>$<?php echo $producter->price_product; ?></del></p>
-                        <?php else : ?>
-                            <p class="ps-product__price">$<?php echo $producter->price_product; ?></p>
-                        <?php endif; ?>
+                        <p class="ps-product__price sale text-success PresioPlantilla">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></p>
 
                         <a class="ps-btn btn" 
                             onclick="addBagCard('<?php echo $producter->url_product; ?>', '<?php echo $producter->url_category; ?>', '<?php echo $producter->image_product; ?>', '<?php echo $producter->name_product; ?>', '<?php echo $producter->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"

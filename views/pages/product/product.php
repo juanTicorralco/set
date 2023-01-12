@@ -1,6 +1,6 @@
 <!-- traer toda la informacion del producto -->
 <?php
-$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product,starEnd_product,starStart_product";
+$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product,starEnd_product,starStart_product,stars_product";
 $method9 = "GET";
 $field9 = array();
 $header9 = array();
@@ -25,7 +25,7 @@ $producter = CurlController::request($url9, $method9, $field9, $header9)->result
 
  $upDateProduct= CurlController::request($url12,$method12,$field12, $header12); 
 
- 
+ $priceProduct = json_decode($producter->price_product);
 ?>
 
 <!--=====================================
@@ -66,7 +66,7 @@ Product Content
                     Product Header
                     ======================================-->
 
-                    <div class="container-fluid preloadTrue">
+                    <!-- <div class="container-fluid preloadTrue">
                         <div class="ph-item">
                             <div class="ph-col-6">
                                 <div class="ph-item border-0">
@@ -110,9 +110,9 @@ Product Content
 
                         </div>
 
-                    </div>
+                    </div> -->
 
-                    <div class="ps-product__header preloadFalse plantilla-principal">
+                    <div class="ps-product__header  plantilla-principal">
 
                         <!--=====================================
                         Gallery

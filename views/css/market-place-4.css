@@ -257,7 +257,7 @@ a.jo {
   justify-content:center;
 }
 .item-bola{
-  margin: 30px;
+  margin: 10px;
 }
 .principal-h1{
   color: #fbff00;
@@ -305,9 +305,6 @@ a.jo {
   #quedn{
     top: 0px; left: 75%;
   }
-  .item-bola{
-    margin: 20px;
-  }
   .imagen-baja{
     max-width: 150px;
   }
@@ -342,4 +339,17 @@ a.jo {
 .butonInter{
   background-color: transparent;
   border: aliceblue;
+}
+.PresioPlantilla{
+  color: #06e321;
+  font-size: large;
+  font-weight: bolder;
+}
+.nome{
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
