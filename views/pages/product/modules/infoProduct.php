@@ -92,10 +92,12 @@
         date_default_timezone_set('UTC');
         date_default_timezone_set("America/Mexico_City");
         $fechacount =0;
-         $fechadeHoy= strtotime(date("d-m-Y H:i:s"));
-         foreach($timestart as $key => $value){
-            $timestart = strtotime($value);
-            if($timestart > $fechadeHoy){
+        $fechadeHoy = date("d-m-Y H:i:s");
+        $fechHoy= strtotime($fechadeHoy);
+        foreach($timestart as $key => $value){
+            $tstart = strtotime($value);
+            if($tstart > $fechHoy){
+                $timestart = $value;
                 $fechacount++;
             }
          }
@@ -103,10 +105,42 @@
         <?php if($fechacount >0): ?>
             <a class="ps-btn" title="Solo podemos apartar tu estrella 5 minutos, despues de eso tu estrella volvera a estar libre.">
                 Tiempo: 
-                <?php
-                    echo "05:00:00";
-                ?>
+                <span>0</span><span id="minutes"></span> : <span id="seconds"></span>
             </a>
+            <?php
+                $timestart = explode(" ", $timestart);
+                if (!empty(array_filter($timestart)[1])) {
+                    $timestart = array($timestart[1]);
+                }
+                echo "
+                <script>
+                    const SPAN_MINUTES = document.querySelector('span#minutes');
+                    const SPAN_SECONDS = document.querySelector('span#seconds');
+                    const MILLISECONDS_OF_A_SECOND = 1000;
+                
+                    function updateCountdown() {
+                        var hora1 = ('$timestart[0]').split(':'),
+                        t1 = new Date(),
+                        t2 = new Date(),
+                        hor=0, min=0;
+                    
+                        t1.setHours(hora1[0], hora1[1], hora1[2]);
+                        hor = t1.getMinutes()-t2.getMinutes()-1;
+                        min= 60-t2.getSeconds();
+                        if(hor < 0 ){
+                            SPAN_MINUTES.textContent = 0;
+                            SPAN_SECONDS.textContent = '00';
+                        }else{
+                            SPAN_MINUTES.textContent = hor;
+                            SPAN_SECONDS.textContent = min;
+                        }
+                    }
+
+                    updateCountdown();
+                    setInterval(updateCountdown, MILLISECONDS_OF_A_SECOND);
+                </script>
+                ";    
+            ?>
         <?php endif; ?>
         
         <a class="ps-btn" 
