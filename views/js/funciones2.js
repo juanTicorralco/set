@@ -70,8 +70,8 @@ function switAlert(type, text, url, icon, time) {
         title: text,
         width: 600,
         padding: "3em",
-        color: "#716add",
-        background: "#fff url(img/users/default/fondo.jpg)",
+        color: "#fff",
+        background: "#fff url(img/users/default/fondo.gif)",
         backdrop: `
             rgba(0,0,123,0.4)
             url("img/users/default/we4.gif")

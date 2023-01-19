@@ -12,7 +12,7 @@ if(localStorage.getItem("token_user")){
        } 
      }
 }
-if(urlMaster != "http://wesharp.com/acount&login" && urlMaster != "http://wesharp.com/acount&enrollment" && !localStorage.getItem("token_user")){
+if(urlMaster != "http://seture.com/acount&login" && urlMaster != "http://seture.com/acount&enrollment" && !localStorage.getItem("token_user")){
   setCookie("UrlPage", urlMaster, 1);
 }
 /* funcion para resetear url de los filtros */

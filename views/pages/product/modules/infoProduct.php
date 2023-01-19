@@ -2,8 +2,19 @@
 <div class="ps-product__info">
 
     <div class="plantilla-principal1">
-                            
-        <div class="quedan-estos" id="quedn"><?php echo $producter->starEnd_product - $producter->starStart_product ?></div>
+        <?php 
+        $quedannum = 0;
+        $rascnum = 0;
+        foreach(json_decode($producter->stars_product) as $key => $value){
+            $quedannum = $quedannum + 1;  
+            $rascnum = $rascnum + 1; 
+            if($value->idUser != "" || $value->idUser != NULL){
+                $quedannum = $quedannum -1;
+            }  
+        }
+        $rascnum = $rascnum - $quedannum;
+        ?>
+        <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
         <h1 class="principal-h1">Participa y GANA!!!</h1>
         <a href="<?php echo $path . $producter->url_category; ?>">
             <h4 class="p-color"><?php echo $producter->name_category; ?></h4>
@@ -23,7 +34,7 @@
 
                         <span class="colorcute"><?php
                                 if ($producter->sales_product != null) {
-                                    echo $producter->sales_product;
+                                    echo $rascnum;
                                 } else {
                                     echo "0";
                                 }
@@ -39,8 +50,7 @@
             <?php foreach(json_decode($producter->stars_product) as $key => $value):?>
                 <div class="item-bola">
                     <p class="p-bolas"><?php echo $value->numero;?></p>
-                    <?php if($value->check == "checkin"):
-                        array_push($timestart,$value->time);?>
+                    <?php if($value->check == "checkin"):?>
                         <form  method="POST" class="needs-validation" novalidate>
                             <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
                             <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
@@ -52,6 +62,7 @@
                                         <?php
                                         if (isset($_SESSION['user'])){
                                             if($_SESSION['user']->id_user == $value->idUser){ 
+                                                array_push($timestart,$value->time);
                                                 echo "$".$value->precio;
                                             }else{
                                                 echo "X";
@@ -94,13 +105,44 @@
         $fechacount =0;
         $fechadeHoy = date("d-m-Y H:i:s");
         $fechHoy= strtotime($fechadeHoy);
-        foreach($timestart as $key => $value){
-            $tstart = strtotime($value);
-            if($tstart > $fechHoy){
-                $timestart = $value;
-                $fechacount++;
+        if($timestart != null || $timestart == ""){
+            foreach($timestart as $key => $value){
+                $tstart = strtotime($value);
+                if($tstart > $fechHoy){
+                    $timestart = $value;
+                    $fechacount++;
+                }else{
+                    $timestart = $value;
+                }
             }
-         }
+            
+            $timestart = explode(" ", $timestart);
+            if (!empty(array_filter($timestart)[1])) {
+                $timestart = array($timestart[1]);
+            }
+            $timestarter = explode(":", $timestart[0]);
+            if ($timestarter[1]<10) {
+                $sumtime=60;
+            }else{
+                $sumtime=0;
+            }
+        }
+    
+        $url=CurlController::api();
+        $idUser=$_SESSION['user']->id_user;
+        $idProduct = $producter->id_product;
+        $check="checkout";
+        $tokenput = $_SESSION["user"]->token_user;
+        $numero = array();
+        foreach(json_decode($producter->stars_product) as $key => $value){   
+            array_push($numero, $value->numero);
+        }
+        $numero = json_encode($numero);
+        $routeurl = explode("/", $_SERVER['REQUEST_URI']);
+        if (!empty(array_filter($routeurl)[1])) {
+            $routeurl = array($routeurl[1]);
+        }
+        $routeurls = TemplateController::path() . $routeurl[0];
         ?>
         <?php if($fechacount >0): ?>
             <a class="ps-btn" title="Solo podemos apartar tu estrella 5 minutos, despues de eso tu estrella volvera a estar libre.">
@@ -108,10 +150,6 @@
                 <span>0</span><span id="minutes"></span> : <span id="seconds"></span>
             </a>
             <?php
-                $timestart = explode(" ", $timestart);
-                if (!empty(array_filter($timestart)[1])) {
-                    $timestart = array($timestart[1]);
-                }
                 echo "
                 <script>
                     const SPAN_MINUTES = document.querySelector('span#minutes');
@@ -123,13 +161,68 @@
                         t1 = new Date(),
                         t2 = new Date(),
                         hor=0, min=0;
-                    
+                      
                         t1.setHours(hora1[0], hora1[1], hora1[2]);
-                        hor = t1.getMinutes()-t2.getMinutes()-1;
-                        min= 60-t2.getSeconds();
-                        if(hor < 0 ){
+                        hor = (t1.getMinutes() + $sumtime) - t2.getMinutes()-1;
+                        if(hor >= 60 && t2.getMinutes()<10 ){
+                            hor = hor-60;
+                        }
+
+                        min= 59-t2.getSeconds();
+                        
+                        if(hor <= 0 && min <= 5){
                             SPAN_MINUTES.textContent = 0;
                             SPAN_SECONDS.textContent = '00';
+                            let cont=0, idUser = $idUser, idProduct=$idProduct, check='checkout', numero=$numero;
+                            let url = '$url'+'products?linkTo=id_product&equalTo=$idProduct&select=stars_product';
+                            
+                            let settings = {
+                                url: url,
+                                metod: 'GET',
+                                timeaot: 0,
+                            };
+                         
+                            $.ajax(settings).done(function (response) {
+                                if (response.status == 200) {
+                                    let stars = JSON.parse(response.result[0].stars_product);
+                                   
+                                    if (stars != null && stars.length > 0) {
+                                        stars.forEach((list,i) => {
+                                            if(numero[i] != '' || numero[i] != NULL){
+                                                if(numero[i] == list.numero){
+                                                    if((list.check == 'checkin') && (list.idUser == idUser )){
+                                                        list.idUser= '';
+                                                        list.check= check;
+                                                        list.emailUser= '';
+                                                        list.time= '';
+                                                        cont++;
+                                                    }   
+                                                }
+                                            }
+                                        });
+                                    }
+                                    
+                                    let settings = {
+                                        'url': '$url' + 'products?id=$idProduct&nameId=id_product&token=$tokenput',
+                                        'method': 'PUT',
+                                        'timeaot': 0,
+                                        'headers': {
+                                          'Content-Type': 'application/x-www-form-urlencoded',
+                                        },
+                                        'data': {
+                                          'stars_product': JSON.stringify(stars),
+                                        },
+                                    };
+                          
+                                    $.ajax(settings).done(function (response) {
+                                    if (response.status == 200) {
+                                        switAlert('error', 'Se eliminaron tus estrellas!', null, null, 1500);
+                                        window.location='$routeurls' ;
+                                        return;
+                                    }
+                                    });
+                                }
+                            }); 
                         }else{
                             SPAN_MINUTES.textContent = hor;
                             SPAN_SECONDS.textContent = min;
@@ -141,7 +234,15 @@
                 </script>
                 ";    
             ?>
-        <?php endif; ?>
+        <?php endif ?>
+        <?php 
+        if($timestart != null || $timestart == ""){
+            if($fechacount <= 0){
+                $question = new ControllerUser();
+                $question -> endcheck($idUser, $idProduct, $numero); 
+            }
+        }
+        ?>
         
         <a class="ps-btn" 
         onclick="addBagCard('<?php echo $producter->url_product; ?>', '<?php echo $producter->url_category; ?>', '<?php echo $producter->image_product; ?>', '<?php echo $producter->name_product; ?>', '<?php echo $producter->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this), bagCkeck()"

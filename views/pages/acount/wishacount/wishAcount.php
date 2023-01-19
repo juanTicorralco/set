@@ -14,7 +14,7 @@ if (!isset($_SESSION['user'])) {
     return;
     }else{
         // traer la lista de deseos
-        $select="url_product,url_category,name_product,image_product,price_product,offer_product,stock_product";
+        $select="url_product,url_category,name_product,image_product,price_product,offer_product,stock_product,stars_product";
         $products= array();
         foreach($wishlist as $key => $value){  
             $url= CurlController::api()."relations?rel=products,categories&type=product,category&linkTo=url_product&equalTo=".$value."&select=".$select;
@@ -103,32 +103,32 @@ My Account Content
                                     </td>
 
                                     <td>  
-                                        <?php if ($value->offer_product != null) : ?>
-                                            <p class="ps-product__price sale text-success">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del class="text-danger">$<?php echo $value->price_product; ?></del></p>
-                                        <?php else : ?>
-                                            <p class="ps-product__price text-dark">$<?php echo $value->price_product; ?></p>
-                                        <?php endif; ?> 
+                                        <!-- precio  -->
+                                        <?php $priceProduct = json_decode($value->price_product);?>
+                                        <p class="PresioPlantilla text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></p>
                                     </td>
 
                                     <td><span class="ps-tag ps-tag--in-stock">
+                                    <?php 
+                                    $quedannum = 0;
+                                    foreach(json_decode($value->stars_product) as $key2 => $value2){
+                                        $quedannum = $quedannum + 1;
+                                        if($value2->idUser != "" || $value2->idUser != NULL){
+                                            $quedannum = $quedannum -1;
+                                        }  
+                                    }
+                                    ?>
                                         <?php                                     
-                                        if (intval($value->stock_product) != 0) : ?>
-                                        <?php if ($value->offer_product != null) : ?>
-
-                                        <div class="ps-product__badge out-stock text-success">Hay en bodega</div>
-                                        <?php else : ?>
-                                            <div class="ps-product__badge out-stock text-success">Hay en bodega</div>
-                                            <?php endif; ?>
+                                        if ($quedannum > 0) : ?>
+                                            <div class="ps-product__badge out-stock text-success"><?php echo $quedannum; ?> Sin rascar</div>
                                         <?php else : ?>
                                             <div class="ps-product__badge out-stock text-danger">Agotado</div>
                                         <?php endif; ?></span></td>
 
                                     <td>
                                         <a class="ps-btn" 
-                                        onclick="addBagCard('<?php echo $value->url_product; ?>', '<?php echo $value->url_category; ?>', '<?php echo $value->image_product; ?>', '<?php echo $value->name_product; ?>', '<?php echo $value->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
-                                        detailSC 
-                                        quantitySC
-                                        >Add to cart</a>
+                                        href="<?php echo $path . $value->url_product; ?>"
+                                        >Rascar</a>
                                     </td>
                                     <td>
                                         <a  class="text-danger btn basura-wislist" onclick="removeWishlist('<?php echo $value->url_product; ?>', '<?php echo CurlController::api(); ?>', '<?php echo $path; ?>' )"><i class="fas fa-trash-alt"></i></a>

@@ -76,35 +76,35 @@ class TemplateController
     }
 
     /* funcion para enviar correos electronicos */
-    // static public function sendEmail($name, $subject, $email, $message, $url, $post)
-    // {
-    //     date_default_timezone_set("America/Mexico_City");
-    //     $mail = new PHPMailer;
-    //     $mail->Charset = "UTF-8";
-    //     $mail->isMail();
-    //     $mail->setFrom("roster_rtr@hotmail.com", "WeSharp Support"); //esto se debe cambiar en produccion
-    //     $mail->Subyect = "Hola " . $name . " - " . $subject;
-    //     $mail->addAddress($email);
-    //     $mail->msgHTML('
-    //         <div>
-    //             Hola,' . $name . ':
-    //             <p>' . $message . '</p>
-    //             <a href="' . $url . '">Dale Click al link para: ' . $post . '</a>
-    //             Si no deseas verificar tu email en WeSharp, favor de ignorar este mensaje.
+    static public function sendEmail($name, $subject, $email, $message, $url, $post)
+    {
+        date_default_timezone_set("America/Mexico_City");
+        $mail = new PHPMailer;
+        $mail->Charset = "UTF-8";
+        $mail->isMail();
+        $mail->setFrom("roster_rtr@hotmail.com", "Seture Support"); //esto se debe cambiar en produccion
+        $mail->Subyect = "Hola " . $name . " - " . $subject;
+        $mail->addAddress($email);
+        $mail->msgHTML('
+            <div>
+                Hola,' . $name . ':
+                <p>' . $message . '</p>
+                <a href="' . $url . '">Dale Click al link para: ' . $post . '</a>
+                Si no deseas verificar tu email en Seture, favor de ignorar este mensaje.
 
-    //             Gracias
+                Gracias
 
-    //             Su grupo WeSharp
+                Su grupo WeSharp
 
-    //         </div>
-    //     ');
-    //     $send = $mail->Send();
-    //     if (!$send) {
-    //         return $mail->ErrorInfo;
-    //     } else {
-    //         return "ok";
-    //     }
-    // }
+            </div>
+        ');
+        $send = $mail->Send();
+        if (!$send) {
+            return $mail->ErrorInfo;
+        } else {
+            return "ok";
+        }
+    }
 
     // Funcion para almacear fotos
     static public function AlmacenPhoto($image, $folder, $path, $width, $heigt, $name)

@@ -8,7 +8,7 @@ require_once "controllers/curlController.php";
 require_once "controllers/controllerUsers.php";
 // require_once "controllers/controllerVendor.php";
 
-// require_once "extensions/vendor/autoload.php";
+require_once "extensions/vendor/autoload.php";
 
 $index = new TemplateController;
 $index->index();

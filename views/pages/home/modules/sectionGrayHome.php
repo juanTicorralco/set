@@ -80,7 +80,7 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Vertical Slider Category
                 ======================================-->
                 <?php
-                    $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starEnd_product,starStart_product";
+                    $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starEnd_product,starStart_product,stars_product";
                     $method = "GET";
                     $field = array();
                     $header = array();
@@ -112,9 +112,18 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                     Product Simple
                     ======================================-->
                     <?php $bestProduct2= $bestProduct[0]; ?>
+                    <?php 
+                        $quedannum = 0;
+                        foreach(json_decode($bestProduct2->stars_product) as $key4 => $value4){
+                            $quedannum = $quedannum + 1;  
+                            if($value4->idUser != "" || $value4->idUser != NULL){
+                                $quedannum = $quedannum -1;
+                            }  
+                        }
+                    ?>
                     <div class="plantilla-principal">
                             
-                        <div class="quedan-estos" id="quedn"><?php echo $bestProduct2->starEnd_product - $bestProduct2->starStart_product ?></div>
+                        <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
                         <h1 class="principal-h1">Participa y GANA!!!</h1>
                         <a href="<?php echo $path . $value->url_category; ?>">
                             <h4 class="p-color"><?php echo $value->name_category; ?></h4>
@@ -133,46 +142,24 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                             </div>
                         </div>
                         <div class="plantilla-bolas">
-                            <div class="item-bola">
-                                <p class="p-bolas">1</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">2</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">    
-                                <p class="p-bolas">3</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">4</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">5</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola"> 
-                                <p class="p-bolas">6</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">7</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">8</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">9</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
-                            <div class="item-bola">
-                                <p class="p-bolas">10</p>
-                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                            </div>
+                        <?php foreach(json_decode($bestProduct2->stars_product) as $key5 => $value5):?>
+                        
+                                <?php if($value5->check == "checkin"):?>
+                                    <div class="item-bola">
+                                        <p class="p-bolas"><?php echo $value5->numero;?></p>
+                                        <div class="contestrella">
+                                            <div class="numero-pedido"><img src="/views/img/starendsas.png" alt="star"></div>
+                                            <p class="numeroDesc">X</p>
+                                        </div>
+                                    </div>
+                                <?php else:?>
+                                <div class="item-bola">
+                                    <p class="p-bolas"><?php echo $value5->numero;?></p>
+                                    <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
+                                </div>
+                                <?php endif ?>t
+                           
+                        <?php endforeach; ?>
                         </div>
                     </div> 
                     

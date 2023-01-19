@@ -49,8 +49,8 @@ class ControllerUser
                         if ($sendEmail == "ok") {
                             echo '<div class="alert alert-success">Tu usuario se registro correctamente, confirma tu cuenta en tu email (aveces esta en spam)</div>
                             <script>
-                            formatearAlertas()
-                        </script>';
+                                formatearAlertas()
+                            </script>';
                         } else {
                             echo '<div class="alert alert-danger">Error al enviar a tu correo</div>
                             <script>
@@ -89,7 +89,7 @@ class ControllerUser
             ) {
                 echo '
                 <script>
-                switAlert("loading", "Accesando a WeSharp", "","");
+                switAlert("loading", "Accesando a Seture", "","");
                 </script>
                 ';
                 $url = CurlController::api() . "users?login=true";
@@ -638,9 +638,7 @@ class ControllerUser
                         $idProduct = $_POST["idprod"];
                         $check=$_POST["idtipe"];
                         $numero=$_POST["idStar"];
-                        $cont=0;
-
-                       
+                        $cont=0;         
                         $method = "GET";
                         $fields = array();
                         $header = array();
@@ -701,6 +699,60 @@ class ControllerUser
                         return;
                     }
                 }
+            }
+        }
+    }
+    public function endcheck($idUser, $idProduct, $numero){
+       
+        $cont=0; 
+        $idUser = $idUser; 
+        $idProduct=$idProduct; 
+        $check='checkout'; 
+        $numero=$numero;
+        $method = "GET";
+        $fields = array();
+        $header = array();
+        $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product";
+        $stars = CurlController::request($url2, $method, $fields, $header)->result[0];
+        $stars = json_decode($stars->stars_product);
+        $numero = json_decode( $numero);
+        if ($stars != null && is_array($stars)) {
+            foreach($stars as $key => $value){
+                if($numero[$key] != '' || $numero[$key] != NULL){
+                    if($numero[$key] == $value->numero){
+                        if(($value->check == "checkin") && ($value->idUser == $idUser )){
+                        
+                            $value->idUser= "";
+                            $value->check= $check;
+                            $value->emailUser= "";
+                            $value->time= "";
+                            $cont++;
+                        }
+                    }
+                }
+            }   
+        }   
+       
+        if($cont > 0){
+            $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product";
+            $method = "PUT";
+            $fields = "stars_product=".json_encode($stars) ;
+            $headers = array();
+
+            $upStar = CurlController::request($url,$method,$fields,$headers);
+            print_r($upStar);
+            if($upStar->status == 200){
+                $routeurl = explode("/", $_SERVER['REQUEST_URI']);
+                if (!empty(array_filter($routeurl)[1])) {
+                    $routeurl = array($routeurl[1]);
+                }
+                echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("success", "Rascadito Removido!!", null, null, 1500);
+                        window.location="' . TemplateController::path() . $routeurl[0] .'";
+                    </script>'; 
+                    return;
             }
         }
     }
