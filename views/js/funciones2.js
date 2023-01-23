@@ -123,6 +123,15 @@ function switAlert(type, text, url, icon, time) {
   }
 }
 
+/* funcion para cear una cooky para la vitrina */
+function setCookie(name, value, exp) {
+  let now = new Date();
+  now.setTime(now.getTime() + exp * 24 * 60 * 60 * 1000);
+
+  let expDate = "expires=" + now.toUTCString();
+  document.cookie = name + "=" + value + "; " + expDate;
+}
+
 //funcion para recordar el email
 function rememberme(e){
   
@@ -133,4 +142,82 @@ function rememberme(e){
     localStorage.removeItem("emailRem");
     localStorage.removeItem("checkRem");
   }
+}
+
+//Agredamos articulos al carrito de compras
+function addBagCard(urlProduct, category, image, name, price, path, urlApi) {
+  // Traer informacion del producto 
+  let select = "stock_product,specifications_product,shipping_product,offer_product";
+
+  let settings = {
+    url:
+      urlApi + "products?linkTo=url_product&equalTo=" + urlProduct + "&select=" + select,
+    method: "GET",
+    timeaot: 0,
+  };
+
+  $.ajax(settings).done(function (response) {
+    
+    if (response.status == 200) {
+      let quantity = 1;
+
+      // preguntamos is la cookie ya existe
+      let myCookie = document.cookie;
+      let listCookie = myCookie.split(";");
+      let count = 0;
+
+      for (let i in listCookie) {
+        var list = listCookie[i].search("listSC");
+        // si list es mayor a -1 es por qu se ncontro la cooki
+        if (list > -1) {
+          count--;
+          var arrayList = JSON.parse(listCookie[i].split("=")[1]);
+        } else {
+          count++;
+        }
+      }
+      // trabajamos sobre la cookie que ya existe
+      if (count != listCookie.length) {
+        if (arrayList != undefined) {
+          // Preguntar si el producto existe
+          var count2 = 0;
+          var index = null;
+          for (let i in arrayList) {
+            if (arrayList[i].product == urlProduct) {
+              count2--;
+              index = i;
+            } else {
+              count2++;
+            }
+          }
+          
+          if (count2 == arrayList.length) {
+            arrayList.push({
+              "product": urlProduct,
+              // "details": detalleProduct,
+               "quantity": parseInt(quantity)
+            });
+          } else {
+            arrayList[index].quantity += parseInt( quantity);
+          }
+         
+          // creamos una cookie
+          setCookie("listSC", JSON.stringify(arrayList), 1);
+          window.location= path +urlProduct;
+        }
+      } 
+      else {
+        // creamos una cookie
+        var arrayList = [];
+        arrayList.push({
+          "product": urlProduct,
+          // "details": detalleProduct,
+          "quantity": parseInt(quantity)
+        });
+
+        setCookie("listSC", JSON.stringify(arrayList), 1);
+        window.location= path +urlProduct;
+      }
+    }
+  });
 }

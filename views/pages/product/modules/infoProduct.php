@@ -99,6 +99,7 @@
     </div> 
 
     <div class="ps-product__shopping botonses">
+        <?php if(isset($_SESSION['user'])): ?>
         <?php
         date_default_timezone_set('UTC');
         date_default_timezone_set("America/Mexico_City");
@@ -243,12 +244,14 @@
             }
         }
         ?>
-        
+        <?php endif; ?>
+        <?php if($fechacount >0): ?>
         <a class="ps-btn" 
-        onclick="addBagCard('<?php echo $producter->url_product; ?>', '<?php echo $producter->url_category; ?>', '<?php echo $producter->image_product; ?>', '<?php echo $producter->name_product; ?>', '<?php echo $producter->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this), bagCkeck()"
+        href="<?php echo $path; ?>checkout"
         detailSC 
         quantitySC
         >Buy Now</a>
+        <?php endif; ?>
 
         <div class="ps-product__actions">
 

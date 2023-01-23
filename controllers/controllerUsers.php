@@ -582,10 +582,10 @@ class ControllerUser
                         $user = CurlController::request($url, $method, $fields, $header)->result[0];
                         $email = $user->email_user;
 
-                        $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product";
+                        $url2 = CurlController::api() . "relations?rel=products,categories&type=product,category&linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product,url_product,name_category,image_product,name_product,price_product";
                         $stars = CurlController::request($url2, $method, $fields, $header)->result[0];
-                        $stars = json_decode($stars->stars_product);
-                        foreach($stars as $key => $value){
+                        $starster = json_decode($stars->stars_product);
+                        foreach($starster as $key => $value){
                             if($numero == $value->numero){
                                 if(($value->check == "checkout" || $value->check == "" || $value->check == null) && ($value->idUser == null || $value->idUser == "") && ($value->emailUser == null || $value->emailUser == "") ){
                                     $mifecha = new DateTime(); 
@@ -602,20 +602,19 @@ class ControllerUser
                         if($cont > 0){
                             $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=".$_SESSION["user"]->token_user;
                             $method = "PUT";
-                            $fields = "stars_product=".json_encode($stars) ;
+                            $fields = "stars_product=".json_encode($starster);
                             $headers = array();
                 
                             $upStar = CurlController::request($url,$method,$fields,$headers);
                             if($upStar->status == 200){
-                                $routeurl = explode("/", $_SERVER['REQUEST_URI']);
-                                if (!empty(array_filter($routeurl)[1])) {
-                                    $routeurl = array($routeurl[1]);
-                                }
+                               
+                                $function = 'addBagCard("'.$stars->url_product.'", "'.$stars->name_category.'", "'.$stars->image_product.'", "'.$stars->name_product.'", '.json_encode($stars->price_product).', "'.TemplateController::path().'", "'.CurlController::api().'");';
                                 echo '
                                     <script>
                                         formatearAlertas();
+                                        '.$function.'
                                         switAlert("success", "Rascadito apartado!!", null, null, 1500);
-                                        window.location="' . TemplateController::path() . $routeurl[0] .'";
+                                        window.location="' . TemplateController::path() . $stars->url_product .'";
                                     </script>'; 
                                     return;
                             }else{
@@ -740,7 +739,6 @@ class ControllerUser
             $headers = array();
 
             $upStar = CurlController::request($url,$method,$fields,$headers);
-            print_r($upStar);
             if($upStar->status == 200){
                 $routeurl = explode("/", $_SERVER['REQUEST_URI']);
                 if (!empty(array_filter($routeurl)[1])) {
@@ -753,6 +751,39 @@ class ControllerUser
                         window.location="' . TemplateController::path() . $routeurl[0] .'";
                     </script>'; 
                     return;
+            }
+        }
+    }
+    public function newsemail(){
+        if(isset($_POST["emailnewes"])){
+            if( preg_match('/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/', $_POST["emailnewes"])){
+                $api = CurlController::api();
+                $url = $api . "newsletter?token=no&except=email_newsletter";
+                // products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product
+                $metod = "PUT";
+                $fields = "email_newsletter=" . $_POST["email"]; 
+                $headers = array();
+
+                $newsemail = CurlController::request($url, $metod, $fields, $headers); 
+                if($newsemail->status == 200){
+                    echo '
+                        <script>
+                            formatearAlertas();
+                            switAlert("success", "Se registro tu email correctamente!!", null, null, 1500);
+                        </script>';
+                }else{
+                    echo '
+                        <script>
+                            formatearAlertas();
+                            switAlert("success", "No se pudo registrar tu email!!", null, null, 1500);
+                        </script>';
+                }
+            }else{
+                echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("success", "No se pudo registrar tu email!!", null, null, 1500);
+                    </script>';
             }
         }
     }

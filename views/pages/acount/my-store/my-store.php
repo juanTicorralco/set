@@ -40,8 +40,10 @@ My Account Content
                 <ul class="ps-section__links">
                     <li ><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
-                    <li class="active"><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
+                    <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                    <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
                     <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
+                    <?php endif; ?>
                 </ul>
 
                 <!--=====================================

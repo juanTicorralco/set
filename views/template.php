@@ -447,35 +447,37 @@ if($totalPro->status == 200){
 
         <div class="container">
 
-            <form class="ps-form--newsletter" action="do_action" method="post">
+        <form  method="POST" class="needs-validation" novalidate>   
+            <div class="row">
 
-                <div class="row">
-
-                    <div class="col-xl-5 col-12 ">
-                        <div class="ps-form__left">
-                            <h3>Newsletter</h3>
-                            <p>Subscribete para recibir cupones y promociones!</p>
-                        </div>
+                <div class="col-xl-5 col-12 ">
+                    <div class="ps-form__left">
+                        <h3>Newsletter</h3>
+                        <p>Subscribete para recibir cupones y promociones!</p>
                     </div>
+                </div>
 
-                    <div class="col-xl-7 col-12 ">
+                <div class="col-xl-7 col-12 ">
 
-                        <div class="ps-form__right">
+                    <div class="ps-form__right">
 
-                            <div class="form-group--nest">
+                        <div class="form-group--nest">
 
-                                <input class="form-control" type="email" placeholder="Escribe tu Email">
-                                <button class="ps-btn">Subscribir</button>
-
-                            </div>
-
+                            <input class="form-control" type="email" name="email" placeholder="Escribe tu Email">
+                            <button class="ps-btn" type="submit">Subscribir</button>
+                            <?php
+                                $newemail = new ControllerUser();
+                                $newemail -> newsemail();
+                            ?>
                         </div>
 
                     </div>
 
                 </div>
 
-            </form>
+            </div>
+        </form>
+            
 
         </div>
 

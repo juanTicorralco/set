@@ -29,7 +29,7 @@ Breadcrumb
 
                 <li><a href="/">Home</a></li>
 
-                <li><a href="<?php echo $path?>shopingBag">Carrito de compras</a></li>
+                <!-- <li><a href="<?php //echo $path?>shopingBag">Carrito de compras</a></li> -->
 
                 <li>Pagar</li>
 
@@ -272,18 +272,16 @@ Checkout
                                 <div class="content">
 
                                     <div class="ps-block--checkout-total">
+                                    <div class="ps-block__header d-flex justify-content-between">
 
-                                        <div class="ps-block__header d-flex justify-content-between">
+                                        <p>Product</p>
 
-                                            <p>Product</p>
+                                        <p>Total</p>
 
-                                            <p>Total</p>
-
-                                        </div>
+                                    </div>
 
                                         <?php 
-                                            if(isset($_COOKIE["listSC"])){
-                                                
+                                            if(isset($_COOKIE["listSC"]) && json_decode($_COOKIE["listSC"]) != []){
                                                 $order=json_decode($_COOKIE["listSC"], true);
                                             }else{
                                                 echo '<script>
@@ -298,16 +296,80 @@ Checkout
                                             <table class="table ps-block__products">
 
                                                 <tbody>
-
+                                                    <?php 
+                                                    $repitClock = 0;
+                                                    $idProdStar = array(); 
+                                                    $idProdStarter = "";
+                                                    ?>
                                                 <?php foreach($order as $key => $value):?>
                                                     <?php
-                                                        $select="id_product,name_product,url_product,name_store,id_store,url_store,price_product,offer_product,delivery_time_product,sales_product,stock_product";
+                                                        $select="id_product,name_product,url_product,name_store,id_store,url_store,price_product,offer_product,delivery_time_product,sales_product,stock_product,stars_product";
                                                         $url=CurlController::api()."relations?rel=products,categories,stores&type=product,category,store&linkTo=url_product&equalTo=".$value["product"]."&select=".$select;
                                                         $method="GET";
                                                         $field=array();
                                                         $header=array();
                                                         $pOrder= CurlController::request($url,$method,$field,$header)->result[0];
+                                                        $estrella="";
+                                                        $precioProdStar=0;
+                                                        $count=0;
+                                                        $repitClock = $repitClock + 1;
+                                                        $timestart = array();
+                                                        $numero = array();
+                                                        $EsOrder = json_decode($pOrder->stars_product);
+                                                        array_push($idProdStar, $pOrder->id_product);
+                                                        $idProdStarter = json_encode($idProdStar);
+                                                        foreach($EsOrder as $key2 => $value2){
+                                                            if($value2->idUser == $_SESSION["user"]->id_user){
+                                                                $precioProdStar = $precioProdStar + $value2->precio;
+                                                                $estrella .=  $value2->numero . ", ";
+                                                                array_push($timestart,$value2->time);
+                                                                $count++;
+                                                            }else{
+                                                                array_push($numero, 0);
+                                                            }
+                                                        }
                                                     ?>
+                                                    <?php
+                                                        date_default_timezone_set('UTC');
+                                                        date_default_timezone_set("America/Mexico_City");
+                                                        $fechacount =0;
+                                                        $fechadeHoy = date("d-m-Y H:i:s");
+                                                        $fechHoy= strtotime($fechadeHoy);
+                                                        if($timestart != null || $timestart == ""){
+                                                            foreach($timestart as $key => $value){
+                                                                $tstart = strtotime($value);
+                                                                if($tstart > $fechHoy){
+                                                                    $timestart = $value;
+                                                                    $fechacount++;
+                                                                }else{
+                                                                    $timestart = $value;
+                                                                }
+                                                            }
+                                                            
+                                                            $timestart = explode(" ", $timestart);
+                                                            if (!empty(array_filter($timestart)[1])) {
+                                                                $timestart = array($timestart[1]);
+                                                            }
+                                                            $timestarter = explode(":", $timestart[0]);
+                                                            if ($timestarter[1]<10) {
+                                                                $sumtime=60;
+                                                            }else{
+                                                                $sumtime=0;
+                                                            }
+                                                        }
+                                                    
+                                                        $url=CurlController::api();
+                                                        $idUser=$_SESSION['user']->id_user;
+                                                        $idProduct = $pOrder->id_product;
+                                                        $check="checkout";
+                                                        $tokenput = $_SESSION["user"]->token_user;
+                                                        $numero = array();
+                                                        foreach(json_decode($pOrder->stars_product) as $key2 => $value2){   
+                                                            array_push($numero, $value2->numero);
+                                                        }
+                                                        $numero = json_encode($numero);
+                                                        $routeurls = TemplateController::path();
+                                                        ?>   
                                                     <tr>
 
                                                         <td>
@@ -320,60 +382,55 @@ Checkout
 
                                                             <a href="<?php echo $path.$pOrder->url_product ?>" class="name_producto"> <?php echo $pOrder->name_product; ?></a>
                                                             <div class="small text_secondary">
-                                                                <div><a href="<?php echo $path.$pOrder->url_store ?>">Sold By:<strong> <?php echo $pOrder->name_store; ?></strong></a></div>
-                                                                <div class="detailsOrder">
-                                                                    <?php if($value["details"] != ""): ?>
-                                                                        <?php foreach(json_decode($value["details"],true) as $key => $item): ?>
-                                                                            <?php foreach(array_keys($item) as $key => $detail): ?>
-                                                                                <div><?php echo $detail.": ". array_values($item)[$key]?></div>
-                                                                            <?php endforeach; ?>
-                                                                            <?php endforeach; ?>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                                <div>Quantity:<strong><span class="quantityOrder"> <?php echo $value["quantity"]; ?></span></strong></div>
-                                                                
-                                                                <p class="m-0"><strong>Envio:</strong> $ <span class="envioOrder">
+                                                                <div><a href="<?php echo $path.$pOrder->url_store ?>">Sold By:<strong> <?php echo "Seture"; ?></strong></a></div>
+                                                                <div>Cantidad:<strong><span class="quantityOrder"> <?php echo $count; ?></span></strong></div>
+                                                                <p class="m-0"><strong>Estrellas: </strong><span class="envibagcl"><?php echo($estrella); ?></span></p>
+                                                                <!-- <p class="m-0"><strong>Envio:</strong> $ <span class="envioOrder"> -->
                                                                     <?php 
-                                                                        if($value["quantity"] >= 3 || $totalSC >= 3 || ($value["quantity"] >= 3 && $totalSC >= 3)){
-                                                                            $ValorPrecioEnvio=0;
-                                                                            echo $ValorPrecioEnvio;
-                                                                        }else{
-                                                                            $ValorPrecioEnvio= ($result->shipping_product * 1.5 )/ $value["quantity"];
-                                                                            echo $ValorPrecioEnvio;
-                                                                        }
+                                                                        // if($value["quantity"] >= 3 || $totalSC >= 3 || ($value["quantity"] >= 3 && $totalSC >= 3)){
+                                                                        //     $ValorPrecioEnvio=0;
+                                                                        //     echo $ValorPrecioEnvio;
+                                                                        // }else{
+                                                                        //     $ValorPrecioEnvio= ($result->shipping_product * 1.5 )/ $value["quantity"];
+                                                                        //     echo $ValorPrecioEnvio;
+                                                                        // }
                                                                     ?>
-                                                                </span></p>
+                                                                <!-- </span></p> -->
                                                                
                                                             </div>
                                                         </td>
 
-                                                        <td class="text-right"> <div><span class="priceProd">
-                                                            
-                                                        <?php if ($pOrder->offer_product != null) : ?>
+                                                        <td class="text-right"> <div><span class="priceProd"> $
                                                         <?php
-                                                            $preceProduct= TemplateController::offerPrice($pOrder->price_product, json_decode($pOrder->offer_product, true)[1], json_decode($pOrder->offer_product, true)[0]); 
-                                                                    echo $preceProduct; ?>
-                                                            <?php else : ?>
+                                                        echo($precioProdStar);
+                                                        $totalPriceSC2 += $precioProdStar;
+                                                    ?>
+                                                            
+                                                        <?php //if ($pOrder->offer_product != null) : ?>
+                                                        <?php
+                                                            // $preceProduct= TemplateController::offerPrice($pOrder->price_product, json_decode($pOrder->offer_product, true)[1], json_decode($pOrder->offer_product, true)[0]); 
+                                                                    // echo $preceProduct; ?>
+                                                            <?php // else : ?>
                                                                 <?php 
-                                                                    $preceProduct= $pOrder->price_product;
-                                                                    echo $preceProduct; ?>
-                                                            <?php endif; ?>
+                                                                    // $preceProduct= $pOrder->price_product;
+                                                                    // echo $preceProduct; ?>
+                                                            <?php //endif; ?>
 
                                                             <?php 
-                                                                if(strpos($preceProduct, ",") != false){
-                                                                    $preceProduct = explode(",", $preceProduct);
+                                                                // if(strpos($preceProduct, ",") != false){
+                                                                //     $preceProduct = explode(",", $preceProduct);
 
-                                                                    if (!empty(array_filter($preceProduct)[1])) {
-                                                                        $priceuno = ($preceProduct[0]*1000) + $preceProduct[1] ;
-                                                                    }else{
-                                                                        $priceuno =$preceProduct;
-                                                                    }
-                                                                }else{
-                                                                    $priceuno =$preceProduct;
-                                                                }
+                                                                //     if (!empty(array_filter($preceProduct)[1])) {
+                                                                //         $priceuno = ($preceProduct[0]*1000) + $preceProduct[1] ;
+                                                                //     }else{
+                                                                //         $priceuno =$preceProduct;
+                                                                //     }
+                                                                // }else{
+                                                                //     $priceuno =$preceProduct;
+                                                                // }
                                                             ?>
                                                             
-                                                            <?php $totalPriceSC2 += $ValorPrecioEnvio + ($priceuno * $value["quantity"]); ?>
+                                                            <?php //$totalPriceSC2 += $ValorPrecioEnvio + ($priceuno * $value["quantity"]); ?>
                                                            </span></div>
                                                         </td>
                                                        
@@ -384,6 +441,114 @@ Checkout
                                                 </tbody>
 
                                             </table>
+
+                                            <?php if($fechacount >0): ?>
+                                                            <div class="d-flex justify-content-center">
+                                                                <a class="ps-btn mb-5" title="Solo podemos apartar tu estrella 5 minutos, despues de eso tu estrella volvera a estar libre.">
+                                                                    Tiempo: 
+                                                                    <span>0</span><span id="minutes"></span> : <span id="seconds"></span>
+                                                                </a>
+                                                            </div>
+                                                        
+                                                            <?php
+                                                                echo "
+                                                                <script>
+                                                                    const SPAN_MINUTES = document.querySelector('span#minutes');
+                                                                    const SPAN_SECONDS = document.querySelector('span#seconds');
+                                                                    const MILLISECONDS_OF_A_SECOND = 1000;
+                                                                
+                                                                    function updateCountdown() {
+                                                                        var hora1 = ('$timestart[0]').split(':'),
+                                                                        t1 = new Date(),
+                                                                        t2 = new Date(),
+                                                                        hor=0, min=0;
+                                                                    
+                                                                        t1.setHours(hora1[0], hora1[1], hora1[2]);
+                                                                        hor = (t1.getMinutes() + $sumtime) - t2.getMinutes()-1;
+                                                                        if(hor >= 60 && t2.getMinutes()<10 ){
+                                                                            hor = hor-60;
+                                                                        }
+
+                                                                        min= 59-t2.getSeconds();
+                                                                        
+                                                                        if(hor <= 0 && min <= 5){
+                                                                            SPAN_MINUTES.textContent = 0;
+                                                                            SPAN_SECONDS.textContent = '00';
+                                                                            let cont=0, countfinal = [], idUser = $idUser, idProduct=$idProdStarter, check='checkout', numero=$numero;
+                                                                            idProduct.forEach((idprod, i) => {
+                                                                                let url = '$url'+'products?linkTo=id_product&equalTo='+idprod+'&select=stars_product';
+                                                                                
+                                                                                let settings = {
+                                                                                    url: url,
+                                                                                    metod: 'GET',
+                                                                                    timeaot: 0,
+                                                                                };
+                                                                            
+                                                                                $.ajax(settings).done(function (response) {
+                                                                                    if (response.status == 200) {
+                                                                                        let stars = JSON.parse(response.result[0].stars_product);
+                                                                                    
+                                                                                        if (stars != null && stars.length > 0) {
+                                                                                            stars.forEach((list,i) => {
+                                                                                                if(numero[i] != '' || numero[i] != NULL){
+                                                                                                    if(numero[i] == list.numero){
+                                                                                                        if((list.check == 'checkin') && (list.idUser == idUser )){
+                                                                                                            list.idUser= '';
+                                                                                                            list.check= check;
+                                                                                                            list.emailUser= '';
+                                                                                                            list.time= '';
+                                                                                                            cont++;
+                                                                                                        }   
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                        }
+                                                                                        
+                                                                                        let settings = {
+                                                                                            'url': '$url' + 'products?id='+idprod+'&nameId=id_product&token=$tokenput',
+                                                                                            'method': 'PUT',
+                                                                                            'timeaot': 0,
+                                                                                            'headers': {
+                                                                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                                                                            },
+                                                                                            'data': {
+                                                                                            'stars_product': JSON.stringify(stars),
+                                                                                            },
+                                                                                        };
+                                                                            
+                                                                                        $.ajax(settings).done(function (response) {
+                                                                                            if (response.status == 200) {
+                                                                                                countfinal.push(i);
+                                                                                                if(countfinal.length == idProduct.length){
+                                                                                                    switAlert('error', 'Se eliminaron tus estrellas!', null, null, 1500);
+                                                                                                    window.location='$routeurls' ;
+                                                                                                    return;
+                                                                                                }
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                }); 
+                                                                            });
+                                                                        }else{
+                                                                            SPAN_MINUTES.textContent = hor;
+                                                                            SPAN_SECONDS.textContent = min;
+                                                                        }
+                                                                    }
+
+                                                                    updateCountdown();
+                                                                    setInterval(updateCountdown, MILLISECONDS_OF_A_SECOND);
+                                                                </script>
+                                                                ";    
+                                                            ?>
+                                                        <?php endif ?>
+                                                        <?php 
+                                                        if($timestart != null || $timestart == ""){
+                                                            if($fechacount <= 0){
+                                                                $question = new ControllerUser();
+                                                                $question -> endcheck($idUser, $idProduct, $numero); 
+                                                            }
+                                                        }
+                                                        ?> 
                                             
                                             <h3 class="text-right totalOrder" total="<?php echo $totalPriceSC2; ?>">Total <span>$<?php echo $totalPriceSC2; ?></span></h3>
 
