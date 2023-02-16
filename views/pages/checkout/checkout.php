@@ -67,6 +67,7 @@ Checkout
 
                                 <h3 class="ps-form__heading">Billing Details</h3>
 
+                                <?php if($_SESSION["user"]->method_user == "direct"): ?>
                                 <div class="form-group">
 
                                     <label>Nombre completo<sup>*</sup></label>
@@ -209,16 +210,89 @@ Checkout
 
                                 <!-- mandar el map -->
                                 <div class="form-group">
-                                <label>Map<sup>*</sup><small> (Puedes mover el marcador para una mejor localizacion)</small></label>
+                                    <label>Map<sup>*</sup><small> (Puedes mover el marcador para una mejor localizacion)</small></label>
 
-                                <div id="myMap" style="height: 400px"></div>
-                                    <div id="mappp" class="mappp" style="display: none" <?php 
-                                        if(isset( $_SESSION["user"]->map_user)){
-                                            echo  'data-value =' . $_SESSION["user"]->map_user;
-                                        }
-                                        ?>>
-                                    </div>
+                                    <div id="myMap" style="height: 400px"></div>
+                                        <div id="mappp" class="mappp" style="display: none" <?php 
+                                            if(isset( $_SESSION["user"]->map_user)){
+                                                echo  'data-value =' . $_SESSION["user"]->map_user;
+                                            }
+                                            ?>>
+                                        </div>
                                 </div>
+
+                                <?php endif; ?>
+                                <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                                    <input type="hidden" id="methodUser" value="<?php echo $_SESSION["user"]->method_user; ?>" >
+                                    <input type="hidden" id="countryOrder" value="<?php echo NULL; ?>" >
+                                    <input type="hidden" id="cityOrder" value="<?php echo NULL; ?>" >
+                                    <input type="hidden" id="mappp" value="<?php echo NULL; ?>" >
+                                   
+                                    <div class="form-group">
+
+                                        <label>Nombre completo<sup>*</sup></label>
+
+                                        <div class="form-group__content">
+
+                                            <input class="form-control" id="nameUserSale" type="text" required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">El nombre es requerido</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label>Email Address<sup>*</sup></label>
+
+                                        <div class="form-group__content">
+
+                                            <input class="form-control" id="emailOrder" type="email" required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">El email es requerido</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                    <label>Phone<sup>*</sup></label>
+
+                                    <div class="form-group__content input-group">
+                                        <?php if($_SESSION["user"]->phone_user != null): ?>
+
+                                        <div class="input-group-append">
+                                            <span class="input-group-text dialCode"><?php echo explode("_",$_SESSION["user"]->phone_user)[0]?></span>
+                                        </div>
+
+                                        <?php 
+                                            $phone= explode("_", $_SESSION["user"]->phone_user)[1]; 
+                                        ?>
+                                        <?php else: ?>
+                                            <div class="input-group-append">
+                                            <span class="input-group-text dialCode">+--</span>
+                                        </div>
+
+                                        <?php $phone="" ?>
+                                        <?php endif; ?>
+
+                                        <input 
+                                        class="form-control" 
+                                        type="text" 
+                                        id="phoneOrder"
+                                        pattern = "[-\\(\\)\\0-9 ]{1,}"
+                                        onchange="validatejs(event, 'phone')" 
+                                        required>
+                                        <div class="valid-feedback"></div>
+                                        <div class="invalid-feedback">El telefono es requerido</div>
+
+                                    </div>
+
+                                </div>
+
+                                <?php endif; ?>
 
                                 <div class="form-group">
 
@@ -256,6 +330,7 @@ Checkout
                                     </div>
 
                                 </div>
+
 
                             </div>
 
@@ -319,7 +394,7 @@ Checkout
                                                         array_push($idProdStar, $pOrder->id_product);
                                                         $idProdStarter = json_encode($idProdStar);
                                                         foreach($EsOrder as $key2 => $value2){
-                                                            if($value2->idUser == $_SESSION["user"]->id_user){
+                                                            if($value2->idUser == $_SESSION["user"]->id_user && $value2->pagado != "pagado"){
                                                                 $precioProdStar = $precioProdStar + $value2->precio;
                                                                 $estrella .=  $value2->numero . ", ";
                                                                 array_push($timestart,$value2->time);
@@ -335,26 +410,35 @@ Checkout
                                                         $fechacount =0;
                                                         $fechadeHoy = date("d-m-Y H:i:s");
                                                         $fechHoy= strtotime($fechadeHoy);
-                                                        if($timestart != null || $timestart == ""){
+                                                        if($timestart != null || $timestart != ""){
                                                             foreach($timestart as $key => $value){
                                                                 $tstart = strtotime($value);
                                                                 if($tstart > $fechHoy){
-                                                                    $timestart = $value;
+                                                                    // $timestart = $value;
+                                                                    $hol = $value;
                                                                     $fechacount++;
                                                                 }else{
                                                                     $timestart = $value;
                                                                 }
                                                             }
+                                                            $timestart = $hol;
                                                             
-                                                            $timestart = explode(" ", $timestart);
-                                                            if (!empty(array_filter($timestart)[1])) {
-                                                                $timestart = array($timestart[1]);
-                                                            }
-                                                            $timestarter = explode(":", $timestart[0]);
-                                                            if ($timestarter[1]<10) {
-                                                                $sumtime=60;
-                                                            }else{
-                                                                $sumtime=0;
+                                                            $conterfech = 1;
+                                                            if($timestart != 0){
+                                                                $timestart = explode(" ", $timestart);
+                                                                if (!empty(array_filter($timestart)[1])) {
+                                                                    $timestart = array($timestart[1]);
+                                                                }
+                                                                $timestarter = explode(":", $timestart[0]);            
+                                                                if($timestarter[0] != null){
+                                                                    if ($timestarter[1]<10) {
+                                                                        $sumtime=60;
+                                                                    }else{
+                                                                        $sumtime=0;
+                                                                    }
+                                                                }else{
+                                                                    $sumtime=0;
+                                                                }
                                                             }
                                                         }
                                                     
@@ -379,12 +463,15 @@ Checkout
                                                             <input type="hidden" class="salesProduct" value="<?php echo $pOrder->sales_product ?>">
                                                             <input type="hidden" class="stockProduct" value="<?php echo $pOrder->stock_product ?>">
                                                             <input type="hidden" class="deliverytime" value="<?php echo $pOrder->delivery_time_product ?>">
+                                                            <input type="hidden" class="numerostar" value="<?php echo $numero ?>">
+                                                            <input type="hidden" class="estrellaStar" value="<?php echo $estrella ?>">
+                                                            
 
                                                             <a href="<?php echo $path.$pOrder->url_product ?>" class="name_producto"> <?php echo $pOrder->name_product; ?></a>
                                                             <div class="small text_secondary">
                                                                 <div><a href="<?php echo $path.$pOrder->url_store ?>">Sold By:<strong> <?php echo "Seture"; ?></strong></a></div>
                                                                 <div>Cantidad:<strong><span class="quantityOrder"> <?php echo $count; ?></span></strong></div>
-                                                                <p class="m-0"><strong>Estrellas: </strong><span class="envibagcl"><?php echo($estrella); ?></span></p>
+                                                                <p class="m-0"><strong>Estrellas: </strong><span class="envibagcl"><?php echo $estrella; ?></span></p>
                                                                 <!-- <p class="m-0"><strong>Envio:</strong> $ <span class="envioOrder"> -->
                                                                     <?php 
                                                                         // if($value["quantity"] >= 3 || $totalSC >= 3 || ($value["quantity"] >= 3 && $totalSC >= 3)){
@@ -400,9 +487,9 @@ Checkout
                                                             </div>
                                                         </td>
 
-                                                        <td class="text-right"> <div><span class="priceProd"> $
+                                                        <td class="text-right">$ <div><span class="priceProd">
                                                         <?php
-                                                        echo($precioProdStar);
+                                                        echo $precioProdStar;
                                                         $totalPriceSC2 += $precioProdStar;
                                                     ?>
                                                             
@@ -492,7 +579,7 @@ Checkout
                                                                                             stars.forEach((list,i) => {
                                                                                                 if(numero[i] != '' || numero[i] != NULL){
                                                                                                     if(numero[i] == list.numero){
-                                                                                                        if((list.check == 'checkin') && (list.idUser == idUser )){
+                                                                                                        if((list.check == 'checkin') && (list.pagado != 'pagado') && (list.idUser == idUser )){
                                                                                                             list.idUser= '';
                                                                                                             list.check= check;
                                                                                                             list.emailUser= '';
@@ -556,6 +643,7 @@ Checkout
 
                                     </div>
 
+                                    <?php if($_SESSION["user"]->method_user == "direct"): ?>
                                     <hr class="py-3">
 
                                     <div class="form-group">
@@ -595,7 +683,21 @@ Checkout
                                     </div>
 
                                     <button type="submit" class="ps-btn ps-btn--fullwidth">Proceed to checkout</button>
+                                    <?php endif; ?>
+                                    <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                                        <div class="form-group">
 
+                                            <div class="ps-radio">
+
+                                                <input class="form-control" type="radio" id="pay-efectivo" name="payment-method" value="efectivo" checked onchange="changemetodpay(event)">
+
+                                                <label for="pay-efectivo">Pay with efectivo? <span><img src="img/payment-method/mercado_pago.jpg" class="w-50"></span></label>
+
+                                            </div>
+
+                                        </div>
+                                        <button type="submit" class="ps-btn ps-btn--fullwidth">Proceed to checkout</button>
+                                    <?php endif; ?>
                                 </div>
 
                             </div>

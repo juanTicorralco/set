@@ -887,13 +887,25 @@ class ControllerVendor{
                 }
 
                 if(
-                    isset($_POST["price"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["price"]) &&
-                    isset($_POST["envio"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["envio"]) &&
-                    isset($_POST["entrega"]) && preg_match('/^[0-9]{1,}$/', $_POST["entrega"]) &&
-                    isset($_POST["stock"]) && preg_match('/^[0-9]{1,}$/', $_POST["stock"])
+                    isset($_POST["priceI"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceI"]) &&
+                    isset($_POST["priceF"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceF"]) &&
+                    // isset($_POST["envio"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["envio"]) &&
+                    // isset($_POST["entrega"]) && preg_match('/^[0-9]{1,}$/', $_POST["entrega"]) &&
+                    isset($_POST["stars"]) && preg_match('/^[0-9]{1,}$/', $_POST["stars"])
                 ){
+                    $priceProduct = (object)[ 
+                        "Presio_baj" => $_POST["priceI"],
+                        "Presio_alt" => $_POST["priceF"]
+                    ];
+                    $stars_product = '[';
+                    for($i=1; $i <= $_POST["stars"]; $i++){
+                        $priceStar = rand($priceProduct->Presio_baj,$priceProduct->Presio_alt);
+                        $stars_product .= '{"idUser":"","check":"","numero":'.$i.',"precio":'.$priceStar.',"pagado":"","emailUser":"","time":""},';
+                    }
+                    $stars_product = substr($stars_product, 0, -1);
+                    $stars_product .= ']';
                     
-                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct."&video_product=".$video_product."&offer_product=".$offer_product."&price_product=".$_POST["price"]."&shipping_product=".$_POST["envio"]."&delivery_time_product=".$_POST["entrega"]."&stock_product=".$_POST["stock"];
+                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct."&video_product=".$video_product."&price_product=".json_encode($priceProduct)."&starStart_product=".$_POST["stars"]."&stars_product=".$stars_product;
                     $url = CurlController::api()."products?id=".$_POST["idProduct"]."&nameId=id_product&token=".$_SESSION["user"]->token_user;
                     $method = "PUT";
                     $fields = $dataProduct;

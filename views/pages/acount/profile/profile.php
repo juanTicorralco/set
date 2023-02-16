@@ -69,6 +69,13 @@ if($store->status == 200){
                     <img src="img/users/<?php echo $_SESSION["user"]->id_user; ?>/<?php echo $_SESSION["user"]->picture_user; ?>" alt="<?php echo $_SESSION["user"]->username_user; ?>">
                 <?php endif; ?>
             <?php endif; ?>
+            <?php if ($_SESSION["user"]->method_user == "globalAdminister") : ?>
+                <?php if ($_SESSION["user"]->picture_user == "" || $_SESSION["user"]->picture_user == "NULL") : ?>
+                    <img src="img/users/default/default.png" alt="<?php echo $_SESSION["user"]->username_user; ?>">
+                <?php else : ?>
+                    <img src="img/users/<?php echo $_SESSION["user"]->id_user; ?>/<?php echo $_SESSION["user"]->picture_user; ?>" alt="<?php echo $_SESSION["user"]->username_user; ?>">
+                <?php endif; ?>
+            <?php endif; ?>
             <div class="br-wrapper">
 
                 <button class="btn btn-primary btn-lg rounded-circle" data-toggle="modal" data-target="#changePhoto"><i class="fas fa-pencil-alt"></i></button>
@@ -91,10 +98,13 @@ if($store->status == 200){
             <?php if ($_SESSION["user"]->method_user == "administer") : ?>
                 <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changePassword">Cambiar Password</button>
             <?php endif; ?>
+            <?php if ($_SESSION["user"]->method_user == "globalAdminister") : ?>
+                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changePassword">Cambiar Password</button>
+            <?php endif; ?>
 
         </div>
 
-        <?php if($_SESSION["user"]->method_user == "administer"): ?>
+        <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
         <div class="row ml-lg-auto pt-5">
 
             <div class="col-lg-3 col-6">

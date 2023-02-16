@@ -50,9 +50,15 @@ My Account Content
             <div class="ps-section__content">
 
                 <ul class="ps-section__links">
+                <?php if($_SESSION["user"]->method_user == "direct"): ?>
                     <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
+                    <?php endif; ?>
+                    <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
                     <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
                     <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>

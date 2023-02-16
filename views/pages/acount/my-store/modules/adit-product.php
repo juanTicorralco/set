@@ -718,30 +718,56 @@
             <div class="form-group">
                 <div class="row mb-3">
                     <!-- precio venta -->
+                    <?php $priceProd = json_decode($editProduct->price_product);?>
                     <div class="col-12 col-lg-3">
                         <label>Price Product <sup class="text-danger">*</sup></label>
                         <div class="form-group__content input-group mx-0 pr-0">
                             <div class="input-group-append">
                                 <span class="input-group-text">
-                                    Price $:
+                                    P-Inicial $:
                                 </span>
                             </div>
                             <input 
                             type="number"
                             class="form-control"
-                            name="price"
+                            name="priceI"
                             min="0"
                             step="any"
-                            value="<?php echo $editProduct->price_product ?>"
+                            value="<?php echo $priceProd->Presio_baj ?>"
                             pattern = "[.\\,\\0-9]{1,}"
                             onchange="validatejs(event, 'numbers')"
                             required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Acompleta el campo</div>
                         </div>
+                        
+                    </div>
+
+                    <div class="col-12 col-lg-3">
+                        <label> <sup class="text-danger">*</sup></label>
+                        <div class="form-group__content input-group mx-0 pr-0">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    P-Final $:
+                                </span>
+                            </div>
+                            <input 
+                            type="number"
+                            class="form-control"
+                            name="priceF"
+                            min="0"
+                            step="any"
+                            value="<?php echo $priceProd->Presio_alt ?>"
+                            pattern = "[.\\,\\0-9]{1,}"
+                            onchange="validatejs(event, 'numbers')"
+                            required>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">Acompleta el campo</div>
+                        </div>
+                        
                     </div>
                     <!-- envio -->
-                    <div class="col-12 col-lg-3">
+                    <!-- <div class="col-12 col-lg-3">
                         <label>Envio Product <sup class="text-danger">*</sup></label>
                         <div class="form-group__content input-group mx-0 pr-0">
                             <div class="input-group-append">
@@ -755,15 +781,15 @@
                             name="envio"
                             min="0"
                             step="any"
-                            value="<?php echo $editProduct->shipping_product ?>"
+                            value="<?php //echo $editProduct->shipping_product ?>"
                             pattern = "[.\\,\\0-9]{1,}"
                             onchange="validatejs(event, 'numbers')"
                             required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Acompleta el campo</div>
                         </div>
-                    </div>
-                    <!-- dias de entrega -->
+                    </div> -->
+                    <!-- dias de entrega
                     <div class="col-12 col-lg-3">
                         <label>Delivery time Product <sup class="text-danger">*</sup></label>
                         <div class="form-group__content input-group mx-0 pr-0">
@@ -778,16 +804,16 @@
                             name="entrega"
                             min="0"
                             pattern = "[0-9]{1,}"
-                            value="<?php echo $editProduct->delivery_time_product ?>"
+                            value="<?php //echo $editProduct->delivery_time_product ?>"
                             onchange="validatejs(event, 'numbers')"
                             required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">Acompleta el campo</div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- stock -->
                     <div class="col-12 col-lg-3">
-                        <label>Stock Product <sup class="text-danger">*</sup> (MAX: 100 unit)</label>
+                        <label>Stars <sup class="text-danger">*</sup> (MAX:100 u)</label>
                         <div class="form-group__content input-group mx-0 pr-0">
                             <div class="input-group-append">
                                 <span class="input-group-text">
@@ -797,7 +823,7 @@
                             <input 
                             type="number"
                             class="form-control"
-                            name="stock"
+                            name="stars"
                             min="0"
                             max="100"
                             pattern = "[0-9]{1,}"
@@ -811,7 +837,7 @@
                 </div>
             </div>
             <!-- oferta -->
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Offer Product Ex: <strong>Type: </strong>Discount, <strong>Percent %: </strong>25, <strong>end ofer: </strong>10/10/2020</label>
                 <div class="row mb-3">
                     <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
@@ -821,41 +847,41 @@
                             </span>
                         </div>
                         <select name="type_offer" class="form-control" onchange="changeOfer(event)">
-                            <?php if($editProduct->offer_product != null): ?>
-                                <?php if( json_decode($editProduct->offer_product, true)[0] == "Discount"): ?>
+                            <?php //if($editProduct->offer_product != null): ?>
+                                <?php //if( json_decode($editProduct->offer_product, true)[0] == "Discount"): ?>
                                     <option value="Discount">Discount</option>
                                     <option value="Fixed">Fixed</option>
-                                <?php else: ?>
+                                <?php //else: ?>
                                     <option value="Fixed">Fixed</option>
                                     <option value="Discount">Discount</option>
-                                <?php endif; ?>
-                            <?php else: ?>
+                                <?php //endif; ?>
+                            <?php //else: ?>
                                 <option value="">Select Discount</option>
                                 <option value="Discount">Discount</option>
                                 <option value="Fixed">Fixed</option>
-                            <?php endif;?>
+                            <?php //endif;?>
                         </select>
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Acompleta el campo</div>
-                    </div>
+                    </div> -->
                     <!-- porcentaje -->
-                    <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
+                    <!-- <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
                         <div class="input-group-append">
-                        <?php if($editProduct->offer_product != null): ?>
-                            <?php if( json_decode($editProduct->offer_product, true)[0] == "Discount"): ?>
+                        <?php //if($editProduct->offer_product != null): ?>
+                            <?php //if( json_decode($editProduct->offer_product, true)[0] == "Discount"): ?>
                                 <span class="input-group-text typeOffer">
                                 Percent %:
                                  </span>
-                            <?php else: ?>
+                            <?php //else: ?>
                                 <span class="input-group-text typeOffer">
                                 Price $:
                                 </span>
-                            <?php endif; ?>
-                        <?php else: ?>
+                            <?php //endif; ?>
+                        <?php //else: ?>
                             <span class="input-group-text typeOffer">
                                 Percent %:
                             </span>
-                        <?php endif;?>    
+                        <?php //endif;?>    
                         </div>
                         <input 
                         type="number"
@@ -863,16 +889,16 @@
                         name="valueOffer"
                         min="0"
                         step="any"
-                        <?php if($editProduct->offer_product != null): ?>
-                        value="<?php echo json_decode($editProduct->offer_product, true)[1] ?>"
-                        <?php endif; ?>
+                        <?php //if($editProduct->offer_product != null): ?>
+                        value="<?php //echo json_decode($editProduct->offer_product, true)[1] ?>"
+                        <?php //endif; ?>
                         pattern = "[0-9]{1,}"
                         onchange="validatejs(event, 'numbers')">
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Acompleta el campo</div>
-                    </div>
+                    </div> -->
                     <!-- time -->
-                    <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
+                    <!-- <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 End Offer:
@@ -882,14 +908,14 @@
                         type="date"
                         class="form-control"
                         name="dateOffer"
-                        <?php if($editProduct->offer_product != null): ?>
-                        value="<?php echo json_decode($editProduct->offer_product, true)[2] ?>"
-                        <?php endif; ?>>
+                        <?php //if($editProduct->offer_product != null): ?>
+                        value="<?php //echo json_decode($editProduct->offer_product, true)[2] ?>"
+                        <?php //endif; ?>>
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Acompleta el campo</div>
                     </div>
                 </div>
-            </div>
+            </div> --> 
     
         </div>
         <div class="modal-footer">

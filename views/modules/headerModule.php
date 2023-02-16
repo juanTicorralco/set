@@ -174,7 +174,7 @@ Header Content
                                             $numero = array();
                                             $EsStar = json_decode($result->stars_product);
                                             foreach($EsStar as $key2 => $value2){
-                                                if($value2->idUser == $_SESSION["user"]->id_user){
+                                                if($value2->idUser == $_SESSION["user"]->id_user && $value2->pagado != "pagado"){
                                                     $precioProdStar = $precioProdStar + $value2->precio;
                                                     $estrella .=  $value2->numero . ", ";
                                                     array_push($numero, $value2->numero);
@@ -308,7 +308,7 @@ Header Content
 
                         <div class="ps-block--user-header">
                             <div class="ps-block__left">
-                                <?php if ($_SESSION["user"]->method_user == "direct") : ?>
+                                <?php if ($_SESSION["user"]->method_user == "direct" || $_SESSION["user"]->method_user == "administer" || $_SESSION["user"]->method_user == "globalAdminister") : ?>
                                     <?php if ($_SESSION["user"]->picture_user == "" || $_SESSION["user"]->picture_user == "NULL") : ?>
                                         <img class="rounded-circle" style="width: 50px;" src="img/users/default/default.png" alt="<?php echo $_SESSION["user"]->name_user; ?>">
                                     <?php else : ?>
@@ -317,7 +317,7 @@ Header Content
                                 <?php endif; ?>
                             </div>
                             <div class="ps-block__right">
-                                <a href="<?php echo $path ?>acount&wishAcount"><?php echo $_SESSION["user"]->displayname_user; ?></a>
+                                <a href="<?php echo $path; if ($_SESSION['user']->method_user == 'direct')echo 'acount&wishAcount';if ($_SESSION['user']->method_user == 'administer')echo 'acount&list-vendor';if ($_SESSION['user']->method_user == 'globalAdminister')echo 'acount&my-store';?>"><?php echo $_SESSION['user']->displayname_user; ?></a>
                                 <a href="<?php echo $path ?>acount&logout">Salir</a>
                             </div>
                         </div>

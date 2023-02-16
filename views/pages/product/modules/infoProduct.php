@@ -13,6 +13,7 @@
             }  
         }
         $rascnum = $rascnum - $quedannum;
+        $verify = 0;
         ?>
         <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
         <h1 class="principal-h1">Participa y GANA!!!</h1>
@@ -55,6 +56,7 @@
                             <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
                             <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
                             <input type="hidden" name="idtipe" value="checkout">
+                            <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
                             <button class="butonInter" type="submit">
                                 <div class="contestrella">
                                     <img class="numero-pedido" src="/views/img/starendsas.png" alt="star">
@@ -84,10 +86,13 @@
                         <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
                         <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
                         <input type="hidden" name="idtipe" value="checkin">
+                        <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
                         <button class="butonInter" type="submit">
                             <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
                         </button>
                         <?php
+                            $verify = new ControllerUser();
+                            $verify = $verify -> verifistar();
                             $question = new ControllerUser();
                             $question -> starcheck();
                         ?>
@@ -104,28 +109,41 @@
         date_default_timezone_set('UTC');
         date_default_timezone_set("America/Mexico_City");
         $fechacount =0;
+        $conterfech = 0;
+        $hol = 0;
         $fechadeHoy = date("d-m-Y H:i:s");
         $fechHoy= strtotime($fechadeHoy);
-        if($timestart != null || $timestart == ""){
+        if($timestart != null || $timestart != ""){
             foreach($timestart as $key => $value){
                 $tstart = strtotime($value);
                 if($tstart > $fechHoy){
-                    $timestart = $value;
+                    // $timestart = $value;
+                    $hol = $value;
                     $fechacount++;
                 }else{
                     $timestart = $value;
                 }
             }
+            $timestart = $hol;
             
-            $timestart = explode(" ", $timestart);
-            if (!empty(array_filter($timestart)[1])) {
-                $timestart = array($timestart[1]);
-            }
-            $timestarter = explode(":", $timestart[0]);
-            if ($timestarter[1]<10) {
-                $sumtime=60;
+            
+            if($timestart != 0){
+                $timestart = explode(" ", $timestart);
+                if (!empty(array_filter($timestart)[1])) {
+                    $timestart = array($timestart[1]);
+                }
+                $timestarter = explode(":", $timestart[0]);            
+                if($timestarter[0] != null){
+                    if ($timestarter[1]<10) {
+                        $sumtime=60;
+                    }else{
+                        $sumtime=0;
+                    }
+                }else{
+                    $sumtime=0;
+                }
             }else{
-                $sumtime=0;
+                $conterfech = 1;
             }
         }
     
@@ -137,6 +155,8 @@
         $numero = array();
         foreach(json_decode($producter->stars_product) as $key => $value){   
             array_push($numero, $value->numero);
+
+
         }
         $numero = json_encode($numero);
         $routeurl = explode("/", $_SERVER['REQUEST_URI']);
@@ -191,7 +211,7 @@
                                         stars.forEach((list,i) => {
                                             if(numero[i] != '' || numero[i] != NULL){
                                                 if(numero[i] == list.numero){
-                                                    if((list.check == 'checkin') && (list.idUser == idUser )){
+                                                    if((list.check == 'checkin') && (list.pagado != 'pagado') && (list.idUser == idUser )){
                                                         list.idUser= '';
                                                         list.check= check;
                                                         list.emailUser= '';
@@ -237,20 +257,20 @@
             ?>
         <?php endif ?>
         <?php 
-        if($timestart != null || $timestart == ""){
+        if($verify != 1){
             if($fechacount <= 0){
                 $question = new ControllerUser();
                 $question -> endcheck($idUser, $idProduct, $numero); 
             }
         }
         ?>
-        <?php endif; ?>
         <?php if($fechacount >0): ?>
         <a class="ps-btn" 
         href="<?php echo $path; ?>checkout"
         detailSC 
         quantitySC
         >Buy Now</a>
+        <?php endif; ?>
         <?php endif; ?>
 
         <div class="ps-product__actions">

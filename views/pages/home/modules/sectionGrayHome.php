@@ -80,12 +80,13 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Vertical Slider Category
                 ======================================-->
                 <?php
-                    $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starEnd_product,starStart_product,stars_product";
+                    $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starStart_product,stars_product";
                     $method = "GET";
                     $field = array();
                     $header = array();
 
                     $bestProduct = CurlController::request($url, $method, $field, $header)->result;
+                   
                 ?>
                 <div class="ps-block__slider">
 

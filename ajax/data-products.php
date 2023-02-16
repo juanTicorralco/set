@@ -91,7 +91,7 @@ class ControllerDataTable{
                     $name_product = $value->name_product;
                     $name_category = $value->name_category;
                     $name_subcategory = $value->name_subcategory;
-                    $price_product = $value->price_product;
+                    $price_product = json_decode($value->price_product);
                     $shipping_product = $value->shipping_product;
                     $stock_product = $value->stock_product;
                     if($value->stock_product >= 50){
@@ -255,7 +255,7 @@ class ControllerDataTable{
                         "name_product": "'.$name_product.'",
                         "name_category": "'.$name_category.'",
                         "name_subcategory": "'.$name_subcategory.'",
-                        "price_product": "$'.$price_product.'",
+                        "price_product": "De:$'.$price_product->Presio_baj.' A:$'.$price_product->Presio_alt.'",
                         "shipping_product": "$'.$shipping_product.'",
                         "stock_product": "'.$stock_product.'",
                         "delivery_time_product": "'.$delivery_time_product.' dias",
@@ -285,7 +285,6 @@ class ControllerDataTable{
                 echo '{"data":[]}';
                 return;
             }
-            
         }
     }
 }

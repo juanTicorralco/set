@@ -14,7 +14,7 @@ if (!isset($_SESSION['user'])) {
     return;
     }else{
         // traer las ordenes
-        $select="quantity_order,price_order,details_order,process_order,id_order,name_store,url_store,id_category_product,name_product,url_product,image_product,reviews_product,id_store_order,email_store,id_user_order,id_product,reviews_product";
+        $select="quantity_order,price_order,details_order,process_order,id_order,name_store,url_store,id_category_product,name_product,url_product,image_product,reviews_product,id_store_order,email_store,id_user_order,id_product,reviews_product,name_vendor_order,email_order,phone_order,stars_order";
         $url= CurlController::api()."relations?rel=orders,stores,products&type=order,store,product&linkTo=id_user_order&equalTo=".$_SESSION["user"]->id_user."&select=".$select."&orderBy=id_order&orderMode=DESC&token=".$_SESSION["user"]->token_user;
         $method= "GET";
         $header= array();
@@ -57,9 +57,15 @@ My Account Content
             <div class="ps-section__content">
 
                 <ul class="ps-section__links">
-                    <li ><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
-                    <li class="active"><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                <?php if($_SESSION["user"]->method_user == "direct"): ?>
+                    <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
+                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
+                    <?php endif; ?>
+                    <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
                     <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
                     <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
@@ -78,14 +84,25 @@ My Account Content
                             <tr>      
 
                                 <th>Product name</th>
-
-                                <th>Proccess</th>
-
+                                
                                 <th>Price</th>
-
+                                
                                 <th>Quantity</th>
 
+                                <?php if($_SESSION["user"]->method_user == "direct"): ?>
+
+                                <th>Proccess</th>
+                                
                                 <th>Review</th>
+                                
+                                <?php endif; ?>
+                                <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Estrellas</th>
+                                <?php endif; ?>
+
 
                             </tr>
 
@@ -131,6 +148,11 @@ My Account Content
 
                                         </td>
 
+                                        <td class="price text-center"><?php echo $value->price_order; ?></td>
+
+                                        <td class="text-center"><?php echo $value->quantity_order; ?></td>
+
+                                        <?php if($_SESSION["user"]->method_user == "direct"): ?>
                                         <td>
                                             <?php $processOrder = json_decode($value->process_order, true); ?>
 
@@ -196,10 +218,6 @@ My Account Content
                                             <?php endif; ?>
 
                                         </td> 
-
-                                        <td class="price text-center"><?php echo $value->price_order; ?></td>
-
-                                        <td class="text-center"><?php echo $value->quantity_order; ?></td>
 
                                         <td>
                                         <div class="text-center  mt-2">
@@ -271,6 +289,18 @@ My Account Content
                                         </div>
 
                                         </td>
+                                        <?php endif; ?>
+                                        <?php if($_SESSION["user"]->method_user == "administer"): ?>
+                                        <td class="text-center"><?php echo $value->name_vendor_order; ?></td>
+                                        <td class="text-center"><?php echo $value->email_order; ?></td>
+                                        <td class="text-center"><?php echo $value->phone_order; ?></td>
+                                        <td class="text-center"><?php 
+                                        $starsOrder = json_decode($value->stars_order);
+                                        foreach($starsOrder as $key2 => $value2){
+                                            echo $value2; 
+                                        } 
+                                        ?></td>
+                                        <?php endif; ?>
 
                                     </tr>
 

@@ -105,7 +105,7 @@ function changeQualyty(quantity, move, stock, index) {
   totalp(index);
 }
 
-if(window.location == "http://wesharp.com/acount&enrollment"){
+if(window.location == "http://seture.com/acount&enrollment"){
   window.onload = function() {
     var myInput = document.getElementById('passRep');
     myInput.onpaste = function(e) {
@@ -505,7 +505,7 @@ function removeBagSC(urlProduct, urlPagina, idUser, numero,urlapi){
                   stars.forEach((list,i) => {
                       if(numero[i] != ''){
                           if(numero[i] == list.numero){
-                              if((list.check == 'checkin') && (list.idUser == idUser )){
+                              if((list.check == 'checkin') && (list.pagado != 'pagado') && (list.idUser == idUser )){
                                   list.idUser= '';
                                   list.check= check;
                                   list.emailUser= '';
@@ -516,7 +516,7 @@ function removeBagSC(urlProduct, urlPagina, idUser, numero,urlapi){
                       }
                   });
               }
-              console.log(stars);
+              
               let settings = {
                   'url': urlapi + 'products?id='+starResponse.id_product+'&nameId=id_product&token=' + localStorage.getItem("token_user"),
                   'method': 'PUT',
@@ -572,7 +572,7 @@ function removeBagSC(urlProduct, urlPagina, idUser, numero,urlapi){
 
 
 function bagCkeck(){
-  window.location = "http://wesharp.com/checkout";
+  window.location = "http://seture.com/checkout";
 }
 
 // seleccionar detalles al producto
@@ -908,6 +908,10 @@ function checkout(){
         });  
       })
     }
+    //pago en efectivo
+    if(metodpay== "efectivo"){
+      newOrden("efectivo","pagado", null,total);
+    }
     return false;
   }else{
     return false;
@@ -942,7 +946,18 @@ function formatFecha(fecha){
   let priceProduct =[];
 
   priceProductClass.each(i=>{
-    priceProduct.push(($(priceProductClass[i]).html().replace(/\s+/gi,'')* quantityOrder[i]) + envioOrder[i]);
+    priceProduct.push(( Number($(priceProductClass[i]).html().replace(/\s+/gi,''))));
+  });
+
+  let starProductClass= $(".estrellaStar");
+  let starProduct =[];
+  let ret = "";
+
+  starProductClass.each(i=>{
+    ret = $(starProductClass[i]).val().split(",");
+    ret.pop();
+    ret = JSON.stringify(ret);
+    starProduct.push(ret);  
   });
 
 // crear orden
@@ -1001,7 +1016,14 @@ function newOrden(metodo,status,id,totals){
   let emailOrder = $("#emailOrder").val();
   let countryOrder = $("#countryOrder").val().split("_")[0];
   let cityOrder = $("#cityOrder").val();
-  let phoneOrder = $("#countryOrder").val().split("_")[1]+"_"+ $("#phoneOrder").val();
+  let phoneOrder = '';
+  let nameUserOrder = $("#nameUserSale").val();
+  let methodUser = $("#methodUser").val();
+  if(methodUser != "administer"){
+    phoneOrder = $("#countryOrder").val().split("_")[1]+"_"+ $("#phoneOrder").val();
+  }else{
+    phoneOrder = $("#phoneOrder").val();
+  }
   let addresOrder = $("#addresOrder").val();
   let infoOrder = $("#infoOrder").val();
   let mapOrder = [document.getElementById('mappp').dataset.value.split(",")[0], document.getElementById('mappp').dataset.value.split(",")[1]];
@@ -1030,8 +1052,7 @@ function newOrden(metodo,status,id,totals){
 
   // preguntar si el usuario quiere guardar su direccion
   let saveAdres= $("#create-account")[0].checked;
-  if(saveAdres){
-  
+  if(saveAdres && methodUser != "administer"){
     let settings = {
       "url": $("#urlApi").val()+"users?id="+idUser+"&nameId=id_user&token=" + localStorage.getItem("token_user"),
       "method": "PUT",
@@ -1068,6 +1089,7 @@ function newOrden(metodo,status,id,totals){
   let foreachend = 0;
   let idOrder=[];
   let idSale=[];
+
   idProduct.forEach((value,i) => {
 
     let moment= Math.ceil(Number(deliveryTime[i]/2));
@@ -1108,8 +1130,10 @@ function newOrden(metodo,status,id,totals){
         "id_user_order": idUser,
         "id_product_order": value,
         "details_order": JSON.stringify(detailsOrder[i]),
+        "name_vendor_order": nameUserOrder,
         "quantity_order": quantityOrder[i],
         "price_order": priceProduct[i],
+        "stars_order": starProduct[i],
         "email_order": emailOrder,
         "country_order": countryOrder,
         "city_order": cityOrder,
@@ -1123,6 +1147,7 @@ function newOrden(metodo,status,id,totals){
     };
 
     $.ajax(settings).done(function (response) {
+      console.log(response);
       idOrder.push(response.result.idlast);
       if (response.status == 200) {
         // Crear comision
@@ -1162,8 +1187,8 @@ function newOrden(metodo,status,id,totals){
             "id_order_sale": response.result.idlast,
             "id_store_sale": idStore[i],
             "name_product_sale": nameProducter[i],
-            "unit_price_sale": unitPrice,
-            "commission_sale": commissionPrice,
+            "unit_price_sale": priceProduct[i],
+            "commision_sale": 0,
             "payment_method_sale": metodo,
             "id_payment_sale": id,
             "status_sale": status,
@@ -1192,6 +1217,57 @@ function newOrden(metodo,status,id,totals){
             }
             foreachend++;
             if(foreachend == idProduct.length){
+              if(metodo == "efectivo"){
+                //Se modifica los valores para que el pago quede estable
+                let numero= $(".numerostar").val(), cont=0;
+                numero = JSON.parse(numero); 
+                idProduct.forEach((idprod, i) => {
+                  let url = $("#urlApi").val()+'products?linkTo=id_product&equalTo='+idprod+'&select=stars_product';
+                  
+                  let settings = {
+                      url: url,
+                      metod: 'GET',
+                      timeaot: 0,
+                  };
+              
+                  $.ajax(settings).done(function (response) {
+                      if (response.status == 200) {
+                          let stars = JSON.parse(response.result[0].stars_product);  
+                          
+                          if (stars != null && stars.length > 0) {
+                            stars.forEach((list,i) => {
+                            if(numero[i] != '' || numero[i] != NULL){
+                                  if(numero[i] == list.numero){
+                                      if((list.check == 'checkin') && (list.idUser == idUser )){
+                                          list.pagado= 'pagado';
+                                          list.time= '';
+                                          cont++;
+                                      }   
+                                  }
+                              }
+                            });
+                          }
+                          let settings = {
+                              'url': $("#urlApi").val() + 'products?id='+idprod+'&nameId=id_product&token=' + localStorage.getItem("token_user"),
+                              'method': 'PUT',
+                              'timeaot': 0,
+                              'headers': {
+                              'Content-Type': 'application/x-www-form-urlencoded',
+                              },
+                              'data': {
+                              'stars_product': JSON.stringify(stars),
+                              },
+                          };
+              
+                          $.ajax(settings).done(function (response) {
+                              if (response.status == 200) {
+
+                              }
+                          });
+                      }
+                   }); 
+              });     
+              }
               if(metodo == "paypal"){
                 document.cookie = "listSC=; max-age=0";
                 switAlert("success", "El pago se realizo correctamente...", $('#url').val() + "acount&my-shopping", null, 1500); 
@@ -1250,7 +1326,9 @@ function newOrden(metodo,status,id,totals){
       }
     });
   });
-  
+  document.cookie = "listSC=; max-age=0";
+  switAlert("success", "El pago se realizo correctamente...", $('#url').val() + "acount&my-shopping", null, 1500);
+  // window.location = $("#url").val()+"acount&my-shopping";
 }
 
 
@@ -1290,8 +1368,6 @@ function urlCreate(e,urlStore){
     
     //mapa
     let resultList =  document.getElementById('mappp').value;
-
-    console.log(resultList);
 
     if(resultList == undefined || resultList == null || resultList == "" ){
         resultList = [19.42847,-99.12766];

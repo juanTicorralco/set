@@ -354,9 +354,6 @@ if($totalPro->status == 200){
     <!-- Preloader placeholder loader -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/placeholder-loading/dist/css/placeholder-loading.min.css"></script> -->
 
-    <!-- Funciones2-->
-    <script src="js/funciones2.js"></script>
-
     <!-- notie alert -->
     <script src="https://unpkg.com/notie"></script>
 
@@ -393,6 +390,10 @@ if($totalPro->status == 200){
 
     <!-- shape Share -->
     <script src="js/plugins/shape.share.js"></script>
+
+    <!-- Funciones2-->
+    <script src="js/funciones2.js"></script>
+
 </head>
 
 <body>
@@ -493,8 +494,8 @@ if($totalPro->status == 200){
 	JS PERSONALIZADO
 	======================================-->
 
-    <script src="js/main.js"></script>
     <script src="js/funcionesjs.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/maps.js"></script>
 
 </body>
