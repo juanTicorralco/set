@@ -63,17 +63,15 @@
 
                 <th>Name</th>
 
+                <th>Price</th>
+
+                <th>N Stars</th>
+
+                <th>Stars</th>
+
                 <th>Category</th>
 
                 <th>Subcategory</th>
-
-                <th>Price</th>
-
-                <th>Shipping</th>
-
-                <th>Stock</th>
-
-                <th>Delivery time</th>
 
                 <th>Offer</th>
 
@@ -112,5 +110,32 @@
         </thead>
 
     </table>
+</div>
+<div class="modal" id="starListProduct">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="POST" class="needs-validation" novalidate>
+            <input type="hidden" name="idProduct">
+            <input type="hidden" name="StarWin">
+                <!-- header -->
+                <div class="modal-header">
+                    <h5 class="modal-title text-center">Stars</h5>
+                    <button class="close btn btn-danger" type="button" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- body -->
+               <div class="starStart_product"></div>
+                <!-- footer -->
+                <div class="modal-footer">
+                    <div class="form-group submit btnStar">
+                        
+                    </div>
+                </div>
+                <?php
+                    $answDispute = new ControllerVendor();
+                    $answDispute->resetWiner();
+                ?>
+            </form>
+        </div>
+    </div>
 </div>
 <?php endif; ?>

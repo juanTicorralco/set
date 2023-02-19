@@ -1995,7 +1995,97 @@ $(document).on("click", ".answerMessage", function(){
 });
 
 $(document).on("click", ".CommentStars", function(){
-  $("[name='idProduct']").val($(this).attr("idProduct"));
+  $("[name='starsProduct']").val($(this).attr("starsProduct"));
   $("[name='idUser']").val($(this).attr("idUser"));
   $("#newComment").modal();
+});
+
+$(document).on("click", ".starsList", function(){
+  $(".starStart_product").html("");
+  $(".btnStar").html("");
+  $("#starListProduct").modal();
+  let processOrder = $(this).attr("starsProduct");
+  let urlapi = $(this).attr("urlApi");
+  let starsProduct = "";
+  let numero =  "";
+  let precio = "";
+  let check = "";
+  let pagado = "";
+  let time = "";
+  let contstar = 0;
+  let btnStar = "";
+  let winStar = null;
+
+  let url = urlapi+'products?linkTo=id_product&equalTo='+processOrder+'&select=stars_product,win_product';
+      
+  let settings = {
+      url: url,
+      metod: 'GET',
+      timeaot: 0,
+  };
+
+  $.ajax(settings).done(function (response) {
+
+    starsProduct = JSON.parse(response.result[0].stars_product);
+    winStar = response.result[0].win_product;
+
+    starsProduct.forEach((value, index) => {
+      numero += "<pre>"+value.numero+"</pre>";
+      precio += "<pre>"+value.precio+"</pre>";
+      check += "<pre>"+value.check+"</pre>";
+      pagado += "<pre>"+value.pagado+"</pre>";
+      time += "<pre>"+value.time+"</pre>";
+      if(value.pagado == "pagado" && value.check == "checkin"){
+        contstar++;
+      }
+    });
+
+    if(starsProduct.length == contstar && winStar == null){
+      $("[name='StarWin']").val(processOrder);
+      btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Ganador</button>`;
+    }
+    if(starsProduct.length != contstar && winStar == null){
+      $("[name='idProduct']").val(processOrder);
+      btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Resetear</button>`;
+    }
+
+    if(starsProduct.length == contstar && winStar != null ){
+      btnStar = `<p class='btn btn-warning ps-btn ps-btn--fullwidth text-dark'> WINER : `+ winStar +`</p>`;
+    }
+
+    $(".starStart_product").append(`
+    <table class="table dt-responsive dt-server" width="100%">
+        
+        <thead>
+
+            <tr>   
+                
+                <th>#</th>   
+
+                <th>Precio</th>
+
+                <th>Check</th>   
+
+                <th>Pagado</th>
+
+                <th>Time</th>   
+
+            </tr>
+
+        </thead>
+        <tbody>
+          <td>`+numero+`</td>
+          <td>`+precio+`</td>
+          <td>`+check+`</td>
+          <td>`+pagado+`</td>
+          <td>`+time+`</td>
+        </tbody>
+
+    </table>
+    `);
+    $(".btnStar").append(` 
+      `+ btnStar +`
+    `);
+
+  });
 });

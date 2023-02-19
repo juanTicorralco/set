@@ -720,60 +720,58 @@ class ControllerUser
         }
     }
     public function endcheck($idUser, $idProduct, $numero){
-        // if($conterfech == 1){
-            $cont=0; 
-            $idUser = $idUser; 
-            $idProduct=$idProduct; 
-            $check='checkout'; 
-            $numero=$numero;
-            $method = "GET";
-            $fields = array();
-            $header = array();
-            $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product";
-            $stars = CurlController::request($url2, $method, $fields, $header)->result[0];
-            $stars = json_decode($stars->stars_product);
-            $numero = json_decode( $numero);
-            if ($stars != null && is_array($stars)) {
-                foreach($stars as $key => $value){
-                    if($numero[$key] != '' || $numero[$key] != NULL){
-                        if($numero[$key] == $value->numero){
-                            if(($value->check == "checkin") && ($value->pagado != "pagado") && ($value->idUser == $idUser )){
-                            
-                                $value->idUser= "";
-                                $value->check= $check;
-                                $value->emailUser= "";
-                                $value->time= "";
-                                $cont++;
-                            }
+        $cont=0; 
+        $idUser = $idUser; 
+        $idProduct=$idProduct; 
+        $check='checkout'; 
+        $numero=$numero;
+        $method = "GET";
+        $fields = array();
+        $header = array();
+        $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product";
+        $stars = CurlController::request($url2, $method, $fields, $header)->result[0];
+        $stars = json_decode($stars->stars_product);
+        $numero = json_decode( $numero);
+        if ($stars != null && is_array($stars)) {
+            foreach($stars as $key => $value){
+                if($numero[$key] != '' || $numero[$key] != NULL){
+                    if($numero[$key] == $value->numero){
+                        if(($value->check == "checkin") && ($value->pagado != "pagado") && ($value->idUser == $idUser )){
+                        
+                            $value->idUser= "";
+                            $value->check= $check;
+                            $value->emailUser= "";
+                            $value->time= "";
+                            $cont++;
                         }
                     }
-                }   
-            }   
-           
-            if($cont > 0){
-                $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product";
-                $method = "PUT";
-                $fields = "stars_product=".json_encode($stars) ;
-                $headers = array();
-
-                $upStar = CurlController::request($url,$method,$fields,$headers);
-                if($upStar->status == 200){
-                    $routeurl = explode("/", $_SERVER['REQUEST_URI']);
-                    if (!empty(array_filter($routeurl)[1])) {
-                        $routeurl = array($routeurl[1]);
-                    }
-                    echo '
-                        <script>
-                            formatearAlertas();
-                            switAlert("success", "Rascadito Removido!!", null, null, 1500);
-                            window.location="' . TemplateController::path() . $routeurl[0] .'";
-                        </script>'; 
-                        return;
                 }
-            }
-
+            }   
+        }   
         
+        if($cont > 0){
+            $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product";
+            $method = "PUT";
+            $fields = "stars_product=".json_encode($stars) ;
+            $headers = array();
+
+            $upStar = CurlController::request($url,$method,$fields,$headers);
+            if($upStar->status == 200){
+                $routeurl = explode("/", $_SERVER['REQUEST_URI']);
+                if (!empty(array_filter($routeurl)[1])) {
+                    $routeurl = array($routeurl[1]);
+                }
+                echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("success", "Rascadito Removido!!", null, null, 1500);
+                        window.location="' . TemplateController::path() . $routeurl[0] .'";
+                    </script>'; 
+                    return;
+            }
+        }    
     }
+
     public function verifistar(){
         if(isset($_POST["idStar"]) && preg_match('/^[0-9]{1,}$/', $_POST["idStar"]) &&
         isset($_POST["idprod"]) && preg_match('/^[0-9]{1,}$/', $_POST["idprod"]) &&

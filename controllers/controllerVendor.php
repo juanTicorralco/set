@@ -394,15 +394,31 @@ class ControllerVendor{
                         }
 
                         if(
-                            isset($_POST["price"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["price"]) &&
-                            isset($_POST["envio"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["envio"]) &&
-                            isset($_POST["entrega"]) && preg_match('/^[0-9]{1,}$/', $_POST["entrega"]) &&
-                            isset($_POST["stock"]) && preg_match('/^[0-9]{1,}$/', $_POST["stock"])
+                            // isset($_POST["price"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["price"]) &&
+                            // isset($_POST["envio"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["envio"]) &&
+                            // isset($_POST["entrega"]) && preg_match('/^[0-9]{1,}$/', $_POST["entrega"]) &&
+                            // isset($_POST["stock"]) && preg_match('/^[0-9]{1,}$/', $_POST["stock"])
+                            isset($_POST["priceI"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceI"]) &&
+                            isset($_POST["priceF"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceF"]) &&
+                            isset($_POST["stars"]) && preg_match('/^[0-9]{1,}$/', $_POST["stars"])
                         ){
 
                             date_default_timezone_set('UTC');
                             date_default_timezone_set("America/Mexico_City");
                             $dateCreate = date("Y-m-d");
+
+                            $priceProduct = (object)[ 
+                                "Presio_baj" => $_POST["priceI"],
+                                "Presio_alt" => $_POST["priceF"]
+                            ];
+                            $stars_product = '[';
+                            for($i=1; $i <= $_POST["stars"]; $i++){
+                                $priceStar = rand($priceProduct->Presio_baj,$priceProduct->Presio_alt);
+                                $stars_product .= '{"idUser":"","check":"","numero":'.$i.',"precio":'.$priceStar.',"pagado":"","emailUser":"","time":""},';
+                            }
+                            $stars_product = substr($stars_product, 0, -1);
+                            $stars_product .= ']';
+
 
                             $dataProduct = array(
                                 "approval_product" => "review",
@@ -427,11 +443,10 @@ class ControllerVendor{
                                 "vertical_slider_product" => $saveImagedeVerticalBanerProduct,
                                 "video_product" => $video_product,
                                 "offer_product" => $offer_product,
-                                "price_product" => $_POST["price"],
-                                "shipping_product" => $_POST["envio"],
-                                "delivery_time_product" => $_POST["entrega"],
-                                "stock_product" => $_POST["stock"],
-                                "date_create_product" => $dateCreate
+                                "price_product" => json_encode($priceProduct),
+                                "starStart_product" => $_POST["stars"],
+                                "date_create_product" => $dateCreate,
+                                "stars_product" => $stars_product
                             );
         
                             $url = CurlController::api()."products?token=".$_SESSION["user"]->token_user;
@@ -1112,6 +1127,85 @@ class ControllerVendor{
                         notiAlert(3, "Error en la sintaxis de los campos");
                     </script>';
                 }
+            }
+        }
+    }
+
+    public function resetWiner(){
+        if(isset($_POST["idProduct"]) && preg_match('/^[0-9]{1,}$/', $_POST["idProduct"])){
+            $cont=0; 
+            $idProduct=$_POST["idProduct"]; 
+            $check='checkout'; 
+            date_default_timezone_set('UTC');
+            date_default_timezone_set("America/Mexico_City");
+            $fechadeHoy = date("d-m-Y H:i:s");
+            $fechHoy= strtotime($fechadeHoy);
+            $method = "GET";
+            $fields = array();
+            $header = array();
+            $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=stars_product";
+            $stars = CurlController::request($url2, $method, $fields, $header)->result[0];
+            $stars = json_decode($stars->stars_product);
+           
+            if ($stars != null && is_array($stars)) {
+                foreach($stars as $key => $value){ 
+                    $tstart = strtotime($value->time);
+                    if(($value->check == "checkin") && ($value->pagado != "pagado") && ($tstart<$fechHoy)){
+                        $value->idUser= "";
+                        $value->check= $check;
+                        $value->emailUser= "";
+                        $value->time= "";
+                        $cont++;
+                    } 
+                }   
+            }   
+            
+            if($cont > 0){
+                $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product";
+                $method = "PUT";
+                $fields = "stars_product=".json_encode($stars) ;
+                $headers = array();
+
+                $upStar = CurlController::request($url,$method,$fields,$headers);
+                if($upStar->status == 200){
+                    echo '
+                        <script>
+                            formatearAlertas();
+                            switAlert("success", "Se reseteo '.$cont.' estrellas con exito!!", null, null, 1500);
+                        </script>'; 
+                        return;
+                }
+            }else{
+                echo '
+                        <script>
+                            formatearAlertas();
+                            switAlert("error", "No hay nada para formatear!!", null, null, 1500);
+                        </script>'; 
+                        return;
+            }    
+        }
+
+        if(isset($_POST["StarWin"]) && preg_match('/^[0-9]{1,}$/', $_POST["StarWin"])){
+            $idProduct=$_POST["StarWin"]; 
+            $method = "GET";
+            $fields = array();
+            $header = array();
+            $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=starStart_product";
+            $stars = CurlController::request($url2, $method, $fields, $header)->result[0]->starStart_product;
+            $winStart = rand(1,$stars);
+            $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=win_product";
+            $method = "PUT";
+            $fields = "win_product=".$winStart;
+            $headers = array();
+
+            $upStar = CurlController::request($url,$method,$fields,$headers);
+            if($upStar->status == 200){
+                echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("success", "Se Genero el ganador!", null, null, 1500);
+                    </script>'; 
+                    return;
             }
         }
     }

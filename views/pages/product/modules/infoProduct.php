@@ -33,13 +33,7 @@
 
                         <?php $reviews = TemplateController::calificationStars(json_decode($producter->reviews_product, true)); ?>
 
-                        <span class="colorcute"><?php
-                                if ($producter->sales_product != null) {
-                                    echo $rascnum;
-                                } else {
-                                    echo "0";
-                                }
-                                ?> Rascados
+                        <span class="colorcute"><?php echo $rascnum;?> Rascados
                         </span>
 
                     </div>

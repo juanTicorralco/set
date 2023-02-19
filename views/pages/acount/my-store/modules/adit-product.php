@@ -1,6 +1,6 @@
 <?php
     if(isset($_GET["product"])){
-        $select = "id_product,name_product,approval_product,state_product,url_product,feedback_product,image_product,name_category,id_category,url_category,name_category,id_subcategory,title_list_subcategory,name_subcategory,price_product,shipping_product,stock_product,delivery_time_product,offer_product,summary_product,specifications_product,details_product,description_product,tags_product,gallery_product,top_banner_product,default_banner_product,horizontal_slider_product,vertical_slider_product,video_product,views_product,sales_product,reviews_product,date_create_product";
+        $select = "id_product,name_product,approval_product,state_product,url_product,feedback_product,image_product,name_category,id_category,url_category,name_category,id_subcategory,title_list_subcategory,name_subcategory,price_product,shipping_product,stock_product,delivery_time_product,offer_product,summary_product,specifications_product,details_product,description_product,tags_product,gallery_product,top_banner_product,default_banner_product,horizontal_slider_product,vertical_slider_product,video_product,views_product,sales_product,reviews_product,date_create_product,starStart_product";
         $url = CurlController::api()."relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=id_product,id_store&equalTo=".$_GET["product"].",".$storeResult[0]->id_store."&select=".$select;
         $method = "GET";
         $fields = array();
@@ -813,7 +813,7 @@
                     </div> -->
                     <!-- stock -->
                     <div class="col-12 col-lg-3">
-                        <label>Stars <sup class="text-danger">*</sup> (MAX:100 u)</label>
+                        <label>Stars <sup class="text-danger">*</sup> (MAX:750 u)</label>
                         <div class="form-group__content input-group mx-0 pr-0">
                             <div class="input-group-append">
                                 <span class="input-group-text">
@@ -825,9 +825,9 @@
                             class="form-control"
                             name="stars"
                             min="0"
-                            max="100"
+                            max="750"
                             pattern = "[0-9]{1,}"
-                            value="<?php echo $editProduct->stock_product ?>"
+                            value="<?php echo $editProduct->starStart_product ?>"
                             onchange="validatejs(event, 'numbers')"
                             required>
                             <div class="valid-feedback"></div>

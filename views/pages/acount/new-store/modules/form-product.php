@@ -619,13 +619,34 @@
                     <div class="form-group__content input-group mx-0 pr-0">
                         <div class="input-group-append">
                             <span class="input-group-text">
-                                Price $:
+                                P-Inicial $:
                             </span>
                         </div>
                         <input 
                         type="number"
                         class="form-control"
-                        name="price"
+                        name="priceI"
+                        min="0"
+                        step="any"
+                        pattern = "[.\\,\\0-9]{1,}"
+                        onchange="validatejs(event, 'numbers')"
+                        required>
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">Acompleta el campo</div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label><sup class="text-danger">*</sup></label>
+                    <div class="form-group__content input-group mx-0 pr-0">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                P-Final $:
+                            </span>
+                        </div>
+                        <input 
+                        type="number"
+                        class="form-control"
+                        name="priceF"
                         min="0"
                         step="any"
                         pattern = "[.\\,\\0-9]{1,}"
@@ -636,7 +657,7 @@
                     </div>
                 </div>
                 <!-- envio -->
-                <div class="col-12 col-lg-3">
+                <!-- <div class="col-12 col-lg-3">
                     <label>Envio Product <sup class="text-danger">*</sup></label>
                     <div class="form-group__content input-group mx-0 pr-0">
                         <div class="input-group-append">
@@ -656,9 +677,9 @@
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Acompleta el campo</div>
                     </div>
-                </div>
+                </div> -->
                 <!-- dias de entrega -->
-                <div class="col-12 col-lg-3">
+                <!-- <div class="col-12 col-lg-3">
                     <label>Delivery time Product <sup class="text-danger">*</sup></label>
                     <div class="form-group__content input-group mx-0 pr-0">
                         <div class="input-group-append">
@@ -677,20 +698,20 @@
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">Acompleta el campo</div>
                     </div>
-                </div>
+                </div> -->
                 <!-- precio venta -->
                 <div class="col-12 col-lg-3">
-                    <label>Stock Product <sup class="text-danger">*</sup> (MAX: 100 unit)</label>
+                    <label>Stars <sup class="text-danger">*</sup> (MAX: 100 u)</label>
                     <div class="form-group__content input-group mx-0 pr-0">
                         <div class="input-group-append">
                             <span class="input-group-text">
-                                Stock:
+                                Stars:
                             </span>
                         </div>
                         <input 
                         type="number"
                         class="form-control"
-                        name="stock"
+                        name="stars"
                         min="0"
                         max="100"
                         pattern = "[0-9]{1,}"

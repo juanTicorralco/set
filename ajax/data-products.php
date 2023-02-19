@@ -23,7 +23,7 @@ class ControllerDataTable{
             if($totalData->status == 200){
                 $totalData = $totalData->total;
             
-                $select = "id_product,feedback_product,state_product,image_product,name_product,url_product,name_category,name_subcategory,price_product,shipping_product,stock_product,delivery_time_product,offer_product,summary_product,specifications_product,details_product,description_product,gallery_product,top_banner_product,default_banner_product,horizontal_slider_product,vertical_slider_product,video_product,tags_product,views_product,sales_product,reviews_product,date_create_product,approval_product,url_category,title_list_product";
+                $select = "id_product,feedback_product,state_product,image_product,name_product,url_product,name_category,name_subcategory,price_product,shipping_product,stock_product,delivery_time_product,offer_product,summary_product,specifications_product,details_product,description_product,gallery_product,top_banner_product,default_banner_product,horizontal_slider_product,vertical_slider_product,video_product,tags_product,views_product,sales_product,reviews_product,date_create_product,approval_product,url_category,title_list_product,starStart_product,stars_product,win_product";
 
                 if(!empty($_POST["search"]["value"])){
                     $linkTo = ["name_product","title_list_product","tags_product","name_category","name_subcategory","price_product"];
@@ -101,6 +101,19 @@ class ControllerDataTable{
                     }else{
                         $stock_product = "<span class='badge badge-danger p-2'>".$value->stock_product."</span>";
                     }
+
+                    $stars_product = $value->starStart_product; 
+                    $win_product = $value->win_product;
+                    if($win_product != null){
+                        $str_product = "<div class='btn-group'>
+                            <button class='btn btn-success rounded-circle mr-2 starsList' starsProduct='".$value->id_product."' urlApi='".CurlController::api()."'><i class='fas fa-eye'></i></button>
+                        </div>"; 
+                    }else{
+                        $str_product = "<div class='btn-group'>
+                        <button class='btn btn-primary rounded-circle mr-2 starsList' starsProduct='".$value->id_product."' urlApi='".CurlController::api()."'><i class='fas fa-eye'></i></button>
+                    </div>"; 
+                    }
+                    $str_product = TemplateController::cleanhtml($str_product);
 
                     $delivery_time_product = $value->delivery_time_product;
                     
@@ -230,14 +243,14 @@ class ControllerDataTable{
                                         if ($reviews > 0) {
                                             for ($i = 0; $i < 5; $i++) {
                                                 if ($reviews < ($i + 1)) {
-                                                    $reviews_product .= "<a href='#' data-rating-value='1' data-rating-text='".($i +1)."'></a>";
+                                                    $reviews_product .= "<a data-rating-value='1' data-rating-text='".($i +1)."'></a>";
                                                 } else {
-                                                    $reviews_product .= "<a href='#' data-rating-value='2' data-rating-text='".($i +1)."' class='br-selected br-current'></a>";
+                                                    $reviews_product .= "<a data-rating-value='2' data-rating-text='".($i +1)."' class='br-selected br-current'></a>";
                                                 }
                                             }
                                         } else {
                                             for ($i = 0; $i < 5; $i++) {
-                                                $reviews_product .= "<a href='#' data-rating-value='1' data-rating-text='".($i +1)."'></a>";
+                                                $reviews_product .= "<a data-rating-value='1' data-rating-text='".($i +1)."'></a>";
                                             }
                                         }
                     $reviews_product .= "<div class='br-current-rating'>".$reviews."</div>
@@ -253,12 +266,11 @@ class ControllerDataTable{
                         "state": "'.$state.'",
                         "image_product": "'.$image_product.'",
                         "name_product": "'.$name_product.'",
+                        "price_product": "De:$'.$price_product->Presio_baj.' A:$'.$price_product->Presio_alt.'",
+                        "stars_product": "'.$stars_product.'",
+                        "st_product": "'.$str_product.'",
                         "name_category": "'.$name_category.'",
                         "name_subcategory": "'.$name_subcategory.'",
-                        "price_product": "De:$'.$price_product->Presio_baj.' A:$'.$price_product->Presio_alt.'",
-                        "shipping_product": "$'.$shipping_product.'",
-                        "stock_product": "'.$stock_product.'",
-                        "delivery_time_product": "'.$delivery_time_product.' dias",
                         "offer_product": "'.$offer_product.'",
                         "summary_product": "'.$summary_product.'",
                         "specifications_product": "'.$specifications_product.'",
