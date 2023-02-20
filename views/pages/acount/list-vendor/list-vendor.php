@@ -13,7 +13,7 @@ if (!isset($_SESSION['user'])) {
     </script>';
     return;
     }else{
-
+        $arrayProdust = array();
         $select1 = "id_product_order";
         $url1 = CurlController::api()."orders?linkTo=id_user_order&equalTo=".$_SESSION["user"]->id_user."&token=".$_SESSION["user"]->token_user."&select=".$select1;
         $method= "GET";
@@ -33,7 +33,6 @@ if (!isset($_SESSION['user'])) {
                     }
                 }       
             }
-            $arrayProdust = array();
             foreach($idProductOrder as $key => $value){
                 $select2 = "id_product,id_category_product,image_product,name_product,stars_product,win_product";
                 $url2 = CurlController::api()."products?linkTo=id_product&equalTo=".$value."&select=".$select2;
@@ -143,9 +142,25 @@ if (!isset($_SESSION['user'])) {
                                                  $url1 = CurlController::api()."orders?linkTo=id_product_order&equalTo=".$value->id_product."&token=".$_SESSION["user"]->token_user."&select=".$select3;
                                                  $namesorder = CurlController::request($url1, $method, $header, $filds)->result;
                                                 $starProd= json_decode($value->stars_product);
-                                                // echo "<pre>"; print_r($namesorder); echo "</pre>";
+                                                $stars_product = '[';
                                                 foreach($namesorder as $key2 => $value2){
                                                     echo "<pre>"; echo $value2->stars_order. " - " . $value2->name_vendor_order; echo "</pre>";
+                                                    $stars_product .= '{"'.$value2->name_vendor_order.'":'.$value2->stars_order.'},';
+                                                }
+
+                                                $stars_product = substr($stars_product, 0, -1);
+                                                $stars_product .= ']';
+                                                foreach(json_decode($stars_product) as $key2 => $value2){
+                                                    // echo "<pre>"; print_r(key($value2)); echo "</pre>";
+                                                    foreach($value2 as $key3 => $value3){
+                                                        foreach($value3 as $key4 => $value4){
+                                                            if($value->win_product != null || $value->win_product != ""){
+                                                                if($value->win_product == $value4 ){
+                                                                    $arrayStarPro = key($value2);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             ?>
                                         </td>
@@ -154,7 +169,7 @@ if (!isset($_SESSION['user'])) {
                                         if($value->win_product == null || $value->win_product == ""){
                                             echo "<p class='text-danger'>No hay ganador</p>";
                                         }else{
-                                            echo $value->win_product;
+                                            echo  "<p class='text-success font-weight-bold'>".$value->win_product." - ". $arrayStarPro ."</p>";
                                         } 
                                         ?></td> 
                                        

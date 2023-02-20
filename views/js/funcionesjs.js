@@ -1014,20 +1014,32 @@ function newOrden(metodo,status,id,totals){
 
   // Inforacion del usuario
   let emailOrder = $("#emailOrder").val();
+  if(emailOrder == null || emailOrder == undefined || emailOrder == ""){
+    return;
+  }
   let countryOrder = $("#countryOrder").val().split("_")[0];
   let cityOrder = $("#cityOrder").val();
   let phoneOrder = '';
   let nameUserOrder = $("#nameUserSale").val();
+  console.log(nameUserOrder);
+  if(nameUserOrder == null || nameUserOrder == undefined || nameUserOrder == ""){
+    return;
+  }
   let methodUser = $("#methodUser").val();
   if(methodUser != "administer"){
     phoneOrder = $("#countryOrder").val().split("_")[1]+"_"+ $("#phoneOrder").val();
   }else{
     phoneOrder = $("#phoneOrder").val();
   }
+  if(phoneOrder == null || phoneOrder == undefined || phoneOrder == ""){
+    return;
+  }
   let addresOrder = $("#addresOrder").val();
   let infoOrder = $("#infoOrder").val();
-  let mapOrder = [document.getElementById('mappp').dataset.value.split(",")[0], document.getElementById('mappp').dataset.value.split(",")[1]];
-
+  let mapOrder = null;
+  if(document.getElementById('mappp').dataset.value != null){
+    mapOrder = [document.getElementById('mappp').dataset.value.split(",")[0], document.getElementById('mappp').dataset.value.split(",")[1]];
+  }
   // tiempo de entrega
   let delytimeClass= $(".deliverytime");
   let deliveryTime =[];

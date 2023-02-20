@@ -234,7 +234,7 @@ Checkout
 
                                         <div class="form-group__content">
 
-                                            <input class="form-control" id="nameUserSale" type="text" required>
+                                            <input class="form-control" id="nameUserSale" type="text" placeholder="Nombre..." required pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validatejs(event, 'text')">
                                             <div class="valid-feedback"></div>
                                             <div class="invalid-feedback">El nombre es requerido</div>
 
@@ -248,7 +248,7 @@ Checkout
 
                                         <div class="form-group__content">
 
-                                            <input class="form-control" id="emailOrder" type="email" required>
+                                            <input class="form-control" id="emailOrder" type="email" placeholder="Email..." required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" onchange="validatejs(event,'email')">
                                             <div class="valid-feedback"></div>
                                             <div class="invalid-feedback">El email es requerido</div>
 

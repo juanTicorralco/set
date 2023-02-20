@@ -1,6 +1,6 @@
 <!-- traer toda la informacion del producto -->
 <?php
-$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product,starStart_product,stars_product";
+$url9 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=url_product,approval_product,state_product&equalTo=" . $urlParams[0].",approved,show&select=url_category,image_product,name_product,offer_product,price_product,offer_product,views_product,id_product,name_category,url_subcategory,name_subcategory,stock_product,gallery_product,reviews_product,name_store,summary_product,video_product,specifications_product,title_list_product,tags_product,description_product,details_product,about_store,url_store,logo_store,id_store,url_product,email_store,sales_product,starStart_product,stars_product,win_product";
 $method9 = "GET";
 $field9 = array();
 $header9 = array();

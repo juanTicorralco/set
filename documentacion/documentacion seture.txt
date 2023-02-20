@@ -4,3 +4,8 @@
     - se coloca en el index el autoload
     -se abre php.ini y se configura la siguiente linea "sendmail_path = C:\xampp\mailtodisk\mailtodisk.exe"
     -se reinicia el xampp
+
+    tipos de usuarios 
+     -direct
+     -globalAdminister
+     -administer

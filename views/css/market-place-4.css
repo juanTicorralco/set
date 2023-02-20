@@ -241,6 +241,10 @@ a.jo {
   width: 70px;
   height: 70px;
 }
+.numero-winer{
+  width: 160px;
+  height: 160px;
+}
 .numero-pedidorojo{
   width: 65px;
   height: 65px;
@@ -256,6 +260,13 @@ a.jo {
   flex-wrap: wrap;
   justify-content:center;
 }
+.plantilla-winer{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+}
 .item-bola{
   margin: 10px;
 }
@@ -266,6 +277,12 @@ a.jo {
 .p-bolas{
   font-weight: bold;
   font-size: large;
+  color: rgb(255, 255, 255);
+  margin: 0;
+}
+.p-winer{
+  /* font-weight: bold;
+  font-size: large; */
   color: rgb(255, 255, 255);
   margin: 0;
 }

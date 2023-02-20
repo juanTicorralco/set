@@ -1,103 +1,128 @@
 <?php $timestart=array();?>
 <div class="ps-product__info">
+    
+        <div class="plantilla-principal1">
+            <?php 
+            $quedannum = 0;
+            $rascnum = 0;
+            foreach(json_decode($producter->stars_product) as $key => $value){
+                $quedannum = $quedannum + 1;  
+                $rascnum = $rascnum + 1; 
+                if($value->idUser != "" || $value->idUser != NULL){
+                    $quedannum = $quedannum -1;
+                }  
+            }
+            $rascnum = $rascnum - $quedannum;
+            $verify = 0;
+            ?>
+            <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
+            <h1 class="principal-h1">Participa y GANA!!!</h1>
+            <a href="<?php echo $path . $producter->url_category; ?>">
+                <h4 class="p-color"><?php echo $producter->name_category; ?></h4>
+            </a>
+            <div class="plantilla-secundaria">
+                <div class="mr-5 ml-5"> 
+                    <h2 class="principal-h1"><?php echo $producter->name_product; ?></h2>
+                    <div class="ps-product__meta colorcute">
+                        <!-- precio  -->
+                        <?php $priceProduct = json_decode($producter->price_product);?>
+                        <p class="PresioPlantilla">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></p>
+                        <p class="colorcute">Seture: Te Deseamos Mucha Suerte</p>
 
-    <div class="plantilla-principal1">
-        <?php 
-        $quedannum = 0;
-        $rascnum = 0;
-        foreach(json_decode($producter->stars_product) as $key => $value){
-            $quedannum = $quedannum + 1;  
-            $rascnum = $rascnum + 1; 
-            if($value->idUser != "" || $value->idUser != NULL){
-                $quedannum = $quedannum -1;
-            }  
-        }
-        $rascnum = $rascnum - $quedannum;
-        $verify = 0;
-        ?>
-        <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
-        <h1 class="principal-h1">Participa y GANA!!!</h1>
-        <a href="<?php echo $path . $producter->url_category; ?>">
-            <h4 class="p-color"><?php echo $producter->name_category; ?></h4>
-        </a>
-        <div class="plantilla-secundaria">
-            <div class="mr-5 ml-5"> 
-                <h2 class="principal-h1"><?php echo $producter->name_product; ?></h2>
-                <div class="ps-product__meta colorcute">
-                    <!-- precio  -->
-                    <?php $priceProduct = json_decode($producter->price_product);?>
-                    <p class="PresioPlantilla">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></p>
-                    <p class="colorcute">Seture: Te Deseamos Mucha Suerte</p>
+                        <div class="ps-product__rating">
 
-                    <div class="ps-product__rating">
+                            <?php $reviews = TemplateController::calificationStars(json_decode($producter->reviews_product, true)); ?>
 
-                        <?php $reviews = TemplateController::calificationStars(json_decode($producter->reviews_product, true)); ?>
+                            <span class="colorcute"><?php echo $rascnum;?> Rascados
+                            </span>
 
-                        <span class="colorcute"><?php echo $rascnum;?> Rascados
-                        </span>
-
+                        </div>
                     </div>
                 </div>
+                
             </div>
-            
-        </div>
-        <div class="plantilla-bolas">
-            <?php foreach(json_decode($producter->stars_product) as $key => $value):?>
-                <div class="item-bola">
-                    <p class="p-bolas"><?php echo $value->numero;?></p>
-                    <?php if($value->check == "checkin"):?>
-                        <form  method="POST" class="needs-validation" novalidate>
-                            <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
-                            <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
-                            <input type="hidden" name="idtipe" value="checkout">
-                            <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
-                            <button class="butonInter" type="submit">
-                                <div class="contestrella">
-                                    <img class="numero-pedido" src="/views/img/starendsas.png" alt="star">
-                                    <p class="numeroDesc">
-                                        <?php
-                                        if (isset($_SESSION['user'])){
-                                            if($_SESSION['user']->id_user == $value->idUser){ 
-                                                array_push($timestart,$value->time);
-                                                echo "$".$value->precio;
+            <?php if($producter->win_product != null ):  ?>
+                <div class="plantilla-winer">
+                    <div class="item-bola">
+                    <img class="numero-winer" src="/views/img/fuegos1.gif" alt="star">
+                    </div>
+                    <div class="item-bola">
+                        <h1 class="p-winer"><?php echo $producter->win_product ;?></h1>
+                        <div class="contestrella">
+                            <img class="numero-winer" src="/views/img/winer.png" alt="star">
+                            <p class="numeroDesc">
+                                <?php
+                                5
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item-bola">
+                    <img class="numero-winer" src="/views/img/fuegos4.gif" alt="star">
+                    </div>
+                </div>
+            <?php else: ?>
+            <div class="plantilla-bolas">
+                <?php foreach(json_decode($producter->stars_product) as $key => $value):?>
+                    <div class="item-bola">
+                        <p class="p-bolas"><?php echo $value->numero;?></p>
+                        <?php if($value->check == "checkin"):?>
+                            <form  method="POST" class="needs-validation" novalidate>
+                                <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
+                                <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
+                                <input type="hidden" name="idtipe" value="checkout">
+                                <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
+                                <button class="butonInter" type="submit">
+                                    <div class="contestrella">
+                                        <img class="numero-pedido" src="/views/img/starendsas.png" alt="star">
+                                        <p class="numeroDesc">
+                                            <?php
+                                            if (isset($_SESSION['user'])){
+                                                if($_SESSION['user']->id_user == $value->idUser){ 
+                                                    array_push($timestart,$value->time);
+                                                    echo "$".$value->precio;
+                                                }else{
+                                                    echo "X";
+                                                }
                                             }else{
                                                 echo "X";
                                             }
-                                        }else{
-                                            echo "X";
-                                        }
-                                        ?>
-                                    </p>
-                                </div>
+                                            ?>
+                                        </p>
+                                    </div>
+                                </button>
+                                <?php
+                                    $question = new ControllerUser();
+                                    $question -> starcheck();
+                                ?>
+                            </form>
+                        <?php else:?>
+                            <form  method="POST" class="needs-validation nome" novalidate>
+                            <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
+                            <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
+                            <input type="hidden" name="idtipe" value="checkin">
+                            <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
+                            <button class="butonInter" type="submit">
+                                <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
                             </button>
                             <?php
+                                $verify = new ControllerUser();
+                                $verify = $verify -> verifistar();
                                 $question = new ControllerUser();
                                 $question -> starcheck();
                             ?>
                         </form>
-                    <?php else:?>
-                        <form  method="POST" class="needs-validation nome" novalidate>
-                        <input type="hidden" name="idStar" value="<?php echo $value->numero;?>">
-                        <input type="hidden" name="idprod" value="<?php echo $producter->id_product;?>">
-                        <input type="hidden" name="idtipe" value="checkin">
-                        <input type="hidden" name="pagado" value="<?php echo $value->pagado;?>">
-                        <button class="butonInter" type="submit">
-                            <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
-                        </button>
-                        <?php
-                            $verify = new ControllerUser();
-                            $verify = $verify -> verifistar();
-                            $question = new ControllerUser();
-                            $question -> starcheck();
-                        ?>
-                    </form>
-                    <?php endif ?>
-                </div>
-            <?php endforeach;?>
-        </div>
-    </div> 
+                        <?php endif ?>
+                    </div>
+                <?php endforeach;?>
+            </div>
+            <?php endif; ?>
+        </div> 
 
     <div class="ps-product__shopping botonses">
+    <?php if($producter->win_product != null ):  ?>
+
+ |  <?php else: ?>
         <?php if(isset($_SESSION['user'])): ?>
         <?php
         date_default_timezone_set('UTC');
@@ -266,6 +291,7 @@
         >Buy Now</a>
         <?php endif; ?>
         <?php endif; ?>
+    <?php endif; ?>
 
         <div class="ps-product__actions">
 
