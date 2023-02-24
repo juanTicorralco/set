@@ -72,6 +72,7 @@ if (!isset($_SESSION['user'])) {
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
                     <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>

@@ -464,7 +464,7 @@ if($totalPro->status == 200){
 
                         <div class="form-group--nest">
 
-                            <input class="form-control" type="email" name="email" placeholder="Escribe tu Email">
+                            <input class="form-control" type="email" name="emailnewes" placeholder="Escribe tu Email">
                             <button class="ps-btn" type="submit">Subscribir</button>
                             <?php
                                 $newemail = new ControllerUser();

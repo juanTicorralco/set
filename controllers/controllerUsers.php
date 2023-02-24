@@ -783,25 +783,38 @@ class ControllerUser
         if(isset($_POST["emailnewes"])){
             if( preg_match('/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/', $_POST["emailnewes"])){
                 $api = CurlController::api();
-                $url = $api . "newsletter?token=no&except=email_newsletter";
-                // products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product
-                $metod = "PUT";
-                $fields = "email_newsletter=" . $_POST["email"]; 
+                $url = $api . "newsletter?token=tokenGlobal&select=email_newsletter&linkTo=email_newsletter&equalTo=". $_POST["emailnewes"];
+                $metod = "GET";
+                $fields = array();
                 $headers = array();
+                $emailSearch = CurlController::request($url, $metod, $fields, $headers); 
 
-                $newsemail = CurlController::request($url, $metod, $fields, $headers); 
-                if($newsemail->status == 200){
-                    echo '
-                        <script>
-                            formatearAlertas();
-                            switAlert("success", "Se registro tu email correctamente!!", null, null, 1500);
-                        </script>';
+                // print_r($emailSearch->status == 400);
+                if($emailSearch->status == 404){
+                    $url = $api . "newsletter?newslater=true";
+                    $metod = "POST";
+                    $fields = array(
+                        "email_newsletter" =>  $_POST["emailnewes"],
+                        "name_newsletter" => null
+                    );
+                    $header = array(
+                        "Content-Type" => "application/x-www-form-urlencoded"
+                    );
+                    $newsemail = CurlController::request($url, $metod, $fields, $header); 
+                    
+                    if($newsemail->status == 200){
+                        echo '
+                            <script>
+                                formatearAlertas();
+                                switAlert("success", "Tu email se registro correctamente!!", null, null, 1500);
+                            </script>';
+                    }
                 }else{
                     echo '
-                        <script>
-                            formatearAlertas();
-                            switAlert("success", "No se pudo registrar tu email!!", null, null, 1500);
-                        </script>';
+                    <script>
+                        formatearAlertas();
+                        switAlert("error", "Este email ya se registro!!", null, null, 1500);
+                    </script>';
                 }
             }else{
                 echo '

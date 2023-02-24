@@ -2052,16 +2052,16 @@ $(document).on("click", ".starsList", function(){
       }
     });
 
-    if(starsProduct.length == contstar && winStar == null){
+    if(starsProduct.length == contstar && (winStar == null || winStar <= 0)){
       $("[name='StarWin']").val(processOrder);
       btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Ganador</button>`;
     }
-    if(starsProduct.length != contstar && winStar == null){
+    if(starsProduct.length != contstar && (winStar == null || winStar <= 0)){
       $("[name='idProduct']").val(processOrder);
       btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Resetear</button>`;
     }
 
-    if(starsProduct.length == contstar && winStar != null ){
+    if(starsProduct.length == contstar && winStar > 0 ){
       btnStar = `<p class='btn btn-warning ps-btn ps-btn--fullwidth text-dark'> WINER : `+ winStar +`</p>`;
     }
 

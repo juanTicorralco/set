@@ -13,40 +13,116 @@ if (!isset($_SESSION['user'])) {
     </script>';
     return;
     }else{
-        $select1 = "id_store";
-        $url1 = CurlController::api()."stores?linkTo=id_user_store&equalTo=".$_SESSION["user"]->id_user."&select=".$select1;
-        $method= "GET";
-        $header= array();
-        $filds= array();
-        $idStore = CurlController::request($url1, $method, $header, $filds);
-        if($idStore->status == 200){
-            $idStore = $idStore->result[0]->id_store;
+        // $select1 = "id_store";
+        // $url1 = CurlController::api()."stores?linkTo=id_user_store&equalTo=".$_SESSION["user"]->id_user."&select=".$select1;
+        // $method= "GET";
+        // $header= array();
+        // $filds= array();
+        // $idStore = CurlController::request($url1, $method, $header, $filds);
+    
+        // if($idStore->status == 200){
+        //     $idStore = $idStore->result[0]->id_store;
 
+        //     if( isset($_GET["date1"]) && isset($_GET["date2"])){
+        //         if($_GET["date1"] != null && $_GET["date2"] != null && substr_count($_GET["date1"], "/") === 2 && substr_count($_GET["date2"], "/") === 2 ){
+        //             $between1 = date("Y-m-d", strtotime($_GET["date1"]));
+        //             $between2 = date("Y-m-d", strtotime($_GET["date2"]));
+        //             $select="unit_price_sale,commision_sale,date_created_sale,quantity_order,name_product_sale";
+        //             $url= CurlController::api()."relations?rel=sales,orders&type=sale,order&linkTo=date_created_sale&between1=".$between1."&between2=".$between2."&filterTo=id_store_sale&inTo=".$idStore."&select=".$select."&orderBy=date_created_sale&orderMode=ASC&token=".$_SESSION["user"]->token_user;
+        //             $sales= CurlController::request($url, $method, $header, $filds)->result;
+        //         }else{
+        //             echo '<script>
+        //                     formatearAlertas();
+        //                     switAlert("error", "Se produjo un error", null,null);
+        //                 </script>';
+        //             return;
+        //         }
+        //     }else{
+        //     // traer las ventas
+        //     $select="unit_price_sale,commision_sale,date_created_sale,quantity_order,name_product_sale";
+        //     $url= CurlController::api()."relations?rel=sales,orders&type=sale,order&linkTo=id_store_sale&equalTo=".$idStore."&select=".$select."&orderBy=date_created_sale&orderMode=ASC&token=".$_SESSION["user"]->token_user;
+        //     $sales= CurlController::request($url, $method, $header, $filds)->result;
+        //     }
+        
+        //     if(!is_array($sales)){
+        //         $sales = array();
+        //     }
+        // }
+        if($_SESSION['user']->method_user == 'globalAdminister'){
+            $header= array();
+            $filds= array();
             if( isset($_GET["date1"]) && isset($_GET["date2"])){
                 if($_GET["date1"] != null && $_GET["date2"] != null && substr_count($_GET["date1"], "/") === 2 && substr_count($_GET["date2"], "/") === 2 ){
                     $between1 = date("Y-m-d", strtotime($_GET["date1"]));
                     $between2 = date("Y-m-d", strtotime($_GET["date2"]));
-                    $select="unit_price_sale,commission_sale,date_created_sale,quantity_order,name_product_sale";
-                    $url= CurlController::api()."relations?rel=sales,orders&type=sale,order&linkTo=date_created_sale&between1=".$between1."&between2=".$between2."&filterTo=id_store_sale&inTo=".$idStore."&select=".$select."&orderBy=date_created_sale&orderMode=ASC&token=".$_SESSION["user"]->token_user;
+                    $select="compra_product,venta_product,comission_product,date_create_product,name_product";
+                    $url= CurlController::api()."products?linkTo=date_create_product&between1=".$between1."&between2=".$between2."&filterTo=ready_product&inTo=1&select=".$select."&orderBy=date_create_product&orderMode=ASC";
                     $sales= CurlController::request($url, $method, $header, $filds)->result;
                 }else{
                     echo '<script>
                             formatearAlertas();
                             switAlert("error", "Se produjo un error", null,null);
+                            window.location="' . $path . 'acount&my-sales";
                         </script>';
                     return;
                 }
             }else{
-            // traer las ventas
-            $select="unit_price_sale,commission_sale,date_created_sale,quantity_order,name_product_sale";
-            $url= CurlController::api()."relations?rel=sales,orders&type=sale,order&linkTo=id_store_sale&equalTo=".$idStore."&select=".$select."&orderBy=date_created_sale&orderMode=ASC&token=".$_SESSION["user"]->token_user;
-            $sales= CurlController::request($url, $method, $header, $filds)->result;
-            }
-        
-            if(!is_array($sales)){
-                $sales = array();
+                // traer las ventas
+                $select="compra_product,venta_product,comission_product,date_create_product,name_product";
+                $url= CurlController::api()."products?linkTo=ready_product&equalTo=1&select=".$select."&orderBy=date_create_product&orderMode=ASC";
+                $sales= CurlController::request($url, $method, $header, $filds)->result;
             }
         }
+        if($_SESSION['user']->method_user == 'administer'){
+            $header= array();
+            $filds= array();
+            if( isset($_GET["date1"]) && isset($_GET["date2"])){
+                if($_GET["date1"] != null && $_GET["date2"] != null && substr_count($_GET["date1"], "/") === 2 && substr_count($_GET["date2"], "/") === 2 ){
+                    $between1 = date("Y-m-d", strtotime($_GET["date1"]));
+                    $between2 = date("Y-m-d", strtotime($_GET["date2"]));
+                    $select="precio_adquisicion_comision,precio_venta_comision,precio_comision,date_create_comision,name_product_comision";
+                    $url= CurlController::api()."comisiones?linkTo=date_create_comision&between1=".$between1."&between2=".$between2."&filterTo=id_user_comision&inTo=".$_SESSION["user"]->id_user."&select=".$select."&orderBy=date_create_comision&orderMode=ASC";
+                    $sales= CurlController::request($url, $method, $header, $filds)->result;
+                }else{
+                    echo '<script>
+                            formatearAlertas();
+                            switAlert("error", "Se produjo un error", null,null);
+                            window.location="' . $path . 'acount&my-sales";
+                        </script>';
+                    return;
+                }
+            }else{
+                // traer las ventas
+                $select="precio_adquisicion_comision,precio_venta_comision,precio_comision,date_create_comision,name_product_comision";
+                $url= CurlController::api()."comisiones?linkTo=id_user_comision&equalTo=".$_SESSION["user"]->id_user."&select=".$select."&orderBy=date_create_comision&orderMode=ASC";
+                $sales= CurlController::request($url, $method, $header, $filds)->result;
+                date_default_timezone_set('UTC');
+                date_default_timezone_set("America/Mexico_City");
+                $fechaHoy = date("Y-m-d");
+                $dia=date("w", strtotime($fechaHoy)); 
+                if($dia == 6){
+                    $fechaHoy = new DateTime(); 
+                    $fechaHoy->modify('-7 day'); 
+                    $fechaHoy =  $fechaHoy->format('d-m-Y');
+                    $fechaantes = new DateTime(); 
+                    $fechaantes->modify('-14 day'); 
+                    $fechaantes =  $fechaantes->format('d-m-Y');
+                    $fechaHoy = explode("-", $fechaHoy);
+                    $between2 = $fechaHoy[2] . "-" . $fechaHoy[1] . "-" . $fechaHoy[0];
+                    $fechaantes = explode("-", $fechaantes);
+                    $between1 = $fechaantes[2] . "-" . $fechaantes[1] . "-" . $fechaantes[0];
+                    $select="precio_comision";
+                    $url= CurlController::api()."comisiones?linkTo=date_create_comision&between1=".$between1."&between2=".$between2."&filterTo=id_user_comision&inTo=".$_SESSION["user"]->id_user."&select=".$select."&orderBy=date_create_comision&orderMode=ASC";
+                    $salester= CurlController::request($url, $method, $header, $filds)->result;
+                    if(!is_array($salester)){
+                        $salester = array();
+                    }  
+                }
+            }
+        }
+        if(!is_array($sales)){
+            $sales = array();
+        }           
     }
 }
 ?>
@@ -76,6 +152,7 @@ if (!isset($_SESSION['user'])) {
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
                     <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
@@ -148,18 +225,35 @@ if (!isset($_SESSION['user'])) {
                     $profits = 0;
                     $comisions= 0;
                     $total = 0;
+                    $preanqui = 0;
+                    $realPre = 0;
                     $arrayDate = array();
                     $sumSales = array();
-                    foreach( $sales as $index => $value ){                   
-                        $profits += $value->unit_price_sale;
-                        $comisions += $value->commission_sale;
-                        $total += $profits + $comisions;
+                    foreach( $sales as $index => $value ){
+                        if($_SESSION['user']->method_user == 'globalAdminister'){                   
+                            $profits += $value->venta_product;
+                            $preanqui += $value->compra_product;
+                            $comisions += $value->comission_product;
+                            $total += $profits + $comisions;
+                            $realPre = $profits - $preanqui - $comisions;
 
-                        $date = substr($value->date_created_sale,0,7);
-                        array_push($arrayDate, $date);
-                        $arraySales = array($date => $value->unit_price_sale);
-                        foreach($arraySales as $key => $item){
-                            $sumSales[$key] += $item;
+                            $date = substr($value->date_create_product,0,7);
+                            array_push($arrayDate, $date);
+                            $arraySales = array($date => $value->venta_product);
+                            foreach($arraySales as $key => $item){
+                                $sumSales[$key] += $item;
+                            }
+                        }
+                        if($_SESSION['user']->method_user == 'administer'){
+                            $profits += $value->precio_venta_comision;
+                            $comisions += $value->precio_comision;
+
+                            $date = substr($value->date_create_comision,0,7);
+                            array_push($arrayDate, $date);
+                            $arraySales = array($date => $value->precio_comision);
+                            foreach($arraySales as $key => $item){
+                                $sumSales[$key] += $item;
+                            }
                         }
                     }
                     $dateNoRepeat = array_unique($arrayDate);
@@ -177,8 +271,14 @@ if (!isset($_SESSION['user'])) {
 
                                 <tbody>
 
+                                <?php  if($_SESSION['user']->method_user == 'globalAdminister'):?>
                                     <tr>
-                                        <td>Store profile</td>
+                                        <td>Adquisicion</td>
+                                        <td>$ <?php echo number_format($preanqui,2); ?></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Venta</td>
                                         <td>$ <?php echo number_format($profits,2); ?></td>
                                     </tr>
 
@@ -188,9 +288,28 @@ if (!isset($_SESSION['user'])) {
                                     </tr>
 
                                     <tr>
-                                        <td><strong>Total</strong></td>
-                                        <td>$ <?php echo number_format($total,2); ?></td>
+                                        <td><strong>Ganancia real</strong></td>
+                                        <td>$ <?php echo number_format($comisions,2); ?></td>
                                     </tr>
+                                <?php endif ?>
+                                <?php  if($_SESSION['user']->method_user == 'administer'):?>
+                                    <tr>
+                                        <td><strong>Ganancia Total</strong></td>
+                                        <td>$ <?php echo number_format($comisions,2); ?></td>
+                                    </tr>
+                                    <?php if(!empty($salester)): ?>
+                                    <?php
+                                        $cobroHoy = 0; 
+                                        foreach($salester as $index2 => $value2){
+                                            $cobroHoy += $value2->precio_comision;
+                                        }
+                                    ?>
+                                    <tr>
+                                        <td>Cobro semanal</td>
+                                        <td>$ <?php echo number_format($cobroHoy,2); ?></td>
+                                    </tr>
+                                    <?php endif ?>
+                                <?php endif ?>
 
                                 </tbody>
 
@@ -220,23 +339,37 @@ if (!isset($_SESSION['user'])) {
                                 <table class="table ps-table ps-table--vendor dt-responsive dt-client" datatable width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
+                                        <?php  if($_SESSION['user']->method_user == 'globalAdminister'):?>
+                                            <th>Fecha</th>
+                                            <th>Producto</th>
+                                            <th>P-Adquisicion</th>
+                                            <th>P-Venta</th>
                                             <th>Comission</th>
-                                            <th>Total</th>
+                                            <th>Ganancia Real</th>
+                                            <?php endif ?>
+                                            <?php  if($_SESSION['user']->method_user == 'administer'):?>
+                                                <th>Fecha</th>
+                                                <th>Producto</th>
+                                                <th>Ganancia Real</th>
+                                            <?php endif ?>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach($sales as $key => $value): ?>
                                             <tr>
-                                                <td><?php echo $value->date_created_sale ?></td>
-                                                <td><?php echo $value->name_product_sale ?></td>
-                                                <td><?php echo $value->quantity_order ?></td>
-                                                <td>$<?php echo $value->unit_price_sale ?></td>
-                                                <td>$<?php echo $value->commission_sale ?></td>
-                                                <td>$<?php echo $value->unit_price_sale + $value->commission_sale ?></td>
+                                            <?php  if($_SESSION['user']->method_user == 'globalAdminister'):?>
+                                                <td><?php echo $value->date_create_product ?></td>
+                                                <td><?php echo $value->name_product ?></td>
+                                                <td><?php echo $value->compra_product ?></td>
+                                                <td>$<?php echo $value->venta_product ?></td>
+                                                <td>$<?php echo $value->comission_product ?></td>
+                                                <td>$<?php echo $value->venta_product - $value->comission_product - $value->compra_product ?></td>
+                                                <?php endif ?>
+                                                <?php  if($_SESSION['user']->method_user == 'administer'):?>
+                                                <td><?php echo $value->date_create_comision ?></td>
+                                                <td><?php echo $value->name_product_comision ?></td>
+                                                <td>$<?php echo $value->precio_comision ?></td>
+                                                <?php endif ?>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

@@ -699,9 +699,9 @@
                         <div class="invalid-feedback">Acompleta el campo</div>
                     </div>
                 </div> -->
-                <!-- precio venta -->
+                <!-- stars venta -->
                 <div class="col-12 col-lg-3">
-                    <label>Stars <sup class="text-danger">*</sup> (MAX: 100 u)</label>
+                    <label>Stars <sup class="text-danger">*</sup> (MAX: 750 u)</label>
                     <div class="form-group__content input-group mx-0 pr-0">
                         <div class="input-group-append">
                             <span class="input-group-text">
@@ -713,7 +713,7 @@
                         class="form-control"
                         name="stars"
                         min="0"
-                        max="100"
+                        max="750"
                         pattern = "[0-9]{1,}"
                         onchange="validatejs(event, 'numbers')"
                         required>
@@ -723,8 +723,36 @@
                 </div>
             </div>
         </div>
-        <!-- oferta -->
+        <!-- Adquisicion -->
         <div class="form-group">
+                <div class="row mb-3">
+                    <!-- precio venta -->
+                    <div class="col-12 col-lg-3">
+                        <label>Adquisicion Product <sup class="text-danger">*</sup></label>
+                        <div class="form-group__content input-group mx-0 pr-0">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    precio $:
+                                </span>
+                            </div>
+                            <input 
+                            type="number"
+                            class="form-control"
+                            name="priceA"
+                            min="0"
+                            step="any"
+                            pattern = "[.\\,\\0-9]{1,}"
+                            onchange="validatejs(event, 'numbers')"
+                            required>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">Acompleta el campo</div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        <!-- oferta -->
+        <!-- <div class="form-group">
             <label>Offer Product Ex: <strong>Type: </strong>Discount, <strong>Percent %: </strong>25, <strong>end ofer: </strong>10/10/2020</label>
             <div class="row mb-3">
                 <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
@@ -740,9 +768,9 @@
                     </select>
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Acompleta el campo</div>
-                </div>
+                </div> -->
                 <!-- porcentaje -->
-                <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
+                <!-- <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
                     <div class="input-group-append">
                         <span class="input-group-text typeOffer">
                             Percent %:
@@ -758,9 +786,9 @@
                     onchange="validatejs(event, 'numbers')">
                     <div class="valid-feedback"></div>
                     <div class="invalid-feedback">Acompleta el campo</div>
-                </div>
+                </div> -->
                 <!-- time -->
-                <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
+                <!-- <div class="form-group__content input-group col-12 col-lg-4 mx-0 pr-0">
                     <div class="input-group-append">
                         <span class="input-group-text">
                             End Offer:
@@ -774,7 +802,7 @@
                     <div class="invalid-feedback">Acompleta el campo</div>
                 </div>
             </div>
-        </div>
+        </div> -->
  
     </div>
     <div class="modal-footer">

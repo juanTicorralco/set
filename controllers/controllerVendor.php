@@ -400,6 +400,7 @@ class ControllerVendor{
                             // isset($_POST["stock"]) && preg_match('/^[0-9]{1,}$/', $_POST["stock"])
                             isset($_POST["priceI"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceI"]) &&
                             isset($_POST["priceF"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceF"]) &&
+                            isset($_POST["priceA"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceA"]) &&
                             isset($_POST["stars"]) && preg_match('/^[0-9]{1,}$/', $_POST["stars"])
                         ){
 
@@ -411,13 +412,16 @@ class ControllerVendor{
                                 "Presio_baj" => $_POST["priceI"],
                                 "Presio_alt" => $_POST["priceF"]
                             ];
+                            $venta_product = 0;
                             $stars_product = '[';
                             for($i=1; $i <= $_POST["stars"]; $i++){
                                 $priceStar = rand($priceProduct->Presio_baj,$priceProduct->Presio_alt);
+                                $venta_product += $priceStar;
                                 $stars_product .= '{"idUser":"","check":"","numero":'.$i.',"precio":'.$priceStar.',"pagado":"","emailUser":"","time":""},';
                             }
                             $stars_product = substr($stars_product, 0, -1);
                             $stars_product .= ']';
+                            $comission_product = ($venta_product * 10)/100;
 
 
                             $dataProduct = array(
@@ -446,7 +450,10 @@ class ControllerVendor{
                                 "price_product" => json_encode($priceProduct),
                                 "starStart_product" => $_POST["stars"],
                                 "date_create_product" => $dateCreate,
-                                "stars_product" => $stars_product
+                                "stars_product" => $stars_product,
+                                "compra_product" => $_POST["priceA"],
+                                "venta_product" => $venta_product,
+                                "comission_product" => $comission_product
                             );
         
                             $url = CurlController::api()."products?token=".$_SESSION["user"]->token_user;
@@ -904,6 +911,7 @@ class ControllerVendor{
                 if(
                     isset($_POST["priceI"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceI"]) &&
                     isset($_POST["priceF"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceF"]) &&
+                    isset($_POST["priceA"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["priceA"]) &&
                     // isset($_POST["envio"]) && preg_match('/^[.\\,\\0-9]{1,}$/', $_POST["envio"]) &&
                     // isset($_POST["entrega"]) && preg_match('/^[0-9]{1,}$/', $_POST["entrega"]) &&
                     isset($_POST["stars"]) && preg_match('/^[0-9]{1,}$/', $_POST["stars"])
@@ -912,15 +920,18 @@ class ControllerVendor{
                         "Presio_baj" => $_POST["priceI"],
                         "Presio_alt" => $_POST["priceF"]
                     ];
+                    $venta_product = 0;
                     $stars_product = '[';
                     for($i=1; $i <= $_POST["stars"]; $i++){
                         $priceStar = rand($priceProduct->Presio_baj,$priceProduct->Presio_alt);
+                        $venta_product += $priceStar;
                         $stars_product .= '{"idUser":"","check":"","numero":'.$i.',"precio":'.$priceStar.',"pagado":"","emailUser":"","time":""},';
                     }
                     $stars_product = substr($stars_product, 0, -1);
                     $stars_product .= ']';
+                    $comission_product = ($venta_product * 10)/100;
                     
-                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct."&video_product=".$video_product."&price_product=".json_encode($priceProduct)."&starStart_product=".$_POST["stars"]."&stars_product=".$stars_product;
+                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct."&video_product=".$video_product."&price_product=".json_encode($priceProduct)."&starStart_product=".$_POST["stars"]."&stars_product=".$stars_product."&compra_product=".$_POST["priceA"]."&venta_product=".$venta_product."&comission_product=".$comission_product;
                     $url = CurlController::api()."products?id=".$_POST["idProduct"]."&nameId=id_product&token=".$_SESSION["user"]->token_user;
                     $method = "PUT";
                     $fields = $dataProduct;
@@ -1164,7 +1175,9 @@ class ControllerVendor{
                 $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=stars_product";
                 $method = "PUT";
                 $fields = "stars_product=".json_encode($stars) ;
-                $headers = array();
+                $headers = array(
+                    "Content-Type" => "application/x-www-form-urlencoded"
+                );
 
                 $upStar = CurlController::request($url,$method,$fields,$headers);
                 if($upStar->status == 200){
@@ -1190,22 +1203,104 @@ class ControllerVendor{
             $method = "GET";
             $fields = array();
             $header = array();
-            $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=starStart_product";
-            $stars = CurlController::request($url2, $method, $fields, $header)->result[0]->starStart_product;
+            $select = "starStart_product,id_product,name_product,compra_product,venta_product,comission_product";
+            $url2 = CurlController::api() . "products?linkTo=id_product&equalTo=" . $idProduct . "&select=".$select;
+            $starset = CurlController::request($url2, $method, $fields, $header)->result[0];
+            $stars = $starset->starStart_product;
             $winStart = rand(1,$stars);
+            $ready_product = 1;
             $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=win_product";
             $method = "PUT";
-            $fields = "win_product=".$winStart;
-            $headers = array();
+            $fields = "win_product=".$winStart."&ready_product=".$ready_product;
+            $headers = array(
+                "Content-Type" => "application/x-www-form-urlencoded"
+            );
 
             $upStar = CurlController::request($url,$method,$fields,$headers);
+
             if($upStar->status == 200){
+                $url2 = CurlController::api() . "comisiones?linkTo=id_product_comision&equalTo=" . $idProduct . "&select=id_product_comision";
+                $method = "GET";
+                $fields = array();
+                $header = array();
+                $idComisionP = CurlController::request($url2, $method, $fields, $header)->result;
+                if(!is_array($idComisionP)){
+                    date_default_timezone_set('UTC');
+                    date_default_timezone_set("America/Mexico_City");
+
+                    $dateCreated = date("Y-m-d");
+
+                    $dataComision = array(
+                        "id_user_comision" => $_SESSION["user"]->id_user,
+                        "id_product_comision" => $starset->id_product,
+                        "name_product_comision" => $starset->name_product,
+                        "precio_adquisicion_comision" => $starset->compra_product,
+                        "precio_venta_comision" => $starset->venta_product,
+                        "precio_comision" => $starset->comission_product,
+                        "date_create_comision" => $dateCreated,
+                    );
+                    $url = CurlController::api()."comisiones?token=".$_SESSION["user"]->token_user;
+                    $method = "POST";
+                    $fields = $dataComision;
+                    $header = array(
+                        "Content-Type" => "application/x-www-form-urlencoded"
+                        );
+                    $saveComision = CurlController::request($url,$method,$fields,$header);
+
+                    if($saveComision->status == 200){
+                        echo '
+                            <script>
+                                formatearAlertas();
+                                switAlert("success", "Se Genero el ganador!", null, null, 1500);
+                            </script>'; 
+                            return;
+                    }else{
+                        $ready_product = 0;
+                        $winStart = null;
+                        $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=win_product";
+                        $method = "PUT";
+                        $fields = "win_product=".$winStart."&ready_product=".$ready_product;
+                        $headers = array(
+                            "Content-Type" => "application/x-www-form-urlencoded"
+                        );
+
+                        $upStar = CurlController::request($url,$method,$fields,$headers);
+                        if($upStar->status == 200){
+                            echo '
+                                    <script>
+                                        formatearAlertas();
+                                        switAlert("error", "Error generar la comision!!", null, null, 1500);
+                                    </script>'; 
+                                    return;
+                        }
+                    }
+                }else{
+                    $ready_product = 0;
+                    $winStart = null;
+                    $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=win_product";
+                    $method = "PUT";
+                    $fields = "win_product=".$winStart."&ready_product=".$ready_product;
+                    $headers = array(
+                        "Content-Type" => "application/x-www-form-urlencoded"
+                    );
+
+                    $upStar = CurlController::request($url,$method,$fields,$headers);
+                    if($upStar->status == 200){
+                        echo '
+                                <script>
+                                    formatearAlertas();
+                                    switAlert("error", "La comision ya existe!!", null, null, 1500);
+                                </script>'; 
+                                return;
+                    }
+                }      
+            }else{
                 echo '
-                    <script>
-                        formatearAlertas();
-                        switAlert("success", "Se Genero el ganador!", null, null, 1500);
-                    </script>'; 
-                    return;
+                        <script>
+                            formatearAlertas();
+                            switAlert("error", "Error al sacar el ganador!!", null, null, 1500);
+                        </script>'; 
+                        return;
             }
         }
     }
