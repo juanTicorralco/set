@@ -1225,35 +1225,76 @@ class ControllerVendor{
                 $header = array();
                 $idComisionP = CurlController::request($url2, $method, $fields, $header)->result;
                 if(!is_array($idComisionP)){
-                    date_default_timezone_set('UTC');
-                    date_default_timezone_set("America/Mexico_City");
+                    $url2 = CurlController::api() . "orders?linkTo=id_product_order&equalTo=" . $idProduct . "&select=id_user_order&token=".$_SESSION["user"]->token_user;
+                    $method = "GET";
+                    $fields = array();
+                    $header = array();
+                    $idUser = CurlController::request($url2, $method, $fields, $header)->result;
 
-                    $dateCreated = date("Y-m-d");
+                    if(is_array($idUser)){
+                        $idOrderU = array();
+                        foreach($idUser as $key5 => $value5 ){
+                            array_push($idOrderU, $value5->id_user_order);
+                        }
+                        $idOrderUser = count(array_unique($idOrderU))===1;
+                        if($idOrderUser == 1){
+                            date_default_timezone_set('UTC');
+                            date_default_timezone_set("America/Mexico_City");
 
-                    $dataComision = array(
-                        "id_user_comision" => $_SESSION["user"]->id_user,
-                        "id_product_comision" => $starset->id_product,
-                        "name_product_comision" => $starset->name_product,
-                        "precio_adquisicion_comision" => $starset->compra_product,
-                        "precio_venta_comision" => $starset->venta_product,
-                        "precio_comision" => $starset->comission_product,
-                        "date_create_comision" => $dateCreated,
-                    );
-                    $url = CurlController::api()."comisiones?token=".$_SESSION["user"]->token_user;
-                    $method = "POST";
-                    $fields = $dataComision;
-                    $header = array(
-                        "Content-Type" => "application/x-www-form-urlencoded"
-                        );
-                    $saveComision = CurlController::request($url,$method,$fields,$header);
+                            $dateCreated = date("Y-m-d");
 
-                    if($saveComision->status == 200){
-                        echo '
-                            <script>
-                                formatearAlertas();
-                                switAlert("success", "Se Genero el ganador!", null, null, 1500);
-                            </script>'; 
-                            return;
+                            $dataComision = array(
+                                "id_user_comision" => $idOrderU[0],
+                                "id_product_comision" => $starset->id_product,
+                                "name_product_comision" => $starset->name_product,
+                                "precio_adquisicion_comision" => $starset->compra_product,
+                                "precio_venta_comision" => $starset->venta_product,
+                                "precio_comision" => $starset->comission_product,
+                                "date_create_comision" => $dateCreated,
+                            );
+                            $url = CurlController::api()."comisiones?token=".$_SESSION["user"]->token_user;
+                            $method = "POST";
+                            $fields = $dataComision;
+                            $header = array(
+                                "Content-Type" => "application/x-www-form-urlencoded"
+                                );
+                            $saveComision = CurlController::request($url,$method,$fields,$header);
+
+                            if($saveComision->status == 200){
+                                echo '
+                                    <script>
+                                        formatearAlertas();
+                                        switAlert("success", "Se Genero el ganador!", null, null, 1500);
+                                    </script>'; 
+                                    return;
+                            }else{
+                                $ready_product = 0;
+                                $winStart = null;
+                                $url = CurlController::api()."products?id=".$idProduct."&nameId=id_product&token=no&except=win_product";
+                                $method = "PUT";
+                                $fields = "win_product=".$winStart."&ready_product=".$ready_product;
+                                $headers = array(
+                                    "Content-Type" => "application/x-www-form-urlencoded"
+                                );
+
+                                $upStar = CurlController::request($url,$method,$fields,$headers);
+                                if($upStar->status == 200){
+                                    echo '
+                                            <script>
+                                                formatearAlertas();
+                                                switAlert("error", "Error generar la comision!!", null, null, 1500);
+                                            </script>'; 
+                                            return;
+                                }
+                            }
+                        }else{
+                            echo '
+                                    <script>
+                                        formatearAlertas();
+                                        switAlert("success", "Se Genero el ganador sin vendor!", null, null, 1500);
+                                    </script>'; 
+                                    return;
+                        }
                     }else{
                         $ready_product = 0;
                         $winStart = null;

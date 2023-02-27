@@ -34,7 +34,7 @@ if (!isset($_SESSION['user'])) {
                 }       
             }
             foreach($idProductOrder as $key => $value){
-                $select2 = "id_product,id_category_product,image_product,name_product,stars_product,win_product";
+                $select2 = "id_product,id_category_product,image_product,name_product,stars_product,win_product,url_product";
                 $url2 = CurlController::api()."products?linkTo=id_product&equalTo=".$value."&select=".$select2;
                 $idProductO = CurlController::request($url2, $method, $header, $filds);
                 if($idProductO->status == 200){
@@ -66,12 +66,12 @@ if (!isset($_SESSION['user'])) {
 
                 <ul class="ps-section__links">
                     <?php if($_SESSION["user"]->method_user == "direct"): ?>
-                    <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
-                    <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li class="active"><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
                     <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
@@ -130,8 +130,7 @@ if (!isset($_SESSION['user'])) {
                                                 </div>
 
                                                 <div class="ps-product__content">
-
-                                                    <a href="<?php echo $path.$value->url_product?>"><?php echo $value->name_product; ?></a>
+                                                    <a href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
                                                 </div>
 
                                             </div>
@@ -151,8 +150,8 @@ if (!isset($_SESSION['user'])) {
 
                                                 $stars_product = substr($stars_product, 0, -1);
                                                 $stars_product .= ']';
+                                                $arrayStarPro = "";
                                                 foreach(json_decode($stars_product) as $key2 => $value2){
-                                                    // echo "<pre>"; print_r(key($value2)); echo "</pre>";
                                                     foreach($value2 as $key3 => $value3){
                                                         foreach($value3 as $key4 => $value4){
                                                             if($value->win_product != null || $value->win_product != ""){

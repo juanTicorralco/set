@@ -17,7 +17,8 @@
             ?>
             <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
             <h1 class="principal-h1">Participa y GANA!!!</h1>
-            <a href="<?php echo $path . $producter->url_category; ?>">
+            <!-- href="<?php //echo $path . $producter->url_category; ?>" -->
+            <a>
                 <h4 class="p-color"><?php echo $producter->name_category; ?></h4>
             </a>
             <div class="plantilla-secundaria">
@@ -26,7 +27,7 @@
                     <div class="ps-product__meta colorcute">
                         <!-- precio  -->
                         <?php $priceProduct = json_decode($producter->price_product);?>
-                        <p class="PresioPlantilla">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></p>
+                        <p class="PresioPlantilla">De: $<?php echo $priceProduct->Presio_baj; ?> - A: $<?php echo $priceProduct->Presio_alt; ?></p>
                         <p class="colorcute">Seture: Te Deseamos Mucha Suerte</p>
 
                         <div class="ps-product__rating">
@@ -105,18 +106,18 @@
                             <button class="butonInter" type="submit">
                                 <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
                             </button>
-                            <?php
-                                $verify = new ControllerUser();
-                                $verify = $verify -> verifistar();
-                                $question = new ControllerUser();
-                                $question -> starcheck();
-                            ?>
                         </form>
                         <?php endif ?>
                     </div>
                 <?php endforeach;?>
             </div>
             <?php endif; ?>
+            <?php
+                $verify = new ControllerUser();
+                $verify = $verify -> verifistar();
+                $question = new ControllerUser();
+                $question -> starcheck();
+            ?>
         </div> 
 
     <div class="ps-product__shopping botonses">

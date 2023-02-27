@@ -22,7 +22,9 @@ if (!isset($_SESSION['user'])) {
             $header= array();
             $filds= array();
             $response= CurlController::request($url, $method, $header, $filds);
-            array_push($products, $response->result[0]);
+            if($response->status == 200){
+                array_push($products, $response->result[0]);
+            }
         }
     }
 }

@@ -77,7 +77,9 @@ if( window.location == "http://seture.com/acount&my-store" ||
     ){
 
     let resultList =  document.getElementById('mappp').dataset.value;
-    if(resultList !== null || resultList !== undefined || resultList !== "" || resultList !== "undefined"){
+    if(resultList == null || resultList == undefined || resultList == "" || resultList == "undefined"){
+        
+    }else{
         resultList = JSON.parse(resultList);
         const title = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
         let myMap=0;

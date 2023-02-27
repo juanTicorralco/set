@@ -16,7 +16,7 @@
 
                     <div class="ps-product__content">
 
-                        <a class="ps-product__title" href="#"><?php echo $producter->name_product ?></a>
+                        <a class="ps-product__title"><?php echo $producter->name_product ?></a>
 
                     </div>
 
@@ -29,7 +29,7 @@
                             onclick="addBagCard('<?php echo $producter->url_product; ?>', '<?php echo $producter->url_category; ?>', '<?php echo $producter->image_product; ?>', '<?php echo $producter->name_product; ?>', '<?php echo $producter->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
                             detailSC 
                             quantitySC
-                        > Add to Cart</a>
+                        > Compra</a>
                     </div>
 
                 </div>

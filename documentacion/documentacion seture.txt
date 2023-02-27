@@ -9,3 +9,23 @@
      -direct
      -globalAdminister
      -administer
+
+datos de creacion de usuario 
+23
+default
+Juanticorralco.png
+Juan Reyes
+Juanticorralco
+$2a$07$pdgtwzaldisoqrtrswqpxuXuASzW4ZIL3gFxaCRKp7M...
+juanticorralco@gmail.com
+["19.4499191","-98.9401198"]
+Mexico
+mexico
++52_5577673644
+ignacio gomez cipriano
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2N...
+1677448572
+globalAdminister
+1
+2023-01-14
+2023-02-25 16:00:46

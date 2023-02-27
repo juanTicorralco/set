@@ -94,7 +94,7 @@ class TemplateController
 
                 Gracias
 
-                Su grupo WeSharp
+                Su grupo Seture
 
             </div>
         ');

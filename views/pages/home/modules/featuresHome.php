@@ -8,16 +8,16 @@
             <div class="ps-block__item">
                 <div class="ps-block__left"><i class="icon-rocket"></i></div>
                 <div class="ps-block__right">
-                    <h4>Entrega gratis</h4>
-                    <p>Para todas las compras a partir de $99</p>
+                    <h4>Juega en cualquier lugar</h4>
+                    <p>Juega y participa con tu celular, pc o tableta</p>
                 </div>
             </div>
 
             <div class="ps-block__item">
                 <div class="ps-block__left"><i class="icon-sync"></i></div>
                 <div class="ps-block__right">
-                    <h4>7 dias de devolucion</h4>
-                    <p>Si el producto tiene problemas</p>
+                    <h4>Premio al intante</h4>
+                    <p>Entrega a las puertas de tu casa</p>
                 </div>
             </div>
 

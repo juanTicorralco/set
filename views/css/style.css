@@ -1051,7 +1051,7 @@ a {
 }
 
 a:hover {
-    color: #fffcf4;
+    color: #06e321;
 }
 
 a,
@@ -8281,7 +8281,7 @@ textarea.form-control {
     -webkit-box-pack: justify;
     justify-content: space-between;
     max-width: 200px;
-    padding: 10px 0;
+    padding: 10px 10px;
     background-color: #fff;
     -webkit-transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1) 0s;
     transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1) 0s;

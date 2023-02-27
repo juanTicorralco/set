@@ -80,13 +80,19 @@
                         </a>
 
                         <!-- porcentaje -->
-                        <?php if ($value->stock_product != 0) : ?>
-                            <?php if ($value->offer_product != null) : ?>
-
-                                <div class="ps-product__badge">-<?php //echo TemplateController::percentOffer($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?>%</div>
-                            <?php endif; ?>
+                        <?php 
+                            $quedannum = 0;
+                            foreach(json_decode($value->stars_product) as $key4 => $value4){
+                                $quedannum = $quedannum + 1;  
+                                if($value4->idUser != "" || $value4->idUser != NULL){
+                                    $quedannum = $quedannum -1;
+                                }  
+                            }
+                        ?>
+                        <?php if ($quedannum > 0) : ?>
+                            <div class="ps-product__badge"><?php echo $quedannum; ?></div>
                         <?php else : ?>
-                            <div class="ps-product__badge out-stock">Out Of Stock</div>
+                            <div class="ps-product__badge out-stock">Finalizado</div>
                         <?php endif; ?>
 
                         <?php
@@ -101,7 +107,7 @@
 
                         <ul class="ps-product__actions">
                        
-                            <li><a href="#" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-eye"></i></a></li>
+                            <li><a href="<?php echo $path . $value->url_product; ?>" data-toggle="tooltip" data-placement="top" title="Ver"><i class="icon-eye"></i></a></li>
                             <li>
                             <a class="btn" onclick="addWishList('<?php echo $value->url_product; ?>', '<?php echo CurlController::api(); ?>')" data-toggle="tooltip" data-placement="top" title="Lo deseo">
                                                 <i class="icon-heart"></i>
@@ -116,11 +122,11 @@
                         <div class="ps-product__content"><a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
                             <!-- precio  -->
                             <?php $priceProduct = json_decode($value->price_product); ?>
-                            <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></h2>
+                            <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_baj; ?> - A: $<?php echo $priceProduct->Presio_alt; ?></h2>
                         </div>
                         <div class="ps-product__content hover"><a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
                             <!-- precio  -->
-                            <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></h2>
+                            <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_baj; ?> - A: $<?php echo $priceProduct->Presio_alt; ?></h2>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <?php
-$url11 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=id_store_product&equalTo=" . $producter->id_store . "&orderBy=id_product&orderMode=DESC&startAt=0&endAt=1&select=url_product,url_category,image_product,name_product,stock_product,offer_product,price_product,url_store,name_store,reviews_product";
+$url11 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=id_store_product&equalTo=" . $producter->id_store . "&orderBy=id_product&orderMode=DESC&startAt=0&endAt=1&select=url_product,url_category,image_product,name_product,stock_product,offer_product,price_product,url_store,name_store,reviews_product,stars_product";
 $method11 = "GET";
 $field11 = array();
 $header11 = array();
@@ -112,11 +112,17 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
 
 
                     <!-- porcentaje -->
-                    <?php if ($value->stock_product != 0) : ?>
-                        <?php if ($value->offer_product != null) : ?>
-
-                            <div class="ps-product__badge">-<?php echo TemplateController::percentOffer($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?>%</div>
-                        <?php endif; ?>
+                    <?php 
+                        $quedannum = 0;
+                        foreach(json_decode($value->stars_product) as $key4 => $value4){
+                            $quedannum = $quedannum + 1;  
+                            if($value4->idUser != "" || $value4->idUser != NULL){
+                                $quedannum = $quedannum -1;
+                            }  
+                        }
+                    ?>
+                    <?php if ($quedannum > 0) : ?>
+                        <div class="ps-product__badge"><?php echo $quedannum; ?></div>
                     <?php else : ?>
                         <div class="ps-product__badge out-stock">Out Of Stock</div>
                     <?php endif; ?>
@@ -135,7 +141,7 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
                     <ul class="ps-product__actions">
 
                         <li>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="Quick View">
+                            <a href="<?php echo $path . $value->url_product; ?>" data-toggle="tooltip" data-placement="top" title="Ver">
                                 <i class="icon-eye"></i>
                             </a>
                         </li>
@@ -152,29 +158,30 @@ $storeProduct = CurlController::request($url11, $method11, $field11, $header11)-
 
                 <div class="ps-product__container">
 
-                    <a class="ps-product__vendor" href="<?php echo $path . $value->url_store; ?>"><?php echo $value->name_store; ?></a>
+                <!-- href="<?php //echo $path . $value->url_store; ?>" -->
+                    <a class="ps-product__vendor" ><?php echo $value->name_store; ?></a>
 
                     <div class="ps-product__content">
 
                         <a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>"><?php echo $value->name_product; ?></a>
 
-                        <div class="ps-product__rating">
+                        <!-- <div class="ps-product__rating">
 
-                            <!-- numero de reviciones -->
+                            
                             <span>(<?php
-                                    if ($producter->reviews_product != null) {
-                                        echo count(json_decode($producter->reviews_product, true));
-                                    } else {
-                                        echo "0";
-                                    }
+                                    // if ($producter->reviews_product != null) {
+                                    //     echo count(json_decode($producter->reviews_product, true));
+                                    // } else {
+                                    //     echo "0";
+                                    // }
                                     ?> rascados)
                             </span>
 
-                        </div>
+                        </div> -->
 
                         <!-- precio  -->
                         <?php $priceProduct = json_decode($value->price_product); ?>
-                        <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_alt; ?> - A: $<?php echo $priceProduct->Presio_baj; ?></h2>
+                        <h2 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_baj; ?> - A: $<?php echo $priceProduct->Presio_alt; ?></h2>
 
                     </div>
 

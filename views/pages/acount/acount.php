@@ -25,7 +25,8 @@ if (isset($urlParams[1])) {
             $urlParams[1] = explode("?", $urlParams[1])[0];
         }
     }
-    if ($urlParams[1] == "enrollment" || $urlParams[1] == "login" || $urlParams[1]=="wishAcount" || $urlParams[1]=="logout" || $urlParams[1]=="my-shopping" || $urlParams[1]=="my-store" || $urlParams[1]=="new-store" || $urlParams[1]=="my-sales" || $urlParams[1]=="list-vendor") {
+    //Colocar el enrollment para el registro
+    if ($urlParams[1] == "" || $urlParams[1] == "login" || $urlParams[1]=="wishAcount" || $urlParams[1]=="logout" || $urlParams[1]=="my-shopping" || $urlParams[1]=="my-store" || $urlParams[1]=="new-store" || $urlParams[1]=="my-sales" || $urlParams[1]=="list-vendor") {
         // if (isset($urlParams[2])) {
             //     if ($urlParams[2] == "facebook") {
                 //         $url = $path . "acount&enrollment&facebook";

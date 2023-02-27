@@ -18,7 +18,7 @@
 
                 <li><a href="/become-vendor">Sell on MarketPlace</a></li>
                 <li><a href="/store-list">Store List</a></li>
-                <li><i class="icon-telephone"></i> Hotline:<strong> 1-800-234-5678</strong></li>
+                <li><i class="icon-telephone"></i> Hotline:<strong> 55-77-67-36-44</strong></li>
 
                 <!-- <li>
 

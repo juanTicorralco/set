@@ -7,6 +7,18 @@
     $storeResult = CurlController::request($url,$method,$fields,$headers)->result;
     $reviews = 0;
     $totalreviews = 0;
+
+    if(!is_array($storeResult)){
+        $select = "id_store,name_store,url_store,logo_store,cover_store,about_store,abstract_store,email_store,country_store,city_store,address_store,phone_store,socialnetwork_store,map_store";
+        $url = CurlController::api()."stores?linkTo=id_user_store&equalTo=".$_SESSION["user"]->id_user."&select=".$select;
+        $method = "GET";
+        $fields = array();
+        $headers = array();
+        $storeResult = CurlController::request($url,$method,$fields,$headers)->result;
+        $reviews = 1;
+    }
+    // print_r($storeResult);
+    // return;
 ?>
 <div class="ps-section__left">
 
@@ -23,6 +35,8 @@
             <div class="ps-block__header">
 
                 <h4><?php echo $storeResult[0]->name_store; ?></h4>
+
+                <?php if($reviews != 1): ?>
 
                 <div class="br-wrapper br-theme-fontawesome-stars">
                     
@@ -65,6 +79,7 @@
                 </div>
 
                 <p><strong><?php echo ($reviews*100)/5; ?>% Positive</strong> (<?php echo $totalreviews; ?> rating)</p>
+                <?php endif; ?>
 
             </div><span class="ps-block__divider"></span>
 

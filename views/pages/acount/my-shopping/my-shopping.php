@@ -58,11 +58,11 @@ My Account Content
 
                 <ul class="ps-section__links">
                 <?php if($_SESSION["user"]->method_user == "direct"): ?>
-                    <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
+                    <li ><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li class="active"><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
                     <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
@@ -140,7 +140,8 @@ My Account Content
                                                 <div class="ps-product__content">
 
                                                     <a href="<?php echo $path.$value->url_product?>"><?php echo $value->name_product; ?></a>
-                                                    <div><a href="<?php echo $path.$value->url_store ?>"><small> <?php echo $value->name_store; ?></small></a></div>
+                                                    <!-- href="<?php //echo $path.$value->url_store ?>" -->
+                                                    <div><a ><small> <?php echo $value->name_store; ?></small></a></div>
                                                     
                                                     <small><?php echo json_decode($value->details_order); ?></small>
                                                 </div>

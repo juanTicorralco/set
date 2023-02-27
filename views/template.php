@@ -199,8 +199,8 @@ if($totalPro->status == 200){
 
     <!-- metadatod twiter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@wesharp">
-    <meta name="twitter:creator" content="@wesharp">
+    <meta name="twitter:site" content="@Seture">
+    <meta name="twitter:creator" content="@Seture">
     <meta name="twitter:title" content="<?php echo $name; ?>">
     <meta name="twitter:description" content="<?php echo $description; ?>">
     <meta name="twitter:image" content="<?php echo $imagen; ?>">
@@ -463,19 +463,17 @@ if($totalPro->status == 200){
                     <div class="ps-form__right">
 
                         <div class="form-group--nest">
-
-                            <input class="form-control" type="email" name="emailnewes" placeholder="Escribe tu Email">
+                            <input class="form-control" type="email" name="emailnewes" placeholder="Escribe tu Email" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" onchange="validatejs(event, 'email')">
                             <button class="ps-btn" type="submit">Subscribir</button>
                             <?php
                                 $newemail = new ControllerUser();
                                 $newemail -> newsemail();
                             ?>
                         </div>
-
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">El nombre es requerido</div>
                     </div>
-
                 </div>
-
             </div>
         </form>
             

@@ -84,7 +84,8 @@
             </div>
         </div>
 
-        <a class="mt-3" href="<?php echo $path . $producter->url_store; ?>">Mas productos de la tienda</a>
+        <!-- href="<?php //echo $path . $producter->url_store; ?>" -->
+        <a class="mt-3" >Mas productos de la tienda</a>
 
     </div>
 

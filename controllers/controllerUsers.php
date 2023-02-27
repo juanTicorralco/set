@@ -40,8 +40,8 @@ class ControllerUser
 
                         // registrar email
                         $name = $displayName;
-                        $subject = "Registro WeSharp";
-                        $message = "Confirma tu email para crear una cuenta en WeSharp";
+                        $subject = "Registro Seture";
+                        $message = "Confirma tu email para crear una cuenta en Seture";
                         $url = TemplateController::path() . "acount&login&" . base64_encode($email);
                         $post = "Confirmar Email";
                         $sendEmail = TemplateController::sendEmail($name, $subject, $email, $message, $url, $post);
@@ -222,8 +222,8 @@ class ControllerUser
                                 // Email donde esta la nueva contraseña
                                 $email = $_POST["resetPassword"];
                                 $name = $user->result[0]->displayname_user;
-                                $subject = "Nueva contraseña WeSharp";
-                                $message = "Confirma tu nueva contraseña para ingresar a WeSharp... Tu nueva contraseña es: " . $newPassword;
+                                $subject = "Nueva contraseña Seture";
+                                $message = "Confirma tu nueva contraseña para ingresar a Seture... Tu nueva contraseña es: " . $newPassword;
                                 $url = TemplateController::path() . "acount&login";
                                 $post = "Confirmar Nueva Contraseña";
                                 $sendEmail = TemplateController::sendEmail($name, $subject, $email, $message, $url, $post);
@@ -281,7 +281,7 @@ class ControllerUser
             if (
                 preg_match('/^[#\\=\\$\\;\\*\\_\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-Z]{1,}$/', $_POST["newPassword"])
             ) {
-                if ($_SESSION["user"]->method_user == "direct") {
+                if ($_SESSION["user"]->method_user == "direct" || $_SESSION["user"]->method_user == "administer" || $_SESSION["user"]->method_user == "globalAdminister") {
 
                     $crypt = crypt($_POST["newPassword"], '$2a$07$pdgtwzaldisoqrtrswqpxzasdte$');
 
@@ -296,8 +296,8 @@ class ControllerUser
                         // Email donde esta la nueva contraseña
                         $email = $_SESSION["user"]->email_user;
                         $name = $_SESSION["user"]->displayname_user;
-                        $subject = "Nueva contraseña WeSharp";
-                        $message = "Acabas de cambiar tu contraseña... si es un error Por favor de notificar a WeSharp... ";
+                        $subject = "Nueva contraseña Seture";
+                        $message = "Acabas de cambiar tu contraseña... si es un error Por favor de notificar a Seture... ";
                         $url = TemplateController::path() . "acount&login";
                         $post = "Confirmar Nueva Contraseña";
                         $sendEmail = TemplateController::sendEmail($name, $subject, $email, $message, $url, $post);

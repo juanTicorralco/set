@@ -146,13 +146,13 @@ if (!isset($_SESSION['user'])) {
 
                 <ul class="ps-section__links">
                 <?php if($_SESSION["user"]->method_user == "direct"): ?>
-                    <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "administer"): ?>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <li><a href="<?php echo $path; ?>acount&list-vendor">Lista vendidos</a></li>
-                    <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
+                    <li class="active"><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
                     <?php endif; ?>
                     <?php if($_SESSION["user"]->method_user == "globalAdminister"): ?>
                     <li><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
@@ -289,7 +289,7 @@ if (!isset($_SESSION['user'])) {
 
                                     <tr>
                                         <td><strong>Ganancia real</strong></td>
-                                        <td>$ <?php echo number_format($comisions,2); ?></td>
+                                        <td>$ <?php echo number_format($realPre,2); ?></td>
                                     </tr>
                                 <?php endif ?>
                                 <?php  if($_SESSION['user']->method_user == 'administer'):?>

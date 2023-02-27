@@ -134,7 +134,7 @@ Product Content
 
                         <!-- Comprados con frecuencia -->
                         <?php
-                        $url10 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=title_list_product&equalTo=" . $producter->title_list_product . "&select=id_product,url_category,image_product,name_product,url_product,price_product,offer_product,stock_product,name_store,reviews_product";
+                        $url10 = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=title_list_product&equalTo=" . $producter->title_list_product . "&select=id_product,url_category,image_product,name_product,url_product,price_product,offer_product,stock_product,name_store,reviews_product,stars_product";
                         $method10 = "GET";
                         $field10 = array();
                         $header10 = array();
@@ -161,13 +161,13 @@ Product Content
 
                 <aside class="widget widget_product widget_features">
 
-                    <p><i class="icon-network"></i> Envios a toda la republica </p>
+                    <p><i class="icon-network"></i> Juega en cualquier lugar </p>
 
-                    <p><i class="icon-3d-rotate"></i> Devolución gratuita en 7 días si es elegible, muy fácil</p>
+                    <p><i class="icon-3d-rotate"></i> Gana premios fantasticos</p>
 
                     <p><i class="icon-receipt"></i> Se factura este producto.</p>
 
-                    <p><i class="icon-credit-card"></i> Pague en línea o al recibir el producto</p>
+                    <p><i class="icon-credit-card"></i> Pague en línea o con un vendor</p>
 
                 </aside>
 

@@ -35,10 +35,10 @@ Header TOP
 
             <div class="header__left">
                 <ul class="d-flex justify-content-center">
-                    <li><a target="_blank"><i class="fab fa-facebook-f mr-4"></i></a></li>
-                    <li><a target="_blank"><i class="fab fa-instagram mr-4"></i></a></li>
+                    <li><a href="https://www.facebook.com/Seture-109105768782094/" target="_blank"><i class="fab fa-facebook-f mr-4"></i></a></li>
+                    <li><a href="https://instagram.com/seturee?igshid=ZDdkNTZiNTM=" target="_blank"><i class="fab fa-instagram mr-4"></i></a></li>
                     <!-- <li><a href="#" target="_blank"><i class="fab fa-twitter mr-4"></i></a></li> -->
-                    <li><a target="_blank"><i class="fab fa-youtube mr-4"></i></a></li>
+                    <li><a href="https://youtube.com/@seture" target="_blank"><i class="fab fa-youtube mr-4"></i></a></li>
                 </ul>
             </div>
 
@@ -50,7 +50,7 @@ Header TOP
                 <ul class="header__top-links">
                     <!-- <li><a href="/become-vendor">Sell on MarketPlace</a></li> -->
                     <!-- <li><a href="/store-list">Store List</a></li> -->
-                    <li><i class="icon-telephone"></i> Hotline:<strong> 1-800-234-5678</strong></li>
+                    <li><i class="icon-telephone"></i> Hotline:<strong> 55-77-67-36-44</strong></li>
                     <!-- <li>
                         <div class="ps-dropdown language"><a href="#"><img src="img/template/en.png" alt="">English</a>
                             <ul class="ps-dropdown-menu">
@@ -332,7 +332,7 @@ Header Content
                             </div>
                             <div class="ps-block__right">
                                 <a href="<?php echo $path ?>acount&login">Mi cuenta</a>
-                                <a href="<?php echo $path ?>acount&enrollment">Registrarse</a>
+                                <!-- <a href="<?php //echo $path ?>acount&enrollment">Registrarse</a> -->
                             </div>
                         </div>
                     <?php endif; ?>

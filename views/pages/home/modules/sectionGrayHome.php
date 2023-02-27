@@ -1,10 +1,17 @@
 <?php
 $url = CurlController::api() . "categories?orderBy=views_category&orderMode=DESC&startAt=0&endAt=6&select=name_category,id_category,url_category";
+// "relations?rel=products,categories&type=product,category&orderBy=views_category&orderMode=DESC&startAt=0&endAt=6&select=name_category,id_category,url_category";
+// http://setureapi.com/relations?rel=products,categories&type=product,category&select=name_category
+// categories?orderBy=views_category&orderMode=DESC&startAt=0&endAt=6&select=name_category,id_category,url_category
 $method = "GET";
 $field = array();
 $header = array();
 
 $bestcategory = CurlController::request($url, $method, $field, $header)->result;
+
+if(!is_array($bestcategory)){
+    $bestcategory = array();
+}
 ?>
 
 <div class="container-fluid preloadTrue">
@@ -52,33 +59,6 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Menu subcategory
                 ======================================-->
 
-                <div class="ps-block__categories">
-
-                    <h3><?php echo $value->name_category; ?></h3>
-
-                    <ul>
-
-                        <?php
-                        $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . $value->id_category . "&select=url_subcategory,name_subcategory";
-                        $method = "GET";
-                        $field = array();
-                        $header = array();
-
-                        $subcategoryAll = CurlController::request($url, $method, $field, $header)->result;
-
-                        foreach ($subcategoryAll as $key2 => $value2) :
-                        ?>
-                            <li><a href="<?php echo $path . $value2->url_subcategory; ?>"><?php echo $value2->name_subcategory; ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
-
-                    <a class="ps-block__more-link" href="<?php echo $path . $value->url_category; ?>">Ver todo</a>
-
-                </div>
-
-                <!--=====================================
-                Vertical Slider Category
-                ======================================-->
                 <?php
                     $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product,description_product,starStart_product,stars_product";
                     $method = "GET";
@@ -86,30 +66,57 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                     $header = array();
 
                     $bestProduct = CurlController::request($url, $method, $field, $header)->result;
-                   
                 ?>
-                <div class="ps-block__slider">
+                <?php if(is_array($bestProduct)): ?>
+                    <div class="ps-block__categories">
 
-                    <div class="ps-carousel--product-box owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="7000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="500" data-owl-mousedrag="off">
+                        <h3><?php echo $value->name_category; ?></h3>
 
-                        <?php foreach ($bestProduct as $key3 => $value3) :
-                        ?>
-                            <a href="<?php echo $path . $value3->url_product; ?>">
-                                <img src="img/products/<?php echo $value->url_category; ?>/vertical/<?php echo $value3->vertical_slider_product; ?>" alt="<?php echo $value3->name_product; ?>">
-                            </a>
-                        <?php endforeach; ?>
+                        <ul>
+
+
+                            <?php
+                            $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . $value->id_category . "&select=url_subcategory,name_subcategory";
+                            $method = "GET";
+                            $field = array();
+                            $header = array();
+
+                            $subcategoryAll = CurlController::request($url, $method, $field, $header)->result;
+
+                            foreach ($subcategoryAll as $key2 => $value2) :
+                            ?>
+                            <!-- href="<?php //echo $path . $value2->url_subcategory; ?>" -->
+                                <li><a ><?php echo $value2->name_subcategory; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+
+                        <!-- href="<?php //echo $path . $value->url_category; ?>" -->
+                        <!-- <a class="ps-block__more-link" >Ver todo</a> -->
 
                     </div>
-
-                </div>
-
-                <!--=====================================
-                Block Product Box
-                ======================================-->
-
-               
+                    
 
                     <!--=====================================
+                    Vertical Slider Category
+                    ======================================-->
+                    <?php if(count($bestProduct) >1): ?>
+                    <div class="ps-block__slider">
+
+                        <div class="ps-carousel--product-box owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="7000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="500" data-owl-mousedrag="off">
+
+                            <?php foreach ($bestProduct as $key3 => $value3) :
+                            ?>
+                                <a href="<?php echo $path . $value3->url_product; ?>">
+                                    <img src="img/products/<?php echo $value->url_category; ?>/vertical/<?php echo $value3->vertical_slider_product; ?>" alt="<?php echo $value3->name_product; ?>">
+                                </a>
+                            <?php endforeach; ?>
+
+                        </div>
+
+                    </div>
+                    <?php endif;?>
+
+                   <!--=====================================
                     Product Simple
                     ======================================-->
                     <?php $bestProduct2= $bestProduct[0]; ?>
@@ -126,7 +133,8 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                             
                         <div class="quedan-estos" id="quedn"><?php echo $quedannum ?></div>
                         <h1 class="principal-h1">Participa y GANA!!!</h1>
-                        <a href="<?php echo $path . $value->url_category; ?>">
+                        <!-- href="<?php //echo $path . $value->url_category; ?>" -->
+                        <a >
                             <h4 class="p-color"><?php echo $value->name_category; ?></h4>
                         </a>
                         <div class="plantilla-secundaria">
@@ -143,8 +151,10 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                             </div>
                         </div>
                         <div class="plantilla-bolas">
-                        <?php foreach(json_decode($bestProduct2->stars_product) as $key5 => $value5):?>
-                        
+                        <?php 
+                        $contsta= 0;
+                        foreach(json_decode($bestProduct2->stars_product) as $key5 => $value5):?>
+                            <?php if($contsta <10):?>
                                 <?php if($value5->check == "checkin"):?>
                                     <div class="item-bola">
                                         <p class="p-bolas"><?php echo $value5->numero;?></p>
@@ -158,11 +168,15 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                                     <p class="p-bolas"><?php echo $value5->numero;?></p>
                                     <div class="numero-pedido"><img src="/views/img/star.png" alt="star"></div>
                                 </div>
-                                <?php endif ?>t
-                           
+                                <?php endif; 
+                                $contsta++;?>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                         </div>
+                        <?php $priceProduct = json_decode($bestProduct[0]->price_product);?>
+                    <h3 class="ps-product__price sale text-success">De: $<?php echo $priceProduct->Presio_baj; ?> - A: $<?php echo $priceProduct->Presio_alt; ?></h3>
                     </div> 
+                <?php endif; ?>
                     
                     <!-- End Product Simple -->
 
