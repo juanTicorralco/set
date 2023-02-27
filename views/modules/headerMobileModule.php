@@ -255,7 +255,7 @@
                         </div>
                         <div class="ps-block__right">
                             <a href="<?php echo $path ?>acount&wishAcount"><?php echo $_SESSION["user"]->displayname_user; ?></a>
-                            <a href="<?php echo $path ?>acount&logout">Salir</a>
+                            <!-- <a href="<?php //echo $path ?>acount&logout">Salir</a> -->
                         </div>
                     </div>
                 <?php else : ?>
