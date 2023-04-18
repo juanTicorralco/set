@@ -62,6 +62,15 @@
                     <img class="numero-winer" src="/views/img/fuegos4.gif" alt="star">
                     </div>
                 </div>
+                <!-- video del producto  -->
+                <?php if ($producter->video_winer_product != null) : ?>
+                      <?php $video = json_decode($producter->video_winer_product, true); ?>
+                      <?php if ($video[0] == "youtube") : ?>
+                          <iframe class="videoclas imgborder" src="https://www.youtube.com/embed/<?php echo $video[1]; ?>?rel=0&autoplay=0" height='360' frameborder='0' allowfullscreen></iframe>
+                      <?php else : ?>
+                          <iframe class="videoclas" src="https://player.vimeo.com/video/<?php echo $video[1]; ?>" height="360" frameborder="0" allowfullscreen></iframe>
+                      <?php endif; ?>
+                  <?php endif; ?>
             <?php else: ?>
             <div class="plantilla-bolas">
                 <?php foreach(json_decode($producter->stars_product) as $key => $value):?>

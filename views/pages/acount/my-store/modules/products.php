@@ -124,6 +124,7 @@
                 </div>
                 <!-- body -->
                <div class="starStart_product"></div>
+               <div class="starwin_product"></div>
                 <!-- footer -->
                 <div class="modal-footer">
                     <div class="form-group submit btnStar">
@@ -138,4 +139,5 @@
         </div>
     </div>
 </div>
+
 <?php endif; ?>

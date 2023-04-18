@@ -1021,7 +1021,6 @@ function newOrden(metodo,status,id,totals){
   let cityOrder = $("#cityOrder").val();
   let phoneOrder = '';
   let nameUserOrder = $("#nameUserSale").val();
-  console.log(nameUserOrder);
   if(nameUserOrder == null || nameUserOrder == undefined || nameUserOrder == ""){
     return;
   }
@@ -1273,7 +1272,8 @@ function newOrden(metodo,status,id,totals){
               
                           $.ajax(settings).done(function (response) {
                               if (response.status == 200) {
-
+                                document.cookie = "listSC=; max-age=0";
+                                switAlert("success", "El pago se realizo correctamente...", $('#url').val() + "acount&my-shopping", null, 1500);
                               }
                           });
                       }
@@ -1338,9 +1338,6 @@ function newOrden(metodo,status,id,totals){
       }
     });
   });
-  document.cookie = "listSC=; max-age=0";
-  switAlert("success", "El pago se realizo correctamente...", $('#url').val() + "acount&my-shopping", null, 1500);
-  // window.location = $("#url").val()+"acount&my-shopping";
 }
 
 
@@ -2095,6 +2092,167 @@ $(document).on("click", ".starsList", function(){
 
     </table>
     `);
+    $(".btnStar").append(` 
+      `+ btnStar +`
+    `);
+
+  });
+});
+
+$(document).on("click", ".starsList", function(){
+  $(".starStart_product").html("");
+  $(".starwin_product").html("");
+  $(".btnStar").html("");
+  $("#starListProduct").modal();
+  let processOrder = $(this).attr("starsProduct");
+  let urlapi = $(this).attr("urlApi");
+  let starsProduct = "";
+  let numero =  "";
+  let precio = "";
+  let check = "";
+  let pagado = "";
+  let time = "";
+  let contstar = 0;
+  let btnStar = "";
+  let Starwiner = "";
+  let winStar = null;
+
+  let url = urlapi+'products?linkTo=id_product&equalTo='+processOrder+'&select=stars_product,win_product';
+      
+  let settings = {
+      url: url,
+      metod: 'GET',
+      timeaot: 0,
+  };
+
+  $.ajax(settings).done(function (response) {
+
+    starsProduct = JSON.parse(response.result[0].stars_product);
+    winStar = response.result[0].win_product;
+
+    starsProduct.forEach((value, index) => {
+      numero += "<pre>"+value.numero+"</pre>";
+      precio += "<pre>"+value.precio+"</pre>";
+      check += "<pre>"+value.check+"</pre>";
+      pagado += "<pre>"+value.pagado+"</pre>";
+      time += "<pre>"+value.time+"</pre>";
+      if(value.pagado == "pagado" && value.check == "checkin"){
+        contstar++;
+      }
+    });
+
+    if(starsProduct.length == contstar && (winStar == null || winStar <= 0)){
+      $("[name='StarWin']").val(processOrder);
+      Starwiner=`
+      <div class="modal-body text-left p-5">        
+            <!-- video -->
+            <div class="form-group">
+                <label>Video Product Ex: <strong>Type: </strong>Youtube, <strong>Id:</strong> 2h3h2h2b3</label>
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-6 form-group__content input-group mx-0 pr-0">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                Type:
+                            </span>
+                        </div>
+                        <select name="type_video" class="form-control">
+                            <option value="">Select Platform</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="vimeo">Vimeo</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-lg-6 form-group__content input-group mx-0">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                Id:
+                            </span>
+                        </div>
+                        <input 
+                        type="text"
+                        class="form-control"
+                        name="id_video"
+                        maxlength="100"
+                        pattern = '[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,}'
+                        onchange="validatejs(event, 'parrafo')">
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">Acompleta el campo</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Adquisicion -->
+            <div class="form-group">
+                    <div class="row mb-3">
+                        <!-- precio venta -->
+                        <div class="col-12 col-lg-3">
+                            <label>Numero winer<sup class="text-danger">*</sup></label>
+                            <div class="form-group__content input-group mx-0 pr-0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        Numero:
+                                    </span>
+                                </div>
+                                <input 
+                                type="number"
+                                class="form-control"
+                                name="num_win"
+                                min="0"
+                                step="any"
+                                pattern = "[.\\,\\0-9]{1,}"
+                                onchange="validatejs(event, 'numbers')"
+                                required>
+                                <div class="valid-feedback"></div>
+                                <div class="invalid-feedback">Acompleta el campo</div>
+                            </div>          
+                        </div>
+                    </div>
+                </div>
+        </div>
+      `;
+      $(".starwin_product").append(` 
+      `+ Starwiner +`
+    `);
+      btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Ganador</button>`;
+    }
+    if(starsProduct.length != contstar && (winStar == null || winStar <= 0)){
+      $("[name='idProduct']").val(processOrder);
+      btnStar = `<button class='btn btn-warning ps-btn ps-btn--fullwidth'>Resetear</button>`;
+    }
+
+    if(starsProduct.length == contstar && winStar > 0 ){
+      btnStar = `<p class='btn btn-warning ps-btn ps-btn--fullwidth text-dark'> WINER : `+ winStar +`</p>`;
+    }
+
+    $(".starStart_product").append(`
+    <table class="table dt-responsive dt-server" width="100%">
+        
+        <thead>
+
+            <tr>   
+                
+                <th>#</th>   
+
+                <th>Precio</th>
+
+                <th>Check</th>   
+
+                <th>Pagado</th>
+
+                <th>Time</th>   
+
+            </tr>
+
+        </thead>
+        <tbody>
+          <td>`+numero+`</td>
+          <td>`+precio+`</td>
+          <td>`+check+`</td>
+          <td>`+pagado+`</td>
+          <td>`+time+`</td>
+        </tbody>
+
+    </table>
+    `);
+    
     $(".btnStar").append(` 
       `+ btnStar +`
     `);

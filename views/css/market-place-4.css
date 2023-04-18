@@ -370,3 +370,15 @@ a.jo {
   justify-content: center;
   align-items: center;
 }
+.activeVideotrue{
+  display:none;
+}
+
+@media (max-width: 560px) {
+  .activeVideotrue{
+    display:block;
+  }
+  .activeVideofalse{
+    display: none;
+  }
+}
