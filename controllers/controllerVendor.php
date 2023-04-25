@@ -729,150 +729,150 @@ class ControllerVendor{
                 return;
             }
             if($continueEdit){
-                if(isset($_FILES["topBanner"]["tmp_name"]) && !empty($_FILES["topBanner"]["tmp_name"])){
-                    $image = $_FILES["topBanner"];
-                    $folder = "img/products";
-                    $path = explode("_", $_POST['categoryProduct'])[1]."/top";
-                    $width = 1920;
-                    $heigth = 80;
-                    $name = mt_rand(10000,99999);
+                // if(isset($_FILES["topBanner"]["tmp_name"]) && !empty($_FILES["topBanner"]["tmp_name"])){
+                //     $image = $_FILES["topBanner"];
+                //     $folder = "img/products";
+                //     $path = explode("_", $_POST['categoryProduct'])[1]."/top";
+                //     $width = 1920;
+                //     $heigth = 80;
+                //     $name = mt_rand(10000,99999);
 
-                    $saveImagetopBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
+                //     $saveImagetopBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
 
-                    if($saveImagetopBanerProduct == "error"){
-                        echo '
-                            <script>
-                                formatearAlertas();
-                                notiAlert(3, "Error: al subir top banner");
-                            </script>'; 
-                            return;
-                    }else{
-                        unlink("views/".$folder."/".$path."/".$_POST["topBannerOld"]);
-                    }
-                }else{
-                    $saveImagetopBanerProduct = $_POST["topBannerOld"];
-                }
-                if(
-                    isset($_POST["topBannerH3Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerH3Tag"]) &&
-                    isset($_POST["topBannerP1Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerP1Tag"]) &&
-                    isset($_POST["topBannerH4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerH4Tag"]) &&
-                    isset($_POST["topBannerP2Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerP2Tag"]) &&
-                    isset($_POST["topBannerSpanTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerSpanTag"]) &&
-                    isset($_POST["topBannerButtonTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerButtonTag"]) 
-                ){
-                    $topbannerProduct = (object)[
-                        "H3 tag" => TemplateController::capitalize($_POST["topBannerH3Tag"]),
-                        "P1 tag" => TemplateController::capitalize($_POST["topBannerP1Tag"]),
-                        "H4 tag" => TemplateController::capitalize($_POST["topBannerH4Tag"]),
-                        "P2 tag" => TemplateController::capitalize($_POST["topBannerP2Tag"]),
-                        "Span tag" => TemplateController::capitalize($_POST["topBannerSpanTag"]),
-                        "Button tag" => TemplateController::capitalize($_POST["topBannerButtonTag"]),
-                        "IMG tag" => $saveImagetopBanerProduct
-                    ];
-                }else{
-                    echo '
-                        <script>
-                            formatearAlertas();
-                            notiAlert(3, "Error: en la sintaxis de los campos");
-                        </script>'; 
-                    return;
-                }
+                //     if($saveImagetopBanerProduct == "error"){
+                //         echo '
+                //             <script>
+                //                 formatearAlertas();
+                //                 notiAlert(3, "Error: al subir top banner");
+                //             </script>'; 
+                //             return;
+                //     }else{
+                //         unlink("views/".$folder."/".$path."/".$_POST["topBannerOld"]);
+                //     }
+                // }else{
+                //     $saveImagetopBanerProduct = $_POST["topBannerOld"];
+                // }
+                // if(
+                //     isset($_POST["topBannerH3Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerH3Tag"]) &&
+                //     isset($_POST["topBannerP1Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerP1Tag"]) &&
+                //     isset($_POST["topBannerH4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerH4Tag"]) &&
+                //     isset($_POST["topBannerP2Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerP2Tag"]) &&
+                //     isset($_POST["topBannerSpanTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerSpanTag"]) &&
+                //     isset($_POST["topBannerButtonTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["topBannerButtonTag"]) 
+                // ){
+                //     $topbannerProduct = (object)[
+                //         "H3 tag" => TemplateController::capitalize($_POST["topBannerH3Tag"]),
+                //         "P1 tag" => TemplateController::capitalize($_POST["topBannerP1Tag"]),
+                //         "H4 tag" => TemplateController::capitalize($_POST["topBannerH4Tag"]),
+                //         "P2 tag" => TemplateController::capitalize($_POST["topBannerP2Tag"]),
+                //         "Span tag" => TemplateController::capitalize($_POST["topBannerSpanTag"]),
+                //         "Button tag" => TemplateController::capitalize($_POST["topBannerButtonTag"]),
+                //         "IMG tag" => $saveImagetopBanerProduct
+                //     ];
+                // }else{
+                //     echo '
+                //         <script>
+                //             formatearAlertas();
+                //             notiAlert(3, "Error: en la sintaxis de los campos");
+                //         </script>'; 
+                //     return;
+                // }
 
-                if(isset($_FILES["DefaultBanner"]["tmp_name"]) && !empty($_FILES["DefaultBanner"]["tmp_name"])){
-                    $image = $_FILES["DefaultBanner"];
-                    $folder = "img/products";
-                    $path = explode("_", $_POST['categoryProduct'])[1]."/default";
-                    $width = 570;
-                    $heigth = 210;
-                    $name = mt_rand(10000,99999);
+                // if(isset($_FILES["DefaultBanner"]["tmp_name"]) && !empty($_FILES["DefaultBanner"]["tmp_name"])){
+                //     $image = $_FILES["DefaultBanner"];
+                //     $folder = "img/products";
+                //     $path = explode("_", $_POST['categoryProduct'])[1]."/default";
+                //     $width = 570;
+                //     $heigth = 210;
+                //     $name = mt_rand(10000,99999);
 
-                    $saveImagedefaultBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
-                    if($saveImagedefaultBanerProduct == "error"){
-                        echo '
-                        <script>
-                            formatearAlertas();
-                            notiAlert(3, "Error: al salvar el default banner");
-                        </script>'; 
-                        return;
-                    }else{
-                        unlink("views/".$folder."/".$path."/".$_POST["defaultBannerOld"]);
-                    }
-                }else{
-                    $saveImagedefaultBanerProduct = $_POST["defaultBannerOld"];
-                }
+                //     $saveImagedefaultBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
+                //     if($saveImagedefaultBanerProduct == "error"){
+                //         echo '
+                //         <script>
+                //             formatearAlertas();
+                //             notiAlert(3, "Error: al salvar el default banner");
+                //         </script>'; 
+                //         return;
+                //     }else{
+                //         unlink("views/".$folder."/".$path."/".$_POST["defaultBannerOld"]);
+                //     }
+                // }else{
+                //     $saveImagedefaultBanerProduct = $_POST["defaultBannerOld"];
+                // }
 
-                if(isset($_FILES["hSlider"]["tmp_name"]) && !empty($_FILES["hSlider"]["tmp_name"])){
-                    $image = $_FILES["hSlider"];
-                    $folder = "img/products";
-                    $path = explode("_", $_POST['categoryProduct'])[1]."/horizontal";
-                    $width = 1920;
-                    $heigth = 358;
-                    $name = mt_rand(10000,99999);
+                // if(isset($_FILES["hSlider"]["tmp_name"]) && !empty($_FILES["hSlider"]["tmp_name"])){
+                //     $image = $_FILES["hSlider"];
+                //     $folder = "img/products";
+                //     $path = explode("_", $_POST['categoryProduct'])[1]."/horizontal";
+                //     $width = 1920;
+                //     $heigth = 358;
+                //     $name = mt_rand(10000,99999);
 
-                    $saveImageSliderProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
+                //     $saveImageSliderProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
 
-                    if($saveImageSliderProduct != "error"){
-                        echo '
-                            <script>
-                                formatearAlertas();
-                                notiAlert(3, "Error: al subir la imagen del horizontal slider");
-                            </script>'; 
-                        return;
-                    }else{
-                        unlink("views/".$folder."/".$path."/".$_POST["horizontalSliderOld"]);
-                    }
-                }else{
-                    $saveImageSliderProduct = $_POST["horizontalSliderOld"];
-                }
+                //     if($saveImageSliderProduct != "error"){
+                //         echo '
+                //             <script>
+                //                 formatearAlertas();
+                //                 notiAlert(3, "Error: al subir la imagen del horizontal slider");
+                //             </script>'; 
+                //         return;
+                //     }else{
+                //         unlink("views/".$folder."/".$path."/".$_POST["horizontalSliderOld"]);
+                //     }
+                // }else{
+                //     $saveImageSliderProduct = $_POST["horizontalSliderOld"];
+                // }
                 
-                if(
-                    isset($_POST["hSliderH4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH4Tag"]) &&
-                    isset($_POST["hSliderH3_1Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_1Tag"]) &&
-                    isset($_POST["hSliderH3_2Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_2Tag"]) &&
-                    isset($_POST["hSliderH3_3Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_3Tag"]) &&
-                    isset($_POST["hSliderH3_4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_4Tag"]) &&
-                    isset($_POST["hSliderButtonTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderButtonTag"]) 
-                ){
-                    $SliderProduct = (object)[
-                        "H4 tag" => TemplateController::capitalize($_POST["hSliderH4Tag"]),
-                        "H3-1 tag" => TemplateController::capitalize($_POST["hSliderH3_1Tag"]),
-                        "H3-2 tag" => TemplateController::capitalize($_POST["hSliderH3_2Tag"]),
-                        "H3-3 tag" => TemplateController::capitalize($_POST["hSliderH3_3Tag"]),
-                        "H3-4s tag" => TemplateController::capitalize($_POST["hSliderH3_4Tag"]),
-                        "Button tag" => TemplateController::capitalize($_POST["hSliderButtonTag"]),
-                        "IMG tag" => $saveImageSliderProduct
-                    ];
-                }else{
-                    echo '
-                        <script>
-                            formatearAlertas();
-                            notiAlert(3, "Error: en la sintaxis de los campos");
-                        </script>'; 
-                    return;
-                }
+                // if(
+                //     isset($_POST["hSliderH4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH4Tag"]) &&
+                //     isset($_POST["hSliderH3_1Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_1Tag"]) &&
+                //     isset($_POST["hSliderH3_2Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_2Tag"]) &&
+                //     isset($_POST["hSliderH3_3Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_3Tag"]) &&
+                //     isset($_POST["hSliderH3_4Tag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderH3_4Tag"]) &&
+                //     isset($_POST["hSliderButtonTag"]) && preg_match('/^[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,50}$/', $_POST["hSliderButtonTag"]) 
+                // ){
+                //     $SliderProduct = (object)[
+                //         "H4 tag" => TemplateController::capitalize($_POST["hSliderH4Tag"]),
+                //         "H3-1 tag" => TemplateController::capitalize($_POST["hSliderH3_1Tag"]),
+                //         "H3-2 tag" => TemplateController::capitalize($_POST["hSliderH3_2Tag"]),
+                //         "H3-3 tag" => TemplateController::capitalize($_POST["hSliderH3_3Tag"]),
+                //         "H3-4s tag" => TemplateController::capitalize($_POST["hSliderH3_4Tag"]),
+                //         "Button tag" => TemplateController::capitalize($_POST["hSliderButtonTag"]),
+                //         "IMG tag" => $saveImageSliderProduct
+                //     ];
+                // }else{
+                //     echo '
+                //         <script>
+                //             formatearAlertas();
+                //             notiAlert(3, "Error: en la sintaxis de los campos");
+                //         </script>'; 
+                //     return;
+                // }
                 
-                if(isset($_FILES["vSlider"]["tmp_name"]) && !empty($_FILES["vSlider"]["tmp_name"])){
-                    $image = $_FILES["vSlider"];
-                    $folder = "img/products";
-                    $path = explode("_", $_POST['categoryProduct'])[1]."/vertical";
-                    $width = 263;
-                    $heigth = 629;
-                    $name = mt_rand(10000,99999);
+                // if(isset($_FILES["vSlider"]["tmp_name"]) && !empty($_FILES["vSlider"]["tmp_name"])){
+                //     $image = $_FILES["vSlider"];
+                //     $folder = "img/products";
+                //     $path = explode("_", $_POST['categoryProduct'])[1]."/vertical";
+                //     $width = 263;
+                //     $heigth = 629;
+                //     $name = mt_rand(10000,99999);
 
-                    $saveImagedeVerticalBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
-                    if($saveImagedeVerticalBanerProduct == "error"){
-                        echo '
-                        <script>
-                            formatearAlertas();
-                            notiAlert(3, "Error: al salvar el vertical slider");
-                        </script>'; 
-                        return;
-                    }else{
-                        unlink("views/".$folder."/".$path."/".$_POST["verticalSliderOld"]);
-                    }
-                }else{
-                  $saveImagedeVerticalBanerProduct = $_POST["verticalSliderOld"];
-                }
+                //     $saveImagedeVerticalBanerProduct = TemplateController::AlmacenPhoto($image, $folder, $path, $width, $heigth, $name);
+                //     if($saveImagedeVerticalBanerProduct == "error"){
+                //         echo '
+                //         <script>
+                //             formatearAlertas();
+                //             notiAlert(3, "Error: al salvar el vertical slider");
+                //         </script>'; 
+                //         return;
+                //     }else{
+                //         unlink("views/".$folder."/".$path."/".$_POST["verticalSliderOld"]);
+                //     }
+                // }else{
+                //   $saveImagedeVerticalBanerProduct = $_POST["verticalSliderOld"];
+                // }
 
                 if(!empty($_POST["type_video"]) && !empty($_POST["id_video"])){
                     $video_product = array();
@@ -931,7 +931,8 @@ class ControllerVendor{
                     $stars_product .= ']';
                     $comission_product = ($venta_product * 10)/100;
                     
-                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct."&video_product=".$video_product."&price_product=".json_encode($priceProduct)."&starStart_product=".$_POST["stars"]."&stars_product=".$stars_product."&compra_product=".$_POST["priceA"]."&venta_product=".$venta_product."&comission_product=".$comission_product;
+                    $dataProduct = "description_product=".TemplateController::cleanhtml(html_entity_decode(str_replace("+", "%2B", $_POST["descriptionProduct"])))."&summary_product=".json_encode($summaryProduct)."&details_product=".json_encode($detailsProduct)."&specifications_product=".$inputEspecific."&tags_product=".json_encode( explode(",", $_POST['tagsinput']))."&image_product=".$ImageProduct."&gallery_product=".json_encode($galeryArrayProduct)."&video_product=".$video_product."&price_product=".json_encode($priceProduct)."&starStart_product=".$_POST["stars"]."&stars_product=".$stars_product."&compra_product=".$_POST["priceA"]."&venta_product=".$venta_product."&comission_product=".$comission_product;
+                    // ."&top_banner_product=".json_encode($topbannerProduct)."&default_banner_product=".$saveImagedefaultBanerProduct."&horizontal_slider_product=".json_encode($SliderProduct)."&vertical_slider_product=".$saveImagedeVerticalBanerProduct
                     $url = CurlController::api()."products?id=".$_POST["idProduct"]."&nameId=id_product&token=".$_SESSION["user"]->token_user;
                     $method = "PUT";
                     $fields = $dataProduct;
