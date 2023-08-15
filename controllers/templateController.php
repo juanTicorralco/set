@@ -16,7 +16,7 @@ class TemplateController
     /* Route Principal Or Domine from site */
     static public function path()
     {
-        return "http://seture.com/";
+        return "http://bersani.com/";
     }
 
     /* Controller save */

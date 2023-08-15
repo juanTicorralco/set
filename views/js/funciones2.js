@@ -42,7 +42,6 @@ function switAlert(type, text, url, icon, time) {
     case "success":
       if (url == null && icon == null) {
         Swal.fire({
-          position: "top-end",
           icon: "success",
           title: text,
           showConfirmButton: false,
@@ -97,7 +96,7 @@ function switAlert(type, text, url, icon, time) {
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
+          confirmButtonText: 'Estoy seguro!'
         }).then(function(result){
           resolve(result.value);
         });
