@@ -5,7 +5,7 @@ class CurlController
     /* route API */
     static public function api()
     {
-        return "http://setureapi.com/";
+        return "http://apiBersani.com/";
     }
 
     /* petition to the api */

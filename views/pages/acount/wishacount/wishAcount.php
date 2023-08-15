@@ -53,6 +53,7 @@ My Account Content
 
                 <ul class="ps-section__links">
                 <?php if($_SESSION["user"]->method_user == "direct"): ?>
+                    <li class="active"><a href="<?php echo $path; ?>acount&orders">Ordenes</a></li>
                     <li class="active"><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
                     <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
                     <?php endif; ?>
