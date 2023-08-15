@@ -15,6 +15,7 @@ foreach ($promotionToday as $key => $value) {
         unset($promotionToday[$key]);
     }
 
+  
     /* We ask if the offer date has not expired */
     if ($value->offer_product != null) {
         if ($today > json_decode($value->offer_product, true)[2]) {
